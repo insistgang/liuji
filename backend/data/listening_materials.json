@@ -1,0 +1,147 @@
+[
+  {
+    "title": "News Report: Climate Summit 2024",
+    "section_type": "news_report",
+    "audio_url": "",
+    "transcript": "World leaders gathered in Paris this week for the 2024 Climate Summit, where they discussed ambitious new targets for reducing carbon emissions. The summit, which brought together representatives from over 190 countries, focused on three key areas: renewable energy adoption, forest conservation, and sustainable transportation. The European Union announced plans to reduce emissions by 55% below 1990 levels by 2030, while China committed to reaching peak emissions before 2030. The United States pledged to double its climate finance contributions to developing nations. Environmental activists praised the commitments but urged faster action, noting that current pledges still fall short of what is needed to limit global warming to 1.5 degrees Celsius. The next summit is scheduled for June 2025 in Berlin.",
+    "difficulty": 3,
+    "duration": 45,
+    "source": "2024年6月真题",
+    "exercises": [
+      {
+        "question_text": "What is the main topic of the news report?",
+        "options_json": "[\"A) Economic development in Europe\", \"B) The 2024 Climate Summit in Paris\", \"C) A new trade agreement\", \"D) Technology innovation\"]",
+        "correct_answer": "B",
+        "explanation": "新闻报道主要讲述的是2024年巴黎气候峰会。",
+        "timestamp": 5,
+        "sort_order": 1
+      },
+      {
+        "question_text": "How many countries were represented at the summit?",
+        "options_json": "[\"A) Over 100\", \"B) Over 150\", \"C) Over 190\", \"D) Over 200\"]",
+        "correct_answer": "C",
+        "explanation": "文中提到峰会汇聚了来自190多个国家的代表。",
+        "timestamp": 10,
+        "sort_order": 2
+      },
+      {
+        "question_text": "What did the European Union announce at the summit?",
+        "options_json": "[\"A) Plans to increase fossil fuel use\", \"B) Plans to reduce emissions by 55% by 2030\", \"C) Plans to withdraw from the agreement\", \"D) Plans to host the next summit\"]",
+        "correct_answer": "B",
+        "explanation": "欧盟宣布计划到2030年将排放量比1990年水平减少55%。",
+        "timestamp": 18,
+        "sort_order": 3
+      },
+      {
+        "question_text": "According to environmental activists, what is the main concern?",
+        "options_json": "[\"A) The summit was too short\", \"B) Current pledges are insufficient\", \"C) Too few countries participated\", \"D) The location was inappropriate\"]",
+        "correct_answer": "B",
+        "explanation": "环保活动人士敦促更快行动，指出当前承诺仍不足以将全球变暖控制在1.5摄氏度以内。",
+        "timestamp": 30,
+        "sort_order": 4
+      },
+      {
+        "question_text": "Where will the next summit be held?",
+        "options_json": "[\"A) Paris\", \"B) New York\", \"C) Berlin\", \"D) Tokyo\"]",
+        "correct_answer": "C",
+        "explanation": "下一届峰会计划于2025年6月在柏林举行。",
+        "timestamp": 40,
+        "sort_order": 5
+      }
+    ]
+  },
+  {
+    "title": "Lecture: The History of Artificial Intelligence",
+    "section_type": "lecture",
+    "audio_url": "",
+    "transcript": "Today's lecture traces the history of artificial intelligence from its origins in the 1950s to the present day. The field was formally founded at a workshop at Dartmouth College in 1956, where researchers proposed that machines could be made to simulate any aspect of learning or intelligence. The early years saw great optimism, with researchers predicting that machines would be as smart as humans within a generation. However, progress was slower than expected, leading to what became known as the 'AI winter' in the 1970s and 1980s, when funding and interest in AI research declined significantly. The field experienced a resurgence in the 1990s with the development of machine learning algorithms and the availability of large datasets. The breakthrough moment came in 2012 when deep learning models achieved unprecedented accuracy in image recognition tasks. Since then, AI has advanced rapidly, with applications in healthcare, finance, transportation, and many other fields. Today, large language models like GPT have demonstrated remarkable capabilities in understanding and generating human language, though debates continue about the implications of these technologies for society.",
+    "difficulty": 4,
+    "duration": 60,
+    "source": "模拟题",
+    "exercises": [
+      {
+        "question_text": "When was the field of AI formally founded?",
+        "options_json": "[\"A) 1946\", \"B) 1956\", \"C) 1966\", \"D) 1976\"]",
+        "correct_answer": "B",
+        "explanation": "AI领域于1956年在达特茅斯学院的一次研讨会上正式成立。",
+        "timestamp": 8,
+        "sort_order": 1
+      },
+      {
+        "question_text": "What is the 'AI winter'?",
+        "options_json": "[\"A) A cold weather event\", \"B) A period of reduced funding and interest in AI\", \"C) A new AI technology\", \"D) An AI conference\"]",
+        "correct_answer": "B",
+        "explanation": "'AI寒冬'指的是20世纪70-80年代AI研究资金和兴趣大幅减少的时期。",
+        "timestamp": 20,
+        "sort_order": 2
+      },
+      {
+        "question_text": "What was the breakthrough moment for AI in 2012?",
+        "options_json": "[\"A) The creation of the first robot\", \"B) Deep learning models achieving unprecedented accuracy in image recognition\", \"C) The invention of the internet\", \"D) The first AI chess match\"]",
+        "correct_answer": "B",
+        "explanation": "2012年的突破性时刻是深度学习模型在图像识别任务中取得了前所未有的准确率。",
+        "timestamp": 38,
+        "sort_order": 3
+      },
+      {
+        "question_text": "What capabilities have large language models demonstrated?",
+        "options_json": "[\"A) Physical strength\", \"B) Understanding and generating human language\", \"C) Time travel\", \"D) Cooking\"]",
+        "correct_answer": "B",
+        "explanation": "大型语言模型展示了理解和生成人类语言的卓越能力。",
+        "timestamp": 50,
+        "sort_order": 4
+      }
+    ]
+  },
+  {
+    "title": "Conversation: Planning a Group Project",
+    "section_type": "conversation",
+    "audio_url": "",
+    "transcript": "A: Hi Sarah, have you started working on the group project yet?\nB: Hi Tom. I've been thinking about it, but I haven't started writing anything. What about you?\nA: Same here. I think we should meet this weekend to divide up the work. How about Saturday afternoon?\nB: Saturday works for me. Where should we meet? The library?\nA: Actually, I was thinking we could meet at the coffee shop on Main Street. It has good Wi-Fi and it's quieter than the library.\nB: That sounds perfect. What time?\nA: How about 2 PM? That gives us the whole afternoon.\nB: Great. Should we invite Lisa and John too?\nA: Definitely. I'll send them a message. By the way, have you decided which topic you want to focus on?\nB: I'm interested in the environmental impact section. I've already found some good research papers on it.\nA: That's great. I was thinking about doing the economic analysis part. We should make sure our sections connect well.\nB: Agreed. We can discuss the outline on Saturday to make sure everything flows together.\nA: Perfect. I'll see you then!",
+    "difficulty": 2,
+    "duration": 50,
+    "source": "模拟题",
+    "exercises": [
+      {
+        "question_text": "When do they plan to meet?",
+        "options_json": "[\"A) Friday evening\", \"B) Saturday afternoon\", \"C) Sunday morning\", \"D) Monday after class\"]",
+        "correct_answer": "B",
+        "explanation": "他们计划周六下午见面。",
+        "timestamp": 8,
+        "sort_order": 1
+      },
+      {
+        "question_text": "Where do they decide to meet?",
+        "options_json": "[\"A) The library\", \"B) Tom's house\", \"C) A coffee shop on Main Street\", \"D) The campus center\"]",
+        "correct_answer": "C",
+        "explanation": "他们决定在主街的咖啡店见面。",
+        "timestamp": 15,
+        "sort_order": 2
+      },
+      {
+        "question_text": "What topic does Sarah want to focus on?",
+        "options_json": "[\"A) Economic analysis\", \"B) Environmental impact\", \"C) Historical background\", \"D) Technology trends\"]",
+        "correct_answer": "B",
+        "explanation": "Sarah对环境影响部分感兴趣。",
+        "timestamp": 32,
+        "sort_order": 3
+      },
+      {
+        "question_text": "What does Tom plan to work on?",
+        "options_json": "[\"A) Environmental impact\", \"B) Research methodology\", \"C) Economic analysis\", \"D) Data collection\"]",
+        "correct_answer": "C",
+        "explanation": "Tom打算做经济分析部分。",
+        "timestamp": 38,
+        "sort_order": 4
+      },
+      {
+        "question_text": "What time will they meet?",
+        "options_json": "[\"A) 10 AM\", \"B) 12 PM\", \"C) 2 PM\", \"D) 4 PM\"]",
+        "correct_answer": "C",
+        "explanation": "他们约定下午2点见面。",
+        "timestamp": 12,
+        "sort_order": 5
+      }
+    ]
+  }
+]

@@ -1,0 +1,120 @@
+{
+  "title": "2024年6月六级真题（第一套）",
+  "exam_date": "2024-06-15",
+  "exam_type": "cet6",
+  "total_score": 710,
+  "sections": {
+    "reading": {
+      "questions": [
+        {
+          "section": "reading",
+          "question_num": 1,
+          "question_type": "multiple_choice",
+          "content": "According to the passage, what is the main challenge facing modern education systems?\n\nThe modern education system faces numerous challenges in the 21st century. Perhaps the most significant is the need to prepare students for jobs that do not yet exist, using technologies that have not yet been invented, to solve problems that we don't yet know are problems. This requires a fundamental shift from the traditional model of education, which focused on memorization and standardized testing, to one that emphasizes critical thinking, creativity, and adaptability. Schools must evolve from being knowledge-delivery systems to becoming learning environments where students develop the skills they need to navigate an uncertain future.",
+          "options_json": "[\"A) Lack of funding for schools\", \"B) Preparing students for an uncertain future\", \"C) The high cost of new technologies\", \"D) Teacher shortages worldwide\"]",
+          "correct_answer": "B",
+          "explanation": "文章明确指出最重大的挑战是为尚未存在的工作培养学生，这对应选项B——为不确定的未来做准备。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 2,
+          "question_type": "multiple_choice",
+          "content": "What does the author suggest education systems should emphasize?",
+          "options_json": "[\"A) Memorization and standardized testing\", \"B) Critical thinking, creativity, and adaptability\", \"C) Technical skills and vocational training\", \"D) Traditional academic subjects\"]",
+          "correct_answer": "B",
+          "explanation": "文中明确提到应强调critical thinking, creativity, and adaptability。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 3,
+          "question_type": "multiple_choice",
+          "content": "The word 'navigate' in the last sentence is closest in meaning to:",
+          "options_json": "[\"A) avoid\", \"B) manage\", \"C) ignore\", \"D) create\"]",
+          "correct_answer": "B",
+          "explanation": "navigate在此处意为'应对、处理'，与manage意思最接近。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 4,
+          "question_type": "multiple_choice",
+          "content": "According to recent studies, remote work has shown several unexpected benefits beyond the commonly discussed flexibility advantages. Researchers have found that remote workers often report higher levels of job satisfaction, not because they work fewer hours, but because they have more control over their work environment. Additionally, companies that adopted remote work policies early have seen a 25% reduction in office-related expenses, while maintaining or even improving productivity levels. However, the study also notes that these benefits are most pronounced when employees have access to proper home office setups and reliable internet connections.\n\nWhat is the main finding of the studies mentioned in the passage?",
+          "options_json": "[\"A) Remote workers work fewer hours\", \"B) Remote work offers unexpected benefits beyond flexibility\", \"C) All companies should adopt remote work\", \"D) Office expenses have increased\"]",
+          "correct_answer": "B",
+          "explanation": "文章开头就指出远程工作有几个超出灵活性之外的意外好处。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 5,
+          "question_type": "multiple_choice",
+          "content": "According to the passage, what factor contributes most to the success of remote work benefits?",
+          "options_json": "[\"A) Working fewer hours\", \"B) Having a shorter commute\", \"C) Access to proper home office setups and reliable internet\", \"D) Having more meetings\"]",
+          "correct_answer": "C",
+          "explanation": "文章最后一句明确指出，这些好处在员工有合适的家庭办公环境和可靠的网络连接时最为明显。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 6,
+          "question_type": "multiple_choice",
+          "content": "The phrase 'pronounced' in the last paragraph most likely means:",
+          "options_json": "[\"A) spoken aloud\", \"B) obvious or noticeable\", \"C) difficult to achieve\", \"D) recently discovered\"]",
+          "correct_answer": "B",
+          "explanation": "pronounced在此处意为'显著的、明显的'，与obvious or noticeable意思相同。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 7,
+          "question_type": "fill_blank",
+          "content": "Climate change is one of the most pressing issues of our time. Scientists have warned that without immediate action, global temperatures could rise by more than 2°C above pre-industrial levels by 2050. This would lead to more frequent extreme weather events, rising sea levels, and significant disruption to agriculture. Many experts believe that a combination of renewable energy adoption, improved energy efficiency, and changes in consumption patterns will be necessary to address this challenge effectively.\n\nAccording to scientists, global temperatures could rise by more than _______ above pre-industrial levels by 2050 without immediate action.",
+          "options_json": "[]",
+          "correct_answer": "2°C",
+          "explanation": "文中明确提到global temperatures could rise by more than 2°C。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 8,
+          "question_type": "fill_blank",
+          "content": "(Same passage as above)\n\nThe passage mentions three approaches to address climate change: renewable energy adoption, improved energy _______, and changes in consumption patterns.",
+          "options_json": "[]",
+          "correct_answer": "efficiency",
+          "explanation": "文中提到improved energy efficiency。",
+          "points": 7
+        }
+      ]
+    },
+    "translation": {
+      "questions": [
+        {
+          "section": "translation",
+          "question_num": 1,
+          "question_type": "short_answer",
+          "content": "将以下中文翻译成英文：\n\n中国传统文化是中华民族的宝贵财富。近年来，越来越多的年轻人开始关注传统文化，并积极参与各种文化活动。政府也加大了对传统文化保护的力度，投入大量资金用于文物修复和非物质文化遗产的传承。通过这些努力，中国传统文化正在焕发出新的活力。",
+          "options_json": "[]",
+          "correct_answer": "Traditional Chinese culture is a precious treasure of the Chinese nation. In recent years, more and more young people have begun to pay attention to traditional culture and actively participate in various cultural activities. The government has also increased efforts to protect traditional culture, investing substantial funds in the restoration of cultural relics and the inheritance of intangible cultural heritage. Through these efforts, traditional Chinese culture is showing new vitality.",
+          "explanation": "翻译时注意：1）'宝贵财富'可译为precious treasure；2）'非物质文化遗产'译为intangible cultural heritage；3）'焕发出新的活力'可译为showing new vitality。",
+          "points": 15
+        }
+      ]
+    },
+    "writing": {
+      "questions": [
+        {
+          "section": "writing",
+          "question_num": 1,
+          "question_type": "short_answer",
+          "content": "Directions: For this part, you are allowed 30 minutes to write an essay on the importance of building trust between employers and employees. You should write at least 150 words but no more than 200 words.",
+          "options_json": "[]",
+          "correct_answer": "",
+          "explanation": "写作评分标准：内容完整性、语言准确性、逻辑连贯性、词汇丰富度。",
+          "points": 15
+        }
+      ]
+    }
+  }
+}
