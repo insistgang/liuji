@@ -2,7 +2,7 @@
   {
     "title": "News Report: Climate Summit 2024",
     "section_type": "news_report",
-    "audio_url": "",
+    "audio_url": "/static/audio/listening_1.mp3",
     "transcript": "World leaders gathered in Paris this week for the 2024 Climate Summit, where they discussed ambitious new targets for reducing carbon emissions. The summit, which brought together representatives from over 190 countries, focused on three key areas: renewable energy adoption, forest conservation, and sustainable transportation. The European Union announced plans to reduce emissions by 55% below 1990 levels by 2030, while China committed to reaching peak emissions before 2030. The United States pledged to double its climate finance contributions to developing nations. Environmental activists praised the commitments but urged faster action, noting that current pledges still fall short of what is needed to limit global warming to 1.5 degrees Celsius. The next summit is scheduled for June 2025 in Berlin.",
     "difficulty": 3,
     "duration": 45,
@@ -53,7 +53,7 @@
   {
     "title": "Lecture: The History of Artificial Intelligence",
     "section_type": "lecture",
-    "audio_url": "",
+    "audio_url": "/static/audio/listening_2.mp3",
     "transcript": "Today's lecture traces the history of artificial intelligence from its origins in the 1950s to the present day. The field was formally founded at a workshop at Dartmouth College in 1956, where researchers proposed that machines could be made to simulate any aspect of learning or intelligence. The early years saw great optimism, with researchers predicting that machines would be as smart as humans within a generation. However, progress was slower than expected, leading to what became known as the 'AI winter' in the 1970s and 1980s, when funding and interest in AI research declined significantly. The field experienced a resurgence in the 1990s with the development of machine learning algorithms and the availability of large datasets. The breakthrough moment came in 2012 when deep learning models achieved unprecedented accuracy in image recognition tasks. Since then, AI has advanced rapidly, with applications in healthcare, finance, transportation, and many other fields. Today, large language models like GPT have demonstrated remarkable capabilities in understanding and generating human language, though debates continue about the implications of these technologies for society.",
     "difficulty": 4,
     "duration": 60,
@@ -96,7 +96,7 @@
   {
     "title": "Conversation: Planning a Group Project",
     "section_type": "conversation",
-    "audio_url": "",
+    "audio_url": "/static/audio/listening_3.mp3",
     "transcript": "A: Hi Sarah, have you started working on the group project yet?\nB: Hi Tom. I've been thinking about it, but I haven't started writing anything. What about you?\nA: Same here. I think we should meet this weekend to divide up the work. How about Saturday afternoon?\nB: Saturday works for me. Where should we meet? The library?\nA: Actually, I was thinking we could meet at the coffee shop on Main Street. It has good Wi-Fi and it's quieter than the library.\nB: That sounds perfect. What time?\nA: How about 2 PM? That gives us the whole afternoon.\nB: Great. Should we invite Lisa and John too?\nA: Definitely. I'll send them a message. By the way, have you decided which topic you want to focus on?\nB: I'm interested in the environmental impact section. I've already found some good research papers on it.\nA: That's great. I was thinking about doing the economic analysis part. We should make sure our sections connect well.\nB: Agreed. We can discuss the outline on Saturday to make sure everything flows together.\nA: Perfect. I'll see you then!",
     "difficulty": 2,
     "duration": 50,

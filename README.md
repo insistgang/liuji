@@ -31,13 +31,16 @@ cd frontend && npm install && npm run dev
 | 数据 | 规模 | 位置 |
 |---|---|---|
 | 六级词库 | 1808 词（高频 985 / 中频 720 / 低频 103） | `backend/data/cet6_vocabulary.json` |
-| 真题 | 1 套（2024.6 第一套，阅读+翻译+写作） | `backend/data/exam_papers/` |
-| 听力材料 | 3 篇（transcript + 题目，暂无音频） | `backend/data/listening_materials.json` |
-| 写作题库 | 5 篇（含范文） | `backend/data/writing_prompts.json` |
+| 真题/模拟卷 | 3 套（2024.6 真题 + 2023.12 / 2023.6 模拟卷，各含阅读 8 + 翻译 1 + 写作 1） | `backend/data/exam_papers/` |
+| 听力材料 | 3 篇（transcript + 题目 + TTS 音频） | `backend/data/listening_materials.json` |
+| 写作题库 | 20 篇（各带范文与写作建议） | `backend/data/writing_prompts.json` |
+
+听力音频由 `backend/scripts/generate_listening_audio.py` 用 edge-tts（微软神经语音）生成，
+落在 `backend/static/audio/`，经 FastAPI `/static` 挂载对外提供；改动 transcript 后重跑该脚本并
+`seed_listening.py --reset` 即可。
 
 ## 已知待办
 
-- [ ] 扩充真题套数（目前仅 1 套，缺听力 section）
-- [ ] 听力音频（audio_url 为空，可接 TTS 或真题音频）
+- [ ] 扩充真题套数与听力 section（目前卷内无听力题）
 - [ ] 写作/翻译题在套卷判分中仍是字符串比对，待接入 LLM 批改
 - [ ] 后端测试（tests/ 目前为空）

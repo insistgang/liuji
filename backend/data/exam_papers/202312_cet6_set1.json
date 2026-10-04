@@ -1,0 +1,120 @@
+{
+  "title": "2023年12月六级模拟卷（第一套）",
+  "exam_date": "2023-12-16",
+  "exam_type": "cet6",
+  "total_score": 710,
+  "sections": {
+    "reading": {
+      "questions": [
+        {
+          "section": "reading",
+          "question_num": 1,
+          "question_type": "multiple_choice",
+          "content": "What is the primary concern about AI in healthcare raised by the passage?\n\nArtificial intelligence is transforming healthcare at an unprecedented pace. Algorithms can now detect diseases from medical images with accuracy rivaling that of experienced doctors, and predictive models help hospitals allocate resources more efficiently. Yet beneath these impressive advances lies a fundamental concern: accountability. When an AI system makes a diagnostic error, it remains unclear who should be held responsible—the software developer, the hospital, or the physician who relied on the recommendation. Medical professionals worry that over-reliance on algorithms may also gradually erode their own diagnostic skills, much as GPS navigation has weakened people's sense of direction. Regulators, meanwhile, struggle to keep pace with technology that evolves faster than legislation can adapt.",
+          "options_json": "[\"A) The high cost of AI systems\", \"B) Accountability when AI makes errors\", \"C) The slow speed of AI diagnosis\", \"D) Patients' refusal to accept AI\"]",
+          "correct_answer": "B",
+          "explanation": "文章明确指出隐藏于进步之下的根本担忧是accountability（问责），即AI诊断出错时责任归属不明。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 2,
+          "question_type": "multiple_choice",
+          "content": "Why does the author mention GPS navigation?",
+          "options_json": "[\"A) To show technology always improves our abilities\", \"B) To illustrate how over-reliance on technology can weaken human skills\", \"C) To compare the cost of GPS and AI systems\", \"D) To suggest doctors should use GPS more often\"]",
+          "correct_answer": "B",
+          "explanation": "作者用GPS削弱方向感作类比，说明过度依赖算法可能逐渐侵蚀医生的诊断技能。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 3,
+          "question_type": "multiple_choice",
+          "content": "The word \"erode\" in the passage is closest in meaning to:",
+          "options_json": "[\"A) strengthen\", \"B) gradually wear away\", \"C) suddenly destroy\", \"D) carefully preserve\"]",
+          "correct_answer": "B",
+          "explanation": "erode意为'逐渐削弱、侵蚀'，与gradually wear away意思最接近，且文中gradually一词是重要提示。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 4,
+          "question_type": "multiple_choice",
+          "content": "Urban green spaces do far more than beautify cities. A long-term study tracking 10,000 residents across five European cities found that people living within 300 meters of a park reported 30% lower stress hormone levels than those without easy access to greenery. The effect held even after researchers controlled for income and exercise habits, suggesting that mere visual contact with nature—simply seeing trees from a window—delivers measurable psychological benefits. City planners are now using these findings to argue for mandatory green corridors in new developments, though critics point out that such requirements raise construction costs by an estimated 8 to 12 percent.\n\nWhat did the long-term study find?",
+          "options_json": "[\"A) Parks increase residents' income\", \"B) Living near parks is linked to lower stress hormone levels\", \"C) Exercise habits determine stress levels\", \"D) European cities have too many parks\"]",
+          "correct_answer": "B",
+          "explanation": "研究发现住在公园300米范围内的居民压力荷尔蒙水平低30%，即住在公园附近与更低压力水平相关。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 5,
+          "question_type": "multiple_choice",
+          "content": "What objection do critics raise about mandatory green corridors?",
+          "options_json": "[\"A) They reduce property values\", \"B) They are difficult to maintain\", \"C) They raise construction costs\", \"D) They attract too many visitors\"]",
+          "correct_answer": "C",
+          "explanation": "文章末尾指出批评者认为此类要求会使建筑成本上升约8%到12%。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 6,
+          "question_type": "multiple_choice",
+          "content": "The rapid shift to online learning during the pandemic produced an unexpected natural experiment in education. Initial assumptions that students would welcome the flexibility of recorded lectures proved only partially correct. Surveys revealed a sharp divide: students with strong self-regulation skills thrived, often reporting better outcomes than in traditional classrooms, while those who struggled with time management fell further behind than ever before. Researchers coined the term \"autonomy gap\" to describe this widening divide. Interestingly, the gap narrowed significantly when courses introduced structured weekly check-ins and peer accountability groups, suggesting that the problem lies not with online learning itself, but with designs that assume all learners possess equal self-discipline.\n\nWhat does the term \"autonomy gap\" refer to?",
+          "options_json": "[\"A) The difference in internet access between students\", \"B) The widening outcome divide between self-regulated and less disciplined students\", \"C) The gap between teachers' and students' technical skills\", \"D) The difference between online and offline tuition fees\"]",
+          "correct_answer": "B",
+          "explanation": "文章指出自律性强的学生表现更好，时间管理能力弱的学生更加落后，研究者将这种日益扩大的分化称为autonomy gap。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 7,
+          "question_type": "multiple_choice",
+          "content": "According to the passage, what helped narrow the autonomy gap?",
+          "options_json": "[\"A) Reducing course difficulty\", \"B) Providing free laptops\", \"C) Structured weekly check-ins and peer accountability groups\", \"D) Returning entirely to traditional classrooms\"]",
+          "correct_answer": "C",
+          "explanation": "文章明确指出引入结构化的每周检查和同伴问责小组后，差距显著缩小。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 8,
+          "question_type": "multiple_choice",
+          "content": "What is the author's main conclusion about online learning?",
+          "options_json": "[\"A) It is inferior to classroom teaching\", \"B) It should be abandoned after the pandemic\", \"C) Its success depends on course design rather than the format itself\", \"D) It only benefits top students\"]",
+          "correct_answer": "C",
+          "explanation": "文章最后一句点明问题不在于在线学习本身，而在于假设所有学习者都有同等自律性的课程设计。",
+          "points": 7
+        }
+      ]
+    },
+    "translation": {
+      "questions": [
+        {
+          "section": "translation",
+          "question_num": 1,
+          "question_type": "short_answer",
+          "content": "将以下中文翻译成英文：\n\n中国高铁是世界上规模最大的高速铁路网络。截至2023年底，中国高铁运营里程已超过4.5万公里，连接了全国绝大多数大中城市。高铁不仅大大缩短了人们的出行时间，还促进了沿线城市的经济发展。如今，乘坐高铁出行已成为许多中国人的首选，中国高铁技术也开始走向世界。",
+          "options_json": "[]",
+          "correct_answer": "China's high-speed railway is the largest high-speed rail network in the world. By the end of 2023, its operating mileage had exceeded 45,000 kilometers, connecting the vast majority of large and medium-sized cities across the country. High-speed rail has not only greatly shortened people's travel time, but also promoted the economic development of cities along its routes. Today, traveling by high-speed rail has become the first choice for many Chinese people, and China's high-speed rail technology is also beginning to reach the world.",
+          "explanation": "参考译文要点：'运营里程'译为operating mileage；'首选'译为first choice/top choice；'走向世界'译为reach the world/go global。注意时态使用（截至某时点用过去完成时）。",
+          "points": 15
+        }
+      ]
+    },
+    "writing": {
+      "questions": [
+        {
+          "section": "writing",
+          "question_num": 1,
+          "question_type": "short_answer",
+          "content": "Directions: For this part, you are allowed 30 minutes to write an essay on whether artificial intelligence will replace human teachers. You should write at least 150 words but no more than 200 words.",
+          "options_json": "[]",
+          "correct_answer": "",
+          "explanation": "写作评分标准：内容完整性、语言准确性、逻辑连贯性、词汇丰富度。建议结构：表明立场→分析AI的优势与局限→得出人机协作的结论。",
+          "points": 15
+        }
+      ]
+    }
+  }
+}

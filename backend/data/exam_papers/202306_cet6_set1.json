@@ -1,0 +1,120 @@
+{
+  "title": "2023年6月六级模拟卷（第一套）",
+  "exam_date": "2023-06-17",
+  "exam_type": "cet6",
+  "total_score": 710,
+  "sections": {
+    "reading": {
+      "questions": [
+        {
+          "section": "reading",
+          "question_num": 1,
+          "question_type": "multiple_choice",
+          "content": "What is the main idea of the passage?\n\nEvery year, an estimated eight million tons of plastic enter the world's oceans, the equivalent of dumping one garbage truck of plastic into the sea every minute. While images of floating bottles and bags capture public attention, scientists are increasingly concerned about what cannot be seen: microplastics. These tiny fragments, often smaller than a grain of rice, result from the breakdown of larger debris and from synthetic fibers shed by clothing during washing. They have been found in the deepest ocean trenches and in Arctic ice. Recent research suggests that addressing the problem requires action far upstream—improving waste collection in rapidly developing coastal cities, where most ocean plastic originates, rather than focusing solely on beach cleanups in wealthy nations.",
+          "options_json": "[\"A) Beach cleanups are the best solution to ocean plastic\", \"B) Visible plastic waste is the greatest ocean threat\", \"C) Ocean plastic pollution requires upstream solutions in coastal cities\", \"D) Microplastics are harmless to marine life\"]",
+          "correct_answer": "C",
+          "explanation": "文章主旨句在最后：解决问题需要在源头（发展中国家的沿海城市改善垃圾收集）行动，而不是只关注发达国家的海滩清理。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 2,
+          "question_type": "multiple_choice",
+          "content": "According to the passage, where do microplastics come from?",
+          "options_json": "[\"A) Only from broken fishing nets\", \"B) The breakdown of larger debris and synthetic fibers from clothing\", \"C) Volcanic activity in the ocean\", \"D) Ships dumping cargo at sea\"]",
+          "correct_answer": "B",
+          "explanation": "文章明确说明微塑料来自较大塑料碎片的分解以及洗涤衣物时脱落的合成纤维。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 3,
+          "question_type": "multiple_choice",
+          "content": "The phrase \"far upstream\" in the last sentence is used metaphorically to mean:",
+          "options_json": "[\"A) closer to river sources\", \"B) at the root cause of the problem\", \"C) in northern countries\", \"D) on the ocean surface\"]",
+          "correct_answer": "B",
+          "explanation": "far upstream在此处是比喻用法，指从问题的源头（垃圾产生的上游环节）着手，而非字面上的河流上游。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 4,
+          "question_type": "multiple_choice",
+          "content": "The debate between digital and print reading has produced surprising findings. Comprehension studies consistently show that readers retain information better from printed pages, particularly for long and complex texts. Researchers attribute this to what they call the \"shallowing hypothesis\": screens train us to skim, and we carry that habit even to serious material. However, the gap narrows dramatically when readers are given unlimited time, suggesting that screen reading encourages rushing rather than preventing deep understanding altogether. Some educators now teach \"digital deep reading\" as a distinct skill, with techniques such as turning off notifications and setting deliberate pacing goals.\n\nWhat does the \"shallowing hypothesis\" claim?",
+          "options_json": "[\"A) Screens make text physically harder to see\", \"B) Screens train readers to skim, and this habit persists\", \"C) Printed books are always cheaper\", \"D) Digital reading eliminates comprehension entirely\"]",
+          "correct_answer": "B",
+          "explanation": "文章解释shallowing hypothesis是指屏幕训练我们浏览略读，且这种习惯会延续到严肃材料的阅读中。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 5,
+          "question_type": "multiple_choice",
+          "content": "When does the comprehension gap between digital and print reading narrow?",
+          "options_json": "[\"A) When readers use larger screens\", \"B) When texts are shorter\", \"C) When readers have unlimited time\", \"D) When notifications are colorful\"]",
+          "correct_answer": "C",
+          "explanation": "文章指出当读者拥有不限时间时，差距显著缩小，说明屏幕阅读促使人们匆忙而非完全阻碍深度理解。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 6,
+          "question_type": "multiple_choice",
+          "content": "The gig economy promised workers freedom: choose your hours, be your own boss, escape the nine-to-five. A decade into the experiment, the reality is more complicated. Surveys of ride-share drivers and delivery couriers reveal a paradox. A majority report valuing schedule flexibility above all else, yet a similar majority also report income anxiety severe enough to affect their sleep. Economists note that flexibility has quietly been redefined: peak-hour pay incentives mean drivers who truly want livable earnings must work exactly when everyone else does—Friday nights, rainy mornings, holidays. Meanwhile, several countries have begun reclassifying gig workers as employees entitled to minimum wage and benefits, a shift platforms warn could eliminate the very flexibility workers cherish.\n\nWhat paradox do surveys of gig workers reveal?",
+          "options_json": "[\"A) Workers value flexibility yet suffer income anxiety\", \"B) Workers earn more but work less\", \"C) Drivers enjoy working holidays\", \"D) Platforms pay too much for peak hours\"]",
+          "correct_answer": "A",
+          "explanation": "文章指出多数人最看重时间灵活性，但同样多数的人又因收入焦虑而影响睡眠，这构成悖论。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 7,
+          "question_type": "multiple_choice",
+          "content": "According to economists, how has flexibility been redefined?",
+          "options_json": "[\"A) Workers can choose any hours they like\", \"B) Livable earnings require working during peak demand times\", \"C) Gig work has become a full-time career\", \"D) Platforms have abolished pay incentives\"]",
+          "correct_answer": "B",
+          "explanation": "经济学家指出，高峰时段的薪酬激励意味着想获得可维持生活的收入就必须在需求高峰工作，灵活性被悄悄重新定义。",
+          "points": 7
+        },
+        {
+          "section": "reading",
+          "question_num": 8,
+          "question_type": "multiple_choice",
+          "content": "What concern do platforms have about reclassifying gig workers as employees?",
+          "options_json": "[\"A) It will attract too many new workers\", \"B) It could eliminate the flexibility workers value\", \"C) It will reduce the number of customers\", \"D) It will improve worker sleep quality\"]",
+          "correct_answer": "B",
+          "explanation": "文章最后指出平台警告，将零工劳动者重新归类为雇员可能会消除工人所珍视的灵活性。",
+          "points": 7
+        }
+      ]
+    },
+    "translation": {
+      "questions": [
+        {
+          "section": "translation",
+          "question_num": 1,
+          "question_type": "short_answer",
+          "content": "将以下中文翻译成英文：\n\n移动支付已经深刻改变了中国人的日常生活。从大型商场到街边小摊，消费者只需用手机扫描二维码就能完成付款。移动支付的普及不仅提高了交易效率，还减少了现金使用带来的不便和风险。如今，即使是偏远地区的居民也能享受到便捷的金融服务。中国在移动支付领域的创新为全球提供了宝贵经验。",
+          "options_json": "[]",
+          "correct_answer": "Mobile payment has profoundly changed the daily lives of Chinese people. From large shopping malls to street vendors, consumers can complete payments simply by scanning a QR code with their mobile phones. The popularity of mobile payment has not only improved transaction efficiency, but also reduced the inconvenience and risks associated with using cash. Today, even residents in remote areas can enjoy convenient financial services. China's innovation in mobile payment has provided valuable experience for the world.",
+          "explanation": "参考译文要点：'扫描二维码'译为scan a QR code；'普及'译为popularity/widespread adoption；'偏远地区'译为remote areas。注意完成时态的运用。",
+          "points": 15
+        }
+      ]
+    },
+    "writing": {
+      "questions": [
+        {
+          "section": "writing",
+          "question_num": 1,
+          "question_type": "short_answer",
+          "content": "Directions: For this part, you are allowed 30 minutes to write an essay on the importance of mental health for college students. You should write at least 150 words but no more than 200 words.",
+          "options_json": "[]",
+          "correct_answer": "",
+          "explanation": "写作评分标准：内容完整性、语言准确性、逻辑连贯性、词汇丰富度。建议结构：指出心理健康的重要性→分析常见压力来源→提出应对建议。",
+          "points": 15
+        }
+      ]
+    }
+  }
+}

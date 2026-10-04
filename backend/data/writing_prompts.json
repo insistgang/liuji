@@ -48,5 +48,155 @@
     "sample_essay": "Technology has revolutionized education in ways that were unimaginable just a few decades ago. From online learning platforms to artificial intelligence tutors, technology is reshaping how we teach and learn.\n\nOne of the most significant contributions of technology to education is increased accessibility. Students in remote areas can now access high-quality educational materials through the internet. Online courses and digital textbooks have made education more affordable and convenient for millions of learners worldwide.\n\nTechnology also enables personalized learning. Adaptive learning software can identify students' strengths and weaknesses and tailor content accordingly. This individualized approach helps students learn at their own pace and receive targeted support where they need it most.\n\nHowever, technology should complement, not replace, traditional teaching methods. The human element in education—mentorship, emotional support, and social interaction—remains irreplaceable. The most effective approach combines technological tools with skilled teaching.\n\nLooking ahead, emerging technologies like virtual reality and AI promise to further transform education. The key is to harness these innovations thoughtfully to enhance learning outcomes while preserving the essential human aspects of education.",
     "tips": "1. 使用具体技术例子\n2. 分析利弊\n3. 提出平衡观点\n4. 展望未来",
     "difficulty": 3
+  },
+  {
+    "title": "Will Artificial Intelligence Replace Human Workers?",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on whether artificial intelligence will replace human workers. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于人工智能是否会取代人类劳动者的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "argumentative",
+    "sample_essay": "The rise of artificial intelligence has sparked intense debate about the future of work. While some fear mass unemployment, I believe AI will transform rather than replace human labor.\n\nAdmittedly, AI excels at repetitive and data-driven tasks. Assembly lines, data entry, and basic customer service are increasingly automated, and this trend will continue. However, history offers reassurance: the Industrial Revolution eliminated many jobs yet created entirely new industries. Similarly, AI is generating demand for roles that barely existed a decade ago, such as data analysts and AI ethics consultants.\n\nMore importantly, human qualities remain irreplaceable. Empathy, creativity, and moral judgment cannot be reduced to algorithms. A nurse's comforting words, a teacher's encouragement, and a leader's vision all require genuine human connection.\n\nIn conclusion, rather than fearing replacement, we should focus on adaptation. By developing uniquely human skills and learning to work alongside AI, we can ensure that technology serves as a tool for progress rather than a threat to livelihoods.",
+    "tips": "1. 首段直接表明立场（transform rather than replace）\n2. 用工业革命作历史类比增强说服力\n3. 列举同理心、创造力等不可替代的人类特质\n4. 结尾落在'适应'而非'对抗'",
+    "difficulty": 2
+  },
+  {
+    "title": "The Importance of Environmental Protection",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on the importance of environmental protection. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于环境保护重要性的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "Environmental protection is no longer a choice but a necessity for the survival of our planet and future generations.\n\nTo begin with, a healthy environment is the foundation of human well-being. Clean air, safe water, and fertile soil directly determine our quality of life. When pollution goes unchecked, respiratory diseases, contaminated food chains, and extreme weather events follow, imposing enormous costs on society.\n\nIn addition, protecting the environment makes economic sense. Renewable energy industries are creating millions of jobs worldwide, while countries that invest in green technology gain a competitive edge in the global market. Conversely, environmental degradation leads to resource scarcity and economic instability.\n\nFinally, we have a moral obligation to preserve the planet. Countless species face extinction due to habitat destruction, and future generations deserve to inherit a world as rich and beautiful as the one we enjoy today.\n\nIn summary, environmental protection safeguards our health, strengthens our economies, and fulfills our moral duty. Every individual action, from recycling to saving energy, contributes to this shared mission.",
+    "tips": "1. 用To begin with/In addition/Finally组织三大论点\n2. 健康、经济、道德三个角度层层递进\n3. 结尾呼吁个人行动，收束有力",
+    "difficulty": 1
+  },
+  {
+    "title": "College Students' Mental Health",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on how to maintain mental health for college students. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于大学生如何保持心理健康的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "College life brings both exciting opportunities and considerable pressure. Maintaining mental health is therefore essential for students to thrive academically and personally.\n\nFirst and foremost, students should build a balanced lifestyle. Regular exercise, sufficient sleep, and a healthy diet form the physical foundation of mental well-being. Research shows that even a thirty-minute daily walk can significantly reduce anxiety and improve mood.\n\nEqually important is maintaining social connections. Loneliness is a major trigger of depression on campus. Joining clubs, talking with roommates, and staying in touch with family provide emotional support when difficulties arise. No one should face stress alone.\n\nMoreover, students must learn to manage academic pressure realistically. Setting achievable goals, breaking large tasks into smaller steps, and accepting imperfection can prevent burnout. When problems become overwhelming, seeking help from campus counseling services is a sign of strength, not weakness.\n\nIn conclusion, mental health requires active cultivation through healthy habits, meaningful relationships, and sensible stress management. Universities and students alike should treat it as a top priority.",
+    "tips": "1. 从生活方式、社交、学业压力三个层面给建议\n2. 引用研究数据增强可信度\n3. '寻求帮助是坚强而非软弱'是亮点观点句",
+    "difficulty": 2
+  },
+  {
+    "title": "Preserving Traditional Chinese Culture",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on how young people can help preserve traditional Chinese culture. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于年轻人如何助力传承中国传统文化的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "Traditional Chinese culture, from calligraphy to folk festivals, is a treasure accumulated over five thousand years. Young people, as the future of the nation, play an irreplaceable role in keeping it alive.\n\nTo start with, young people should take the initiative to learn about their cultural heritage. Reading classical literature, visiting museums, and practicing traditional arts deepen understanding and foster genuine appreciation. Knowledge is the first step toward love.\n\nFurthermore, the younger generation can revitalize tradition through innovation. Short videos featuring Peking Opera, creative products inspired by palace museums, and digital exhibitions have already brought ancient culture to millions of new fans. By combining old wisdom with modern technology, tradition becomes fashionable rather than outdated.\n\nLastly, sharing culture with the world matters equally. As global communication increases, young people fluent in foreign languages can introduce Chinese culture to international friends, building bridges of mutual understanding.\n\nIn conclusion, preserving traditional culture requires learning, innovating, and sharing. When young people embrace this mission, our cultural heritage will continue to flourish for generations to come.",
+    "tips": "1. 学习、创新、传播三个层次清晰展开\n2. 举'故宫文创''京剧短视频'等鲜活例子\n3. 首段点明年轻人的不可替代作用",
+    "difficulty": 2
+  },
+  {
+    "title": "The Pros and Cons of Online Shopping",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on the advantages and disadvantages of online shopping. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于网购利与弊的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "argumentative",
+    "sample_essay": "Online shopping has revolutionized the way we buy things, offering remarkable convenience while also bringing noteworthy drawbacks.\n\nThe advantages are obvious. With a few taps on a smartphone, consumers can compare prices across thousands of sellers and have goods delivered to their doorstep, often within a day. This saves time, expands choices, and frequently lowers costs. For people in remote areas, online shopping provides access to products that local stores simply do not stock.\n\nNevertheless, the disadvantages deserve attention. Unable to touch or try products, buyers sometimes receive items that disappoint them, and returning goods can be troublesome. Excessive packaging also creates environmental problems. Worse still, the ease of one-click purchasing encourages impulse buying, trapping many young consumers in unnecessary debt.\n\nIn my view, online shopping is a powerful tool whose value depends on how wisely we use it. By comparing carefully, reading reviews critically, and setting spending limits, consumers can enjoy its convenience while avoiding its pitfalls.",
+    "tips": "1. 用The advantages are obvious / Nevertheless 切换利弊\n2. 观点句放最后一段，先分析后表态\n3. '一键下单导致冲动消费'是具体生动的论据",
+    "difficulty": 1
+  },
+  {
+    "title": "The Value of Part-time Jobs for Students",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on whether college students should take part-time jobs. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于大学生是否应该做兼职的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "argumentative",
+    "sample_essay": "Whether college students should take part-time jobs has long been debated. In my opinion, a moderate amount of part-time work benefits students far more than it harms them.\n\nSupporters point out that part-time jobs cultivate practical abilities that classrooms cannot teach. Communicating with customers, managing time between work and study, and handling workplace pressure all prepare students for their future careers. Moreover, earning their own money fosters financial independence and a genuine appreciation of hard work.\n\nCritics, however, worry that jobs may distract students from their studies. This concern is valid when work consumes excessive hours. A student who waits tables thirty hours a week will surely see grades suffer.\n\nThe key, therefore, lies in balance. Working eight to ten hours weekly in a position related to one's interests can enrich rather than endanger college life. Universities can also help by offering on-campus jobs with flexible schedules.\n\nIn conclusion, part-time jobs are worthwhile when kept moderate. They transform students from passive learners into capable adults ready for society.",
+    "tips": "1. 正方、反方、折中方案的经典三段式\n2. 给出具体数字（每周8-10小时）显得务实\n3. 结尾句有升华：从学习者成长为能干的成年人",
+    "difficulty": 2
+  },
+  {
+    "title": "Developing a Reading Habit",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on how to develop a good reading habit. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于如何培养良好阅读习惯的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "In an age of endless short videos and fragmented information, the ability to read deeply has become a rare and precious skill. Developing a reading habit requires deliberate effort, but the rewards are lifelong.\n\nThe first step is to start small and stay consistent. Rather than forcing yourself through a thick classic, begin with twenty minutes a day on a book that genuinely interests you. Consistency matters more than quantity; a modest daily page-turn builds momentum that eventually becomes automatic.\n\nSecond, create an environment that invites reading. Keep a book on your pillow, carry one in your bag, and place your phone in another room during reading time. When books are within reach and distractions are out of sight, good habits form naturally.\n\nFinally, make reading social and reflective. Join a reading club, share notes with friends, or keep a simple journal of memorable ideas. Discussing what you read deepens understanding and turns solitary pages into shared joy.\n\nIn summary, start small, design your surroundings, and read with others. A habit built this way will accompany you for life.",
+    "tips": "1. 三条建议分别对应行为养成的动机、环境、反馈\n2. '手机放另一个房间'等细节具体可操作\n3. 首段用短视频时代作对比，引入自然",
+    "difficulty": 1
+  },
+  {
+    "title": "Improving Urban Traffic",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on how to relieve traffic congestion in big cities. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于如何缓解大城市交通拥堵的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "Traffic congestion has become a headache for nearly every big city, wasting time, fuel, and patience. Solving it calls for combined efforts from both governments and citizens.\n\nOn the government's part, priority should be given to public transportation. Expanding subway networks, adding dedicated bus lanes, and lowering fares make shared transport genuinely attractive. When taking the metro is faster than driving, people naturally leave their cars at home. In addition, reasonable policies such as congestion charges and license-plate lotteries can limit the growth of private vehicles.\n\nCitizens, meanwhile, can contribute through daily choices. Cycling or walking for short trips not only eases traffic but also improves personal health. Carpooling with colleagues reduces the number of vehicles on the road. Even adjusting work hours slightly can help one escape the worst of rush hour.\n\nIn conclusion, traffic jams cannot be eliminated overnight, but better public transport combined with wiser individual choices will gradually make our cities move more smoothly.",
+    "tips": "1. 政府与市民双主体提出对策，结构工整\n2. 拥堵费、尾号限行等真实政策可作论据\n3. 结尾承认问题难度，语气客观不绝对",
+    "difficulty": 2
+  },
+  {
+    "title": "Healthy Eating Among Young People",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on the importance of healthy eating habits for young people. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于健康饮食习惯对年轻人重要性的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "Fast food, sugary drinks, and late-night snacks have become staples of youth culture, yet the consequences of poor eating habits are quietly accumulating. Healthy eating is therefore vital for young people.\n\nAbove all, diet directly shapes physical health. Young adulthood is the final window for building strong bones and a robust metabolism. A diet rich in vegetables, whole grains, and lean protein fuels concentration and energy, while excessive sugar and fat invite obesity and chronic diseases that appear decades later.\n\nEqually, eating habits influence mental performance. Students who skip breakfast often struggle to focus in morning classes, whereas balanced meals stabilize blood sugar and mood. Emerging research even links gut health to emotional well-being.\n\nFortunately, healthy eating does not require perfection. Simple changes—carrying a water bottle instead of buying soda, choosing fruit over chips, and eating regular meals—produce remarkable results over time. Campus cafeterias and food delivery platforms can also help by labeling nutritional information clearly.\n\nIn conclusion, the eating habits formed in youth echo throughout life. Choosing wisely today is an investment in decades of health.",
+    "tips": "1. 身体健康与脑力表现双线论证\n2. 给出'水瓶替代汽水'等低门槛建议\n3. 末句'青年习惯影响一生'点题有力",
+    "difficulty": 1
+  },
+  {
+    "title": "The Significance of Volunteer Work",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on the significance of volunteer work. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于志愿服务意义的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "From teaching in rural schools to guiding visitors at museums, volunteer work has become an important part of social life. Its significance extends to volunteers, beneficiaries, and society as a whole.\n\nFor volunteers themselves, service offers invaluable growth. Communicating with diverse people builds social skills and empathy, while organizing activities develops leadership. Many students also discover career interests through volunteering. Perhaps most precious is the deep satisfaction that comes from helping others without expecting payment.\n\nFor those being served, volunteers fill gaps that governments and markets often miss. A free tutoring session may change a rural child's academic path; a weekend visit may brighten an elderly person's lonely week. These small acts carry enormous weight for recipients.\n\nFor society, volunteering weaves a stronger social fabric. It promotes mutual trust, narrows the distance between different groups, and spreads the idea that everyone can contribute to the common good.\n\nIn conclusion, volunteer work is a win-win-win endeavor. By giving our time and energy, we receive growth, others receive help, and society receives warmth.",
+    "tips": "1. 志愿者、受助者、社会三重视角全面立体\n2. 用具体场景（免费家教、探望老人）代替空泛赞美\n3. 结尾'win-win-win'排比简洁有力",
+    "difficulty": 1
+  },
+  {
+    "title": "The Impact of Digital Payment",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on how digital payment has changed our lives. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于数字支付如何改变生活的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "A decade ago, wallets stuffed with cash and cards were daily necessities; today, a smartphone alone suffices. Digital payment has quietly reshaped our lives in several profound ways.\n\nThe most visible change is convenience. Splitting a restaurant bill, paying utility fees, or buying breakfast from a street vendor now takes seconds. This efficiency saves countless hours and has made cash nearly obsolete in Chinese cities.\n\nBeyond convenience, digital payment has expanded financial inclusion. Small merchants can accept payments without expensive equipment, and people in remote villages gain access to banking services through their phones. The digital records created by every transaction also help individuals track spending and build credit histories.\n\nHowever, new challenges accompany these benefits. Elderly people may feel left behind by cashless stores, and privacy concerns arise as platforms accumulate detailed consumption data. Society must ensure that technological progress leaves no one behind.\n\nIn conclusion, digital payment has made life faster and finance fairer. Managing its side effects wisely will determine whether this transformation benefits everyone.",
+    "tips": "1. 今昔对比开头（钱包vs手机）生动抓人\n2. 便利与普惠之外不忘反思适老化和隐私\n3. 结尾'不让任何人掉队'体现思辨深度",
+    "difficulty": 2
+  },
+  {
+    "title": "Online Education: A Double-Edged Sword",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on the advantages and disadvantages of online education. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于在线教育利与弊的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "argumentative",
+    "sample_essay": "Online education has moved from the margins to the mainstream, bringing both remarkable opportunities and genuine challenges.\n\nIts advantages are compelling. Learners in remote areas can attend lectures from top universities, and working adults can study at their own pace after office hours. Recorded courses allow repeated viewing, and tuition is often a fraction of traditional programs. In terms of accessibility and flexibility, online education has truly democratized knowledge.\n\nYet its limitations are equally real. Without a teacher's presence, many students struggle to stay focused; completion rates for online courses remain disappointingly low. Hands-on subjects like chemistry experiments or clinical skills simply cannot be mastered through a screen. Furthermore, the lack of face-to-face interaction deprives learners of friendships and mentorship that campus life naturally provides.\n\nThe wisest path forward is therefore a blended model: online platforms deliver knowledge efficiently, while classrooms offer guidance, practice, and human connection. Used as a complement rather than a replacement, online education can fulfill its extraordinary promise.",
+    "tips": "1. 利弊各一段后提出'混合式'折中方案\n2. 课程完成率低是真实有力的数据型论据\n3. 结尾'补充而非替代'定位精准",
+    "difficulty": 2
+  },
+  {
+    "title": "Coping with Stress in Modern Life",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on how to cope with stress in modern life. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于如何应对现代生活压力的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "expository",
+    "sample_essay": "Deadlines, competition, and information overload make stress an unavoidable part of modern life. The question is not how to eliminate stress, but how to live well with it.\n\nFirst, we should reframe our attitude toward stress. Psychologists have found that moderate pressure actually sharpens performance; it is chronic, unmanaged stress that harms us. Viewing challenges as opportunities to grow, rather than threats to fear, changes how our bodies respond.\n\nSecond, physical outlets work wonders. Exercise releases endorphins that naturally lift mood, while sufficient sleep restores the brain's capacity to regulate emotions. Even five minutes of deep breathing before a difficult task can measurably calm the nervous system.\n\nThird, connection is a powerful buffer. Sharing worries with trusted friends halved their weight, as the saying goes. When stress becomes overwhelming, professional counseling is a wise and courageous choice.\n\nIn conclusion, attitude, action, and connection form a reliable toolkit against stress. By using them regularly, we can remain steady in a restless world.",
+    "tips": "1. '问题不是消除压力而是与之共处'立意高\n2. 心态、行动、人际三层策略清晰\n3. 适当引用心理学发现增加可信度",
+    "difficulty": 2
+  },
+  {
+    "title": "The Power of Teamwork",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on the importance of teamwork. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于团队合作重要性的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "argumentative",
+    "sample_essay": "Whether in a laboratory, a company, or a sports field, remarkable achievements are rarely the work of lone individuals. Teamwork is the engine that turns individual talent into collective success.\n\nTo begin with, teamwork combines complementary strengths. One member may excel at analysis while another shines at communication; together they cover each other's blind spots. A basketball team of five skilled passers will defeat five solo stars who refuse to share the ball.\n\nMoreover, teams generate creativity through collision. When people with different backgrounds debate an idea, weak points are exposed and new possibilities emerge. Many breakthroughs in science and business were born not in isolation but in lively discussion.\n\nFinally, teamwork provides emotional support. Shared goals turn heavy burdens into manageable portions, and encouragement from teammates sustains motivation when individuals might otherwise give up.\n\nOf course, effective teamwork requires trust, clear roles, and open communication. But when these conditions are met, the whole truly becomes greater than the sum of its parts. Learning to work with others is therefore one of life's most valuable skills.",
+    "tips": "1. 能力互补、思维碰撞、情感支持三论点\n2. 篮球类比通俗易懂\n3. 末段补充团队合作的条件，论述更严密",
+    "difficulty": 1
+  },
+  {
+    "title": "Honesty: The Foundation of Society",
+    "prompt_text": "Directions: For this part, you are allowed 30 minutes to write an essay on the importance of honesty. You should write at least 150 words but no more than 200 words.",
+    "prompt_cn": "写一篇关于诚信重要性的文章。字数150-200词。",
+    "word_limit": "150-200",
+    "essay_type": "argumentative",
+    "sample_essay": "Honesty may seem like an old-fashioned virtue in a fast-changing world, yet it remains the invisible foundation on which all cooperation rests.\n\nAt the personal level, honesty builds reputation, the most valuable asset one can own. A student who never cheats earns teachers' trust; an employee who admits mistakes wins colleagues' respect. Such trust, once established, opens doors that cleverness alone cannot.\n\nAt the economic level, honesty reduces the cost of every transaction. When buyers trust sellers, business flows smoothly; when fraud becomes common, everyone must spend time and money on verification, and the whole market slows down. Credit systems in modern society exist precisely to reward honesty and punish deception.\n\nAt the social level, honesty sustains our shared reality. Science, journalism, and justice all collapse without a commitment to truth. A society where lies prevail soon finds itself unable to solve even simple problems.\n\nIn conclusion, honesty is not merely a moral decoration but practical wisdom. Individuals, businesses, and nations that honor it will prosper; those that abandon it will eventually pay the price.",
+    "tips": "1. 个人、经济、社会三层递进，格局开阔\n2. '信誉是最宝贵的资产'是可直接引用的金句\n3. 结尾对比句式增强说服力",
+    "difficulty": 3
   }
 ]
