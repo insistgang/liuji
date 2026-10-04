@@ -64,13 +64,23 @@ async def seed(reset: bool = False):
                 existing_words = {row[0] for row in result}
 
             new_words = [w for w in words if w["word"] not in existing_words]
-            if not new_words:
+            seen = set()
+            unique_words = []
+            for w in new_words:
+                if w["word"] in seen:
+                    continue
+                seen.add(w["word"])
+                unique_words.append(w)
+            skipped_dupes = len(new_words) - len(unique_words)
+            if skipped_dupes:
+                logger.info("Skipped %d duplicate words inside data file", skipped_dupes)
+            if not unique_words:
                 logger.info("No new words to seed (%d already exist)", len(existing_words))
                 return
 
-            db.add_all([VocabularyWord(**w) for w in new_words])
+            db.add_all([VocabularyWord(**w) for w in unique_words])
             await db.commit()
-            logger.info("Seeded %d new words (%d already existed)", len(new_words), len(existing_words))
+            logger.info("Seeded %d new words (%d already existed)", len(unique_words), len(existing_words))
         except Exception:
             await db.rollback()
             logger.exception("Failed to seed vocabulary")

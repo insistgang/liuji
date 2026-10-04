@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, func
+from sqlalchemy import case, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -21,11 +21,11 @@ async def get_stats(
     # Vocabulary stats
     vocab_q = select(
         func.count().label("total"),
-        func.sum(func.cast(UserWordProgress.status == "mastered", int)).label("mastered"),
+        func.sum(case((UserWordProgress.status == "mastered", 1), else_=0)).label("mastered"),
     ).where(UserWordProgress.user_id == user.id)
     vocab_result = (await db.execute(vocab_q)).first()
     vocab_total = vocab_result[0] if vocab_result else 0
-    vocab_mastered = vocab_result[1] if vocab_result else 0
+    vocab_mastered = (vocab_result[1] or 0) if vocab_result else 0
 
     # Exam stats
     exam_q = select(func.count()).where(
