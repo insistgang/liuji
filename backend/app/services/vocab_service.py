@@ -8,6 +8,7 @@ from sqlalchemy.orm import selectinload
 from app.config import settings
 from app.models.vocabulary import VocabularyWord, UserWordProgress
 from app.utils.spaced_repetition import sm2, get_status
+from app.utils.daily_words import load_recommended_words
 
 
 async def get_words(db: AsyncSession, page: int = 1, per_page: int = 20, search: str = ""):
@@ -29,9 +30,11 @@ async def get_new_words(db: AsyncSession, user_id: str, count: int | None = None
 
     # Words the user hasn't started learning yet
     learned_ids = select(UserWordProgress.word_id).where(UserWordProgress.user_id == user_id)
+    recommended = load_recommended_words()
     query = (
         select(VocabularyWord)
         .where(VocabularyWord.id.notin_(learned_ids))
+        .where(VocabularyWord.word.notin_(recommended))
         .order_by(VocabularyWord.frequency.asc().nullslast())
         .limit(count)
     )

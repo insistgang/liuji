@@ -46,6 +46,7 @@ cd frontend && npm install && npm run dev
 - 首页显示今日新词目标、已学/剩余数量、到期复习和真实连续学习天数。
 - 后端接口：`GET /api/v1/dashboard/daily-plan`（需要 JWT），按本机时区划分“今天”。
 - 静态版同样每天提供 20 个未学新词，学习进度与连续天数写入浏览器 `localStorage`。
+- `每日英语单词/每日20词-复习窗口.md` 中的 200 个历史推荐词会被自动排除；当前离线候选词库为 1699 词。
 - 默认配置在 `backend/app/config.py`：`DAILY_NEW_WORDS=20`、`DAILY_REVIEW_LIMIT=50`。
 
 ## 静态离线版

@@ -14,6 +14,17 @@ from app.services.dashboard_service import (
     local_day_bounds,
     to_local_date,
 )
+from app.utils.daily_words import load_recommended_words
+
+
+class DailyWordHistoryTests(unittest.TestCase):
+    def test_history_index_has_200_unique_words(self):
+        words = load_recommended_words()
+        self.assertEqual(len(words), 200)
+        self.assertIn("agenda", words)
+        self.assertIn("weigh", words)
+        self.assertNotIn("单词", words)
+        self.assertTrue(all(word == word.lower() for word in words))
 
 
 class StreakTests(unittest.TestCase):

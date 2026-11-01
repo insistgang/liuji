@@ -7,20 +7,24 @@ makes the offline word list reproducible whenever the source JSON changes.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from app.utils.daily_words import load_recommended_words
 SOURCE = ROOT / "data" / "cet6_vocabulary.json"
 TARGET = ROOT.parent / "frontend" / "public" / "data" / "vocabulary.json"
 
 
 def main() -> None:
     entries = json.loads(SOURCE.read_text(encoding="utf-8"))
+    recommended = load_recommended_words()
     seen: set[str] = set()
     words = []
     for entry in entries:
         word = str(entry.get("word", "")).strip()
-        if not word or word in seen:
+        if not word or word in seen or word.lower() in recommended:
             continue
         seen.add(word)
         words.append(
@@ -40,7 +44,7 @@ def main() -> None:
         )
     TARGET.parent.mkdir(parents=True, exist_ok=True)
     TARGET.write_text(json.dumps(words, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Exported {len(words)} unique words to {TARGET}")
+    print(f"Exported {len(words)} unique words to {TARGET}; skipped {len(recommended)} previously recommended words")
 
 
 if __name__ == "__main__":
