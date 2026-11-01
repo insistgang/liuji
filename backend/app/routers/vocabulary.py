@@ -41,7 +41,7 @@ async def get_word(word_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.get("/learn/new", response_model=ApiResponse[list[WordProgressResponse]])
 async def get_new_words(
-    count: int = Query(None),
+    count: int | None = Query(None),
     user: User = Depends(get_current_user_dep),
     db: AsyncSession = Depends(get_db),
 ):

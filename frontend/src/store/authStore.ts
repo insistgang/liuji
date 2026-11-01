@@ -1,5 +1,14 @@
 import { create } from 'zustand'
 import { authApi, type UserInfo } from '../api/auth'
+import { isStaticMode } from '../api/runtime'
+
+const offlineUser: UserInfo = {
+  id: 'offline-user',
+  username: '本地学习者',
+  email: 'offline@local',
+  avatar_url: null,
+  created_at: new Date(0).toISOString(),
+}
 
 interface AuthState {
   user: UserInfo | null
@@ -19,6 +28,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   isLoading: true,
 
   login: async (username, password) => {
+    if (isStaticMode) {
+      set({ user: offlineUser, isAuthenticated: true, isLoading: false })
+      return
+    }
     const { data } = await authApi.login({ username, password })
     if (data.data) {
       localStorage.setItem('access_token', data.data.access_token)
@@ -30,6 +43,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   register: async (username, email, password) => {
+    if (isStaticMode) {
+      set({ user: offlineUser, isAuthenticated: true, isLoading: false })
+      return
+    }
     await authApi.register({ username, email, password })
   },
 
@@ -40,6 +57,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   fetchUser: async () => {
+    if (isStaticMode) {
+      set({ user: offlineUser, isAuthenticated: true, isLoading: false })
+      return
+    }
     try {
       const { data } = await authApi.me()
       set({ user: data.data, isAuthenticated: true })
@@ -49,6 +70,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   init: async () => {
+    if (isStaticMode) {
+      set({ user: offlineUser, isAuthenticated: true, isLoading: false })
+      return
+    }
     const token = localStorage.getItem('access_token')
     if (token) {
       try {

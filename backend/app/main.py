@@ -11,7 +11,7 @@ from slowapi.errors import RateLimitExceeded
 from app.config import settings
 from app.database import init_db
 from app.limiter import limiter
-from app.routers import auth, vocabulary, exam, listening, writing, user
+from app.routers import auth, vocabulary, exam, listening, writing, user, dashboard
 
 logging.basicConfig(
     level=getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO),
@@ -59,6 +59,7 @@ app.include_router(exam.router, prefix="/api/v1")
 app.include_router(listening.router, prefix="/api/v1")
 app.include_router(writing.router, prefix="/api/v1")
 app.include_router(user.router, prefix="/api/v1")
+app.include_router(dashboard.router, prefix="/api/v1")
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 STATIC_DIR.mkdir(exist_ok=True)
