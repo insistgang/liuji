@@ -82,7 +82,12 @@ def generate(path: Path, base: str, key: str, model: str, force: bool = False) -
     target = SOURCE / '场景配图' / name
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(image)
-    text = text.replace(f'![场景记忆图](../场景配图/{name})', '').replace(f'![场景记忆图](../场景配图/{name})', '')
+    if force:
+        text = '\n'.join(
+            line for line in text.splitlines()
+            if not re.match(r'^!\[[^]]*\]\(\.\./场景配图/[^)]+\)\s*$', line)
+            and not line.startswith('> **场景记忆图**')
+        )
     marker = f'> **场景记忆图**：`场景配图/{name}`（{model}，WORK / LIFE 双场景）。\n\n![场景记忆图](../场景配图/{name})\n\n'
     lines = text.splitlines()
     insert_at = next((i for i, line in enumerate(lines) if line.startswith('## ')), len(lines))
