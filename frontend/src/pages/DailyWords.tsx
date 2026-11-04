@@ -10,8 +10,18 @@ type RecordEntry = { learned: string; reviewed: string[]; due: string; interval:
 type Records = Record<string, RecordEntry>
 const KEY = 'liuji-daily-library-progress-v1'
 const day = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+const readRecordsStrict = (): Records => {
+  const value: unknown = JSON.parse(localStorage.getItem(KEY) || '{}')
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('学习记录格式异常')
+  for (const item of Object.values(value)) {
+    if (!item || typeof item.learned !== 'string' || typeof item.due !== 'string' ||
+      !Array.isArray(item.reviewed) || !item.reviewed.every((date: unknown) => typeof date === 'string') ||
+      !Number.isFinite(item.interval) || item.interval < 0) throw new Error('学习记录格式异常')
+  }
+  return value as Records
+}
 const readRecords = (): Records => {
-  try { return JSON.parse(localStorage.getItem(KEY) || '{}') } catch { return {} }
+  try { return readRecordsStrict() } catch { return {} }
 }
 
 export default function DailyWords() {
@@ -36,15 +46,21 @@ export default function DailyWords() {
   }, [])
 
   function save(word: Word, remembered: boolean) {
-    const current = readRecords()
-    const old = current[word.id]
-    const interval = remembered ? (old ? Math.min(old.interval * 2 || 1, 60) : 1) : 0
-    const due = new Date()
-    due.setDate(due.getDate() + interval)
-    current[word.id] = { learned: old?.learned || today,
-      reviewed: [...(old?.reviewed || []), today], due: day(due), interval }
-    try { localStorage.setItem(KEY, JSON.stringify(current)); setRecords(current); setStorageError('') }
-    catch { setStorageError('浏览器没有保存成功，请检查存储权限；本次操作未计入进度。') }
+    try {
+      const current = readRecordsStrict()
+      const old = current[word.id]
+      const repeatedToday = old?.reviewed.includes(today) && old.interval > 0
+      const interval = remembered ? (old ? (repeatedToday ? old.interval : Math.min(old.interval * 2 || 1, 60)) : 1) : 0
+      const due = new Date()
+      due.setDate(due.getDate() + interval)
+      current[word.id] = { learned: old?.learned || today,
+        reviewed: [...new Set([...(old?.reviewed || []), today])], due: day(due), interval }
+      localStorage.setItem(KEY, JSON.stringify(current))
+      setRecords(current)
+      setStorageError('')
+    } catch {
+      setStorageError('学习记录未保存。请检查浏览器存储权限或原有记录格式；没有覆盖已有数据。')
+    }
   }
 
   if (error) return <div role="alert" className="p-8 text-red-700">{error}。请刷新重试。</div>
@@ -94,7 +110,7 @@ export default function DailyWords() {
       <div className="flex justify-between gap-3"><h2 className="text-2xl font-bold text-slate-900">{word.word}</h2><span className="text-xs text-teal-700">{records[word.id] ? '已学' : '未学'}</span></div>
       <p className="text-slate-500 mt-1">{word.phonetic}</p>
       <p className="text-xs text-slate-400 mt-2">{word.id.split(':')[0]} · {word.group}</p>
-      <p className="font-medium mt-4">{word.definition_cn}</p>
+      {tab === 'review' ? <details className="mt-4"><summary className="cursor-pointer font-medium text-teal-700">先回忆，再展开词义</summary><p className="mt-3">{word.definition_cn}</p></details> : <p className="font-medium mt-4">{word.definition_cn}</p>}
       <details className="mt-4"><summary className="cursor-pointer text-teal-700">查看例句与记忆提示</summary>
         <p className="mt-3 leading-7">{word.example_en}</p><p className="text-slate-500 leading-7">{word.example_cn}</p>
         {word.memory && <p className="mt-3 rounded-xl bg-amber-50 p-3 leading-7">{word.memory}</p>}
