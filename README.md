@@ -72,7 +72,7 @@ macOS 安装（重复运行不会重复注册）：
 /usr/bin/python3 backend/scripts/install_daily_publish.py
 ```
 
-**首次安装后必须验证后台权限。** macOS 可能拒绝 launchd Python 读取桌面目录（错误日志为 `Operation not permitted`）。本机已观察到该问题，不能仅凭任务加载成功宣称定时发布可用。需在系统设置 → 隐私与安全性 → 完全磁盘访问权限中为实际解释器 `/Library/Developer/CommandLineTools/usr/bin/python3` 授权，再执行 `launchctl kickstart -k gui/$(id -u)/com.insistgang.liuji.daily-publish` 并核对日志；手动终端运行成功不能替代后台验证。
+**首次安装后必须验证后台权限。** macOS 可能拒绝 launchd Python 读取桌面目录（错误日志为 `Operation not permitted`）。本机曾观察到该问题，不能仅凭任务加载成功宣称定时发布可用。系统 TCC 日志将权限主体归为 `/usr/bin/python3`（Xcode 工具启动器），而非其最终框架解释器。需在系统设置 → 隐私与安全性 → 完全磁盘访问权限中为 `/usr/bin/python3` 授权，再执行 `launchctl kickstart -k gui/$(id -u)/com.insistgang.liuji.daily-publish` 并核对日志；手动终端运行成功不能替代后台验证。
 
 任务标签为 `com.insistgang.liuji.daily-publish`，每天本机时间 11:00 执行，11 点之后每 30 分钟补检，登录及唤醒后按系统调度补检。上午约 10 点的内容生成任务不由本脚本运行；电脑关机或未登录期间无法读取并上传本地新文件。
 
