@@ -103,7 +103,7 @@ export default function DailyWords() {
       </select>
       {selected !== today && <span className="text-sm text-amber-700">当前展示 {selected} 的词表，不是今天新生成的词表。</span>}
     </div>
-    {(tab === 'lesson' || tab === 'source') && lesson.image &&
+    {tab === 'lesson' && lesson.image &&
       <figure><img className="w-full rounded-2xl border" src={`${import.meta.env.BASE_URL}${lesson.image}`} alt={`${lesson.date} 工作与生活场景记忆图`} /><figcaption className="mt-2 text-sm text-slate-500">知识库原始场景配图 · {lesson.date}</figcaption></figure>}
     {tab === 'library' && <input aria-label="搜索词库" placeholder="搜索单词、中文词义或日期" value={search} onChange={event => setSearch(event.target.value)} className="w-full rounded-xl border p-4" />}
     {tab === 'review' && !due.length && <div className="rounded-2xl bg-teal-50 p-6">没有到期记录。先在每日词表中学习并点击“记住了”，随后会安排复习。想复习旧词也可以进入“全部词库”。</div>}
