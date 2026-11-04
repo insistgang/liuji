@@ -17,6 +17,8 @@ import ListeningPractice from './pages/ListeningPractice'
 import WritingList from './pages/WritingList'
 import WritingEditor from './pages/WritingEditor'
 import Profile from './pages/Profile'
+import DailyWords from './pages/DailyWords'
+import { isStaticMode } from './api/runtime'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuthStore()
@@ -56,8 +58,9 @@ export default function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<Navigate to={isStaticMode ? '/daily' : '/dashboard'} replace />} />
+          <Route path="daily" element={<DailyWords />} />
+          <Route path="dashboard" element={isStaticMode ? <Navigate to="/daily" replace /> : <Dashboard />} />
           <Route path="vocabulary/learn" element={<VocabularyLearn />} />
           <Route path="vocabulary/review" element={<VocabularyReview />} />
           <Route path="vocabulary/test" element={<VocabularyTest />} />

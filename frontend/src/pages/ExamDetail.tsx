@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { examApi } from '../api/exam'
+import { examApi, type ExamPaper } from '../api/exam'
+import type { LucideIcon } from 'lucide-react'
 import { BookOpen, Headphones, PenTool, Languages, Loader2, ArrowLeft } from 'lucide-react'
 
-const sectionInfo: Record<string, { icon: any; label: string; color: string }> = {
+const sectionInfo: Record<string, { icon: LucideIcon; label: string; color: string }> = {
   reading: { icon: BookOpen, label: '阅读理解', color: 'bg-blue-500' },
   listening: { icon: Headphones, label: '听力理解', color: 'bg-orange-500' },
   writing: { icon: PenTool, label: '写作', color: 'bg-pink-500' },
@@ -13,7 +14,7 @@ const sectionInfo: Record<string, { icon: any; label: string; color: string }> =
 export default function ExamDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const [paper, setPaper] = useState<any>(null)
+  const [paper, setPaper] = useState<(ExamPaper & { sections: Record<string, number> }) | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

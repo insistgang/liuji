@@ -46,5 +46,5 @@ export const writingApi = {
     client.get<ApiResponse<WritingSubmission>>(`/writing/submissions/${id}`),
 
   listSubmissions: () =>
-    client.get<ApiResponse<any[]>>('/writing/submissions'),
+    client.get<ApiResponse<WritingSubmission[]>>('/writing/submissions'),
 }

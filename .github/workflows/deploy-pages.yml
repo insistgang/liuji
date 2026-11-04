@@ -9,6 +9,8 @@ on:
       - frontend/**
       - backend/data/cet6_vocabulary.json
       - backend/scripts/export_frontend_vocabulary.py
+      - backend/scripts/export_frontend_daily_words.py
+      - 每日英语单词/**
   workflow_dispatch:
 
 permissions:
@@ -33,6 +35,14 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: frontend/package-lock.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Export daily knowledge base
+        run: python backend/scripts/export_frontend_daily_words.py
 
       - name: Install dependencies
         working-directory: frontend

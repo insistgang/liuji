@@ -143,7 +143,7 @@ export default function WritingEditor() {
             <div className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-3">语法问题</h2>
               <div className="space-y-3">
-                {parseJson(submission.grammar_issues).map((issue: any, idx: number) => (
+                {parseJson(submission.grammar_issues).map((issue: { original: string; corrected: string; explanation: string }, idx: number) => (
                   <div key={idx} className="border-l-4 border-red-400 pl-4">
                     <p className="text-red-600 text-sm">原文: {issue.original}</p>
                     <p className="text-green-600 text-sm">修正: {issue.corrected}</p>
@@ -159,7 +159,7 @@ export default function WritingEditor() {
             <div className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-3">词汇改进建议</h2>
               <div className="space-y-3">
-                {parseJson(submission.vocabulary_suggestions).map((s: any, idx: number) => (
+                {parseJson(submission.vocabulary_suggestions).map((s: { original_word: string; suggestion: string; reason: string }, idx: number) => (
                   <div key={idx} className="border-l-4 border-blue-400 pl-4">
                     <p className="text-gray-700 text-sm">
                       <span className="text-red-500 line-through">{s.original_word}</span>

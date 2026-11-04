@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { isAxiosError } from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 
@@ -23,8 +24,8 @@ export default function Register() {
     try {
       await register(username, email, password)
       navigate('/login')
-    } catch (err: any) {
-      setError(err.response?.data?.detail || '注册失败')
+    } catch (err: unknown) {
+      setError((isAxiosError<{ detail?: string }>(err) && err.response?.data?.detail) || '注册失败')
     } finally {
       setLoading(false)
     }

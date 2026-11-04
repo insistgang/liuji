@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { isAxiosError } from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 
@@ -17,8 +18,8 @@ export default function Login() {
     try {
       await login(username, password)
       navigate('/dashboard')
-    } catch (err: any) {
-      setError(err.response?.data?.detail || '登录失败')
+    } catch (err: unknown) {
+      setError((isAxiosError<{ detail?: string }>(err) && err.response?.data?.detail) || '登录失败')
     } finally {
       setLoading(false)
     }

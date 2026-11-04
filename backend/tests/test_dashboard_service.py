@@ -18,11 +18,22 @@ from app.utils.daily_words import load_recommended_words
 
 
 class DailyWordHistoryTests(unittest.TestCase):
-    def test_history_index_has_200_unique_words(self):
+    def test_history_index_tracks_current_lessons(self):
+        from pathlib import Path
+        import re
+
+        lessons = Path(__file__).resolve().parents[2] / '每日英语单词' / '历期词表'
+        expected = set()
+        for path in lessons.glob('*.md'):
+            for line in path.read_text(encoding='utf-8').splitlines():
+                match = re.match(r'^(?:\*\*\d+\.\s+([^*]+)\*\*|###\s+\d+\.\s+(.+))', line)
+                if match:
+                    word = (match[1] or match[2]).strip().lower()
+                    if word.replace(' ', '').replace('-', '').isalpha() and word.isascii():
+                        expected.add(word)
         words = load_recommended_words()
-        self.assertEqual(len(words), 200)
-        self.assertIn("agenda", words)
-        self.assertIn("weigh", words)
+        self.assertTrue(expected)
+        self.assertEqual(words, expected)
         self.assertNotIn("单词", words)
         self.assertTrue(all(word == word.lower() for word in words))
 

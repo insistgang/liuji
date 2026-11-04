@@ -40,7 +40,7 @@ export const vocabApi = {
   },
 
   startQuiz: (count = 10) =>
-    client.post<ApiResponse<any[]>>('/vocabulary/quiz/start', null, {
+    client.post<ApiResponse<Array<{ word_id: number; word: string; phonetic: string; part_of_speech: string; question_type: string; prompt: string; options: string[]; correct_answer: string }>>>('/vocabulary/quiz/start', null, {
       params: { count },
     }),
 

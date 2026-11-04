@@ -57,7 +57,7 @@ export interface ExamResult {
 export const examApi = {
   list: () => client.get<ApiResponse<ExamPaper[]>>('/exams'),
 
-  getPaper: (id: number) => client.get<ApiResponse<any>>(`/exams/${id}`),
+  getPaper: (id: number) => client.get<ApiResponse<ExamPaper & { sections: Record<string, number> }>>(`/exams/${id}`),
 
   getSection: (paperId: number, section: string) =>
     client.get<ApiResponse<ExamQuestion[]>>(`/exams/${paperId}/sections/${section}`),
@@ -74,5 +74,5 @@ export const examApi = {
   getResult: (attemptId: number) =>
     client.get<ApiResponse<ExamResult>>(`/exams/attempts/${attemptId}/result`),
 
-  history: () => client.get<ApiResponse<any[]>>('/exams/history/list'),
+  history: () => client.get<ApiResponse<ExamAttempt[]>>('/exams/history/list'),
 }

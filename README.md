@@ -43,22 +43,26 @@ cd frontend && npm install && npm run dev
 
 ## 每日 20 词
 
-- 首页显示今日新词目标、已学/剩余数量、到期复习和真实连续学习天数。
-- 后端接口：`GET /api/v1/dashboard/daily-plan`（需要 JWT），按本机时区划分“今天”。
-- 静态版同样每天提供 20 个未学新词，学习进度与连续天数写入浏览器 `localStorage`。
-- `每日英语单词/每日20词-复习窗口.md` 中的 200 个历史推荐词会被自动排除；当前离线候选词库为 1699 词。
-- 默认配置在 `backend/app/config.py`：`DAILY_NEW_WORDS=20`、`DAILY_REVIEW_LIMIT=50`。
+- 静态首页 `/daily` 直接读取 `每日英语单词/历期词表/` 的真实期次，不再用通用题库替代每日词表。
+- 支持按日期查看每期 20 词、原始音标、词义、例句、记忆提示及场景配图；全部词库可按英文、中文或日期搜索。
+- “完整学习资料”保留本期 Markdown 原文（含各期实际的故事、易混辨析、自测题与答案），以及累计复习窗口原文。
+- 无当天文件时展示最近已有期次并明确标注日期，不生成或冒充当天词表。
+- 学习记录采用独立的 `liuji-daily-library-progress-v1` 浏览器存储，不覆盖旧题库进度。只有手动点击才记录学习，按本地日期统计连续天数；“还不熟”保持到期，“记住了”安排后续复习。
+- 进度不自动跨设备同步，提醒任务也不能仅通过服务器读取浏览器中的真实完成数量。
+- 旧题库保留为补充学习入口；真题、听力、写作等需要后端的模块不在静态导航中展示。后端模式仍保留原功能。
 
 ## 静态离线版
 
 ```bash
+python3 backend/scripts/export_frontend_daily_words.py
 cd frontend
 VITE_STATIC_MODE=true VITE_BASE_PATH=/liuji/ npm run build
 cp dist/index.html dist/404.html
 ```
 
-词库由 `backend/scripts/export_frontend_vocabulary.py` 从原始 JSON 去重导出到
-`frontend/public/data/vocabulary.json`。GitHub Actions 在 `main` 分支的前端或词库变更后自动构建并发布。
+每日知识库由标准库 Python 脚本导出到 `frontend/public/data/daily_words.json`，引用的场景图复制到 `frontend/public/images/daily/`。每期必须有 20 个完整词条，否则构建失败。
+
+GitHub Actions 会在 `main` 的每日英语单词目录、导出脚本或前端变更推送后，重新导出并发布。仅修改本机文件但不推送不会更新网站。通用题库仍由原来的 `export_frontend_vocabulary.py` 管理。
 
 ## 测试
 

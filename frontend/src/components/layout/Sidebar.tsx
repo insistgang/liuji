@@ -1,7 +1,9 @@
 import { NavLink } from 'react-router-dom'
+import { isStaticMode } from '../../api/runtime'
 import { BookOpen, Headphones, PenTool, FileText, BarChart3, User } from 'lucide-react'
 
 const navItems = [
+  { to: '/daily', icon: BookOpen, label: '每日词表与复习' },
   { to: '/dashboard', icon: BarChart3, label: '仪表盘' },
   { to: '/vocabulary/learn', icon: BookOpen, label: '词汇学习' },
   { to: '/exams', icon: FileText, label: '真题练习' },
@@ -17,7 +19,7 @@ export default function Sidebar() {
         <h1 className="text-xl font-bold text-blue-600">六级学习系统</h1>
       </div>
       <nav className="flex-1 p-4 space-y-1">
-        {navItems.map(({ to, icon: Icon, label }) => (
+        {navItems.filter(item => !isStaticMode || ['/daily', '/vocabulary/learn'].includes(item.to)).map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
