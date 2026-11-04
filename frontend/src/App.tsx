@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuthStore } from './store/authStore'
 import AppShell from './components/layout/AppShell'
@@ -45,8 +45,9 @@ export default function App() {
     init()
   }, [init])
 
+  const Router = isStaticMode ? HashRouter : BrowserRouter
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <Router basename={isStaticMode ? undefined : import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -75,6 +76,6 @@ export default function App() {
           <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   )
 }
