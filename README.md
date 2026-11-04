@@ -64,6 +64,13 @@ cp dist/index.html dist/404.html
 
 GitHub Actions 会在 `main` 的每日英语单词目录、导出脚本或前端变更推送后，重新导出并发布。仅修改本机文件但不推送不会更新网站。通用题库仍由原来的 `export_frontend_vocabulary.py` 管理。
 
+## 场景配图与完整学习资料
+
+- `backend/scripts/generate_daily_images.py` 按每期职场 11 词、生活 9 词生成 WORK/LIFE 双栏记忆图；默认模型 `gpt-image-2.5-sunburst`，接口凭据只读环境变量或 `~/.config/liuji/image-api.json`，不进入仓库。
+- 已补齐 10-22、10-23、10-25、10-26、10-27、10-28、10-30 的历史配图，并为 10-24 补建完整词表；当前共 14 期、280 词且各期不重复。
+- 2026-10-24 原始自动任务未落盘，该期文件标记为“补录”，不冒充原始运行产物。
+- “完整学习资料”使用 `frontend/src/components/Markdown.tsx` 渲染标题、表格、列表、引用、链接、图片和折叠答案，不再直接展示原始 Markdown 文本。
+
 ## 每天 11 点自动发布
 
 macOS 安装（重复运行不会重复注册）：

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Markdown from '../components/Markdown'
 
 type Word = {
   id: string; no: number; word: string; phonetic: string; definition_cn: string
@@ -118,8 +119,8 @@ export default function DailyWords() {
       <div className="mt-5 flex gap-3"><button className="rounded-xl bg-teal-700 text-white px-4 py-2" onClick={() => save(word, true)}>记住了</button><button className="rounded-xl bg-slate-100 px-4 py-2" onClick={() => save(word, false)}>还不熟</button></div>
     </article>)}</div>}
     {tab === 'source' && <section className="space-y-5">
-      <div className="rounded-2xl border p-5"><h2 className="font-bold text-xl">本期完整原文</h2><p className="text-xs text-slate-500 my-3">{lesson.source} · 含助记卡、场景故事、易混辨析、自测题与原文答案（按各期实际内容展示）。</p><pre className="whitespace-pre-wrap break-words font-sans text-sm leading-7">{lesson.markdown}</pre></div>
-      <details className="rounded-2xl border p-5"><summary className="cursor-pointer font-bold">累计复习窗口原文</summary><pre className="whitespace-pre-wrap break-words font-sans text-sm leading-7 mt-4">{library.review_window}</pre></details>
+      <div className="rounded-2xl border p-5"><h2 className="font-bold text-xl">本期完整原文</h2><p className="text-xs text-slate-500 my-3">{lesson.source} · 含助记卡、场景故事、易混辨析、自测题与原文答案（按各期实际内容展示）。</p><Markdown source={lesson.markdown} /></div>
+      <details className="rounded-2xl border p-5"><summary className="cursor-pointer font-bold">累计复习窗口原文</summary><div className="mt-4"><Markdown source={library.review_window} /></div></details>
     </section>}
   </div>
 }

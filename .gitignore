@@ -17,6 +17,8 @@ node_modules/
 dist/
 
 # IDE
+.tmp/
+.workbuddy/
 .vscode/
 .idea/
 *.swp
