@@ -64,6 +64,29 @@ cp dist/index.html dist/404.html
 
 GitHub Actions 会在 `main` 的每日英语单词目录、导出脚本或前端变更推送后，重新导出并发布。仅修改本机文件但不推送不会更新网站。通用题库仍由原来的 `export_frontend_vocabulary.py` 管理。
 
+## 每天 11 点自动发布
+
+macOS 安装（重复运行不会重复注册）：
+
+```bash
+/usr/bin/python3 backend/scripts/install_daily_publish.py
+```
+
+任务标签为 `com.insistgang.liuji.daily-publish`，每天本机时间 11:00 执行，11 点之后每 30 分钟补检，登录及唤醒后按系统调度补检。上午约 10 点的内容生成任务不由本脚本运行；电脑关机或未登录期间无法读取并上传本地新文件。
+
+发布前要求当天词表存在、每期包含 20 个有效词条、当天配图已引用且存在、累计复习窗口存在。仅提交每日英语单词目录、导出 JSON 和每日配图；不提交 `.workbuddy` 或其他代码。已有暂存内容、非自动提交未推送、远端领先时停止，避免混入其他工作。重复执行无变化时不产生新提交；网络失败由下次补检重试。Git 推送走本机已有 SSH 身份，不在脚本中保存令牌。
+
+```bash
+# 校验已有日期，不提交不推送（会重新导出本地前端数据）
+/usr/bin/python3 backend/scripts/publish_daily_words.py --date 2026-11-04 --dry-run
+# 手动补发已有日期
+/usr/bin/python3 backend/scripts/publish_daily_words.py --date 2026-11-04
+# 查看后台任务
+launchctl print gui/$(id -u)/com.insistgang.liuji.daily-publish
+```
+
+日志在 `~/Library/Logs/liuji-daily-publish.log` 和 `~/Library/Logs/liuji-daily-publish.error.log`。推送回执位于 `.git/daily-publish/last-success.json`。它只证明 Git 同步，不代表 Pages 部署成功；构建结果仍需查看 GitHub Actions。需要暂停可执行 `launchctl bootout gui/$(id -u)/com.insistgang.liuji.daily-publish`，之后重新运行安装脚本恢复。
+
 ## 测试
 
 ```bash
