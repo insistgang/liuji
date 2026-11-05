@@ -80,4 +80,39 @@ test('malformed stored progress and impossible dates are rejected rather than ov
 test('date arithmetic handles month and year boundaries', () => {
   assert.equal(scheduleReview(undefined, true, '2026-12-31').due, '2027-01-01')
   assert.equal(scheduleReview(undefined, true, '2028-02-28').due, '2028-02-29')
+  assert.equal(addDays('2026-12-31', 1), '2027-01-01')
+  assert.equal(addDays('2028-02-28', 1), '2028-02-29')
+})
+
+test('memory strength ratings follow the 默默背单词 style ladder', () => {
+  const fresh = scheduleReview(undefined, true, '2026-11-05', 4)
+  assert.equal(fresh.stage, 1)
+  assert.equal(fresh.due, '2026-11-06')
+
+  const vague = scheduleReview(fresh, true, '2026-11-06', 3)
+  assert.equal(vague.stage, 1)
+  assert.equal(vague.due, '2026-11-06')
+
+  const known = scheduleReview(fresh, true, '2026-11-06', 4)
+  assert.equal(known.stage, 2)
+  assert.equal(known.due, '2026-11-08')
+
+  const strong = scheduleReview(fresh, true, '2026-11-06', 5)
+  assert.equal(strong.stage, 3)
+  assert.equal(strong.due, '2026-11-10')
+
+  const forgotten = scheduleReview(known, false, '2026-11-08', 1)
+  assert.equal(forgotten.stage, 0)
+  assert.equal(forgotten.interval, 0)
+  assert.equal(forgotten.due, '2026-11-08')
+
+  const capped = scheduleReview({ learned: '2026-10-01', reviewed: ['2026-10-01'], due: '2026-11-05', interval: 30, stage: 5 }, true, '2026-11-05', 5)
+  assert.equal(capped.stage, 6)
+  assert.equal(capped.interval, 30)
+})
+
+test('very familiar words on a first sighting skip the shortest interval', () => {
+  const strong = scheduleReview(undefined, true, '2026-11-05', 5)
+  assert.equal(strong.stage, 2)
+  assert.equal(strong.due, '2026-11-07')
 })

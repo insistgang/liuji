@@ -10,23 +10,42 @@ export type RecordEntry = { learned: string; reviewed: string[]; due: string; in
 export type DailyRecords = Record<string, RecordEntry>
 export const PROGRESS_KEY = 'liuji-daily-library-progress-v1'
 export const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30] as const
+export type ReviewQuality = 1 | 3 | 4 | 5
 const PROGRESS_EVENT = 'liuji-daily-progress-updated'
 
 export const day = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+
+export function addDays(date: string, days: number): string {
+  const value = new Date(`${date}T12:00:00`)
+  value.setDate(value.getDate() + days)
+  return day(value)
+}
 
 export function reviewStage(record: RecordEntry): number {
   if (record.stage !== undefined) return record.stage
   return record.interval > 0 ? REVIEW_INTERVALS.filter(interval => interval <= record.interval).length : 0
 }
 
-export function scheduleReview(old: RecordEntry | undefined, remembered: boolean, today = day()): RecordEntry {
+export function scheduleReview(old: RecordEntry | undefined, remembered: boolean, today = day(), quality?: ReviewQuality): RecordEntry {
+  const rating: ReviewQuality = quality ?? (remembered ? 4 : 1)
   const previousStage = old ? reviewStage(old) : 0
-  const advance = remembered && previousStage > 0 && old!.due <= today && !old!.reviewed.includes(today)
-  const stage = remembered ? Math.min(previousStage + (advance || previousStage === 0 ? 1 : 0), REVIEW_INTERVALS.length) : 0
+  const reviewedToday = old?.reviewed.includes(today) ?? false
+  const dueNow = old ? old.due <= today : false
+  const canAdvance = previousStage === 0 || (dueNow && !reviewedToday)
+  let stage: number
+  let due: string
+  if (rating === 1) {
+    stage = 0
+    due = today
+  } else if (rating === 3) {
+    stage = previousStage === 0 ? 1 : previousStage
+    due = previousStage === 0 ? addDays(today, REVIEW_INTERVALS[0]) : old!.due
+  } else {
+    const jump = rating === 5 ? 2 : 1
+    stage = canAdvance ? Math.min(previousStage + jump, REVIEW_INTERVALS.length) : Math.max(previousStage, 1)
+    due = canAdvance ? addDays(today, REVIEW_INTERVALS[stage - 1]) : previousStage === 0 ? addDays(today, REVIEW_INTERVALS[0]) : old!.due
+  }
   const interval = stage > 0 ? REVIEW_INTERVALS[stage - 1] : 0
-  const dueDate = new Date(`${today}T12:00:00`)
-  dueDate.setDate(dueDate.getDate() + interval)
-  const due = remembered && previousStage > 0 && !advance ? old!.due : day(dueDate)
   return { learned: old?.learned || today, reviewed: [...new Set([...(old?.reviewed || []), today])], due, interval, stage }
 }
 
@@ -68,10 +87,10 @@ export function useDailyRecords() {
     }
   }, [])
 
-  function save(word: DailyWord, remembered: boolean): RecordEntry | null {
+  function save(word: DailyWord, remembered: boolean, quality?: ReviewQuality): RecordEntry | null {
     try {
       const current = readRecordsStrict()
-      const next = scheduleReview(current[word.id], remembered)
+      const next = scheduleReview(current[word.id], remembered, day(), quality)
       const updated = { ...current, [word.id]: next }
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(updated))
       setRecords(updated)
