@@ -68,18 +68,19 @@ export function useDailyRecords() {
     }
   }, [])
 
-  function save(word: DailyWord, remembered: boolean): boolean {
+  function save(word: DailyWord, remembered: boolean): RecordEntry | null {
     try {
       const current = readRecordsStrict()
-      const updated = { ...current, [word.id]: scheduleReview(current[word.id], remembered) }
+      const next = scheduleReview(current[word.id], remembered)
+      const updated = { ...current, [word.id]: next }
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(updated))
       setRecords(updated)
       setStorageError('')
       window.dispatchEvent(new Event(PROGRESS_EVENT))
-      return true
+      return next
     } catch {
       setStorageError('学习记录未保存。请检查浏览器存储权限或原有记录格式；没有覆盖已有数据。')
-      return false
+      return null
     }
   }
   return { records, storageError, save }

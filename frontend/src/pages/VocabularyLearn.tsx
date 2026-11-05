@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import LearningFeedback from '../components/LearningFeedback'
 import { day, REVIEW_INTERVALS, reviewStage, useDailyLibrary, useDailyRecords } from '../store/dailyLibrary'
 
 export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: boolean }) {
@@ -10,6 +11,8 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
   const [revealed, setRevealed] = useState(false)
   const [attempts, setAttempts] = useState<Record<string, number>>({})
   const [feedback, setFeedback] = useState('')
+  const [feedbackTone, setFeedbackTone] = useState<'success' | 'retry' | 'error'>('success')
+  const [feedbackSequence, setFeedbackSequence] = useState(0)
   const today = day()
 
   if (error) return <div role="alert" className="p-8 text-red-700">{error}。请刷新重试。</div>
@@ -35,10 +38,17 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
   }
 
   function answer(remembered: boolean) {
-    if (!current || !revealed || !save(current, remembered)) return
+    if (!current || !revealed) return
+    const record = save(current, remembered)
+    setFeedbackTone(!record ? 'error' : remembered ? 'success' : 'retry')
+    setFeedbackSequence(value => value + 1)
+    if (!record) {
+      setFeedback(`${current.word} 未保存，请检查浏览器存储权限后重试。`)
+      return
+    }
     setAttempts(value => ({ ...value, [current.id]: (value[current.id] || 0) + 1 }))
     setRevealed(false)
-    setFeedback(remembered ? `${current.word} 已记入计划，下方可查看下次复习日期。` : `${current.word} 已加入当天重练队列，下一次答对后从 1 天间隔重新开始。`)
+    setFeedback(remembered ? `${current.word} 记住了！已保存，下次复习：${record.due}。` : `${current.word} 已加入今天的重练队列，下一次答对后从 1 天间隔重新开始。`)
   }
 
   return <div className="mx-auto max-w-3xl space-y-6 p-2 md:p-4">
@@ -62,8 +72,8 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
       </select>
       {lesson.date !== today && <p className="text-sm text-amber-700">这是 {lesson.date} 的历史词表，不是今天新生成的词表。</p>}
     </div>}
-    {feedback && <p role="status" className="rounded-xl bg-teal-50 p-4 leading-7 text-teal-800">{feedback}</p>}
-    {current ? <article key={current.id} className="rounded-3xl border bg-white p-6 shadow-sm md:p-8">
+    {feedback && <LearningFeedback key={feedbackSequence} message={feedback} tone={feedbackTone} onDismiss={() => setFeedback('')} />}
+    {current ? <article key={current.id} className="feedback-enter rounded-3xl border bg-white p-6 shadow-sm md:p-8">
       <p className="text-sm text-slate-500">{current.id.split(':')[0]} · {current.group} · {mode === 'review' ? `本轮还剩 ${queue.length} 词` : `本期还剩 ${queue.length} 个新词`}</p>
       <h2 className="mt-5 break-words text-4xl font-bold text-slate-900">{current.word}</h2>
       <p className="mt-3 break-words text-slate-500">{current.phonetic}</p>

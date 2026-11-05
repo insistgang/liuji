@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Markdown from '../components/Markdown'
-import { day, useDailyLibrary, useDailyRecords } from '../store/dailyLibrary'
+import LearningFeedback from '../components/LearningFeedback'
+import { Check, RotateCcw } from 'lucide-react'
+import { day, useDailyLibrary, useDailyRecords, type RecordEntry } from '../store/dailyLibrary'
 
 export default function DailyWords() {
   const { library, error } = useDailyLibrary()
@@ -8,7 +10,13 @@ export default function DailyWords() {
   const [selected, setSelected] = useState('')
   const [tab, setTab] = useState('lesson')
   const [search, setSearch] = useState('')
+  const [feedback, setFeedback] = useState<{ word: string; remembered: boolean; record: RecordEntry | null; sequence: number } | null>(null)
   const today = day()
+
+  function answer(word: Parameters<typeof save>[0], remembered: boolean) {
+    const record = save(word, remembered)
+    setFeedback(previous => ({ word: word.word, remembered, record, sequence: (previous?.sequence || 0) + 1 }))
+  }
 
   if (error) return <div role="alert" className="p-8 text-red-700">{error}。请刷新重试。</div>
   if (!library) return <div className="p-8">正在读取每日词表知识库…</div>
@@ -53,8 +61,8 @@ export default function DailyWords() {
       <figure><img className="w-full rounded-2xl border" src={`${import.meta.env.BASE_URL}${lesson.image}`} alt={`${lesson.date} 工作与生活场景记忆图`} /><figcaption className="mt-2 text-sm text-slate-500">知识库原始场景配图 · {lesson.date}</figcaption></figure>}
     {tab === 'library' && <input aria-label="搜索词库" placeholder="搜索单词、中文词义或日期" value={search} onChange={event => setSearch(event.target.value)} className="w-full rounded-xl border p-4" />}
     {tab === 'review' && !due.length && <div className="rounded-2xl bg-teal-50 p-6">没有到期记录。先在每日词表中学习并点击“记住了”，随后会安排复习。想复习旧词也可以进入“全部词库”。</div>}
-    {tab !== 'source' && <div className="grid gap-4 md:grid-cols-2">{words.map(word => <article key={word.id} className="rounded-2xl border bg-white p-6 shadow-sm">
-      <div className="flex justify-between gap-3"><h2 className="text-2xl font-bold text-slate-900">{word.word}</h2><span className="text-xs text-teal-700">{records[word.id] ? '已学' : '未学'}</span></div>
+    {tab !== 'source' && <div className="grid gap-4 md:grid-cols-2">{words.map(word => <article key={word.id} className={`rounded-2xl border p-6 shadow-sm transition-colors ${!records[word.id] ? 'border-slate-200 bg-white' : records[word.id].interval > 0 ? 'border-teal-200 bg-teal-50/40' : 'border-amber-200 bg-amber-50/40'}`}>
+      <div className="flex justify-between gap-3"><h2 className="text-2xl font-bold text-slate-900">{word.word}</h2><span className={`shrink-0 rounded-full px-2 py-1 text-xs ${!records[word.id] ? 'bg-slate-100 text-slate-500' : records[word.id].interval > 0 ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}`}>{!records[word.id] ? '未学' : records[word.id].interval > 0 ? '已记住' : '待重练'}</span></div>
       <p className="text-slate-500 mt-1">{word.phonetic}</p>
       <p className="text-xs text-slate-400 mt-2">{word.id.split(':')[0]} · {word.group}</p>
       {tab === 'review' ? <details className="mt-4"><summary className="cursor-pointer font-medium text-teal-700">先回忆，再展开词义</summary><p className="mt-3">{word.definition_cn}</p></details> : <p className="font-medium mt-4">{word.definition_cn}</p>}
@@ -62,8 +70,10 @@ export default function DailyWords() {
         <p className="mt-3 leading-7">{word.example_en}</p><p className="text-slate-500 leading-7">{word.example_cn}</p>
         {word.memory && <p className="mt-3 rounded-xl bg-amber-50 p-3 leading-7">{word.memory}</p>}
       </details>
-      <div className="mt-5 flex gap-3"><button className="rounded-xl bg-teal-700 text-white px-4 py-2" onClick={() => save(word, true)}>记住了</button><button className="rounded-xl bg-slate-100 px-4 py-2" onClick={() => save(word, false)}>还不熟</button></div>
+      {records[word.id] && <p className={`mt-4 rounded-xl px-3 py-2 text-sm ${records[word.id].interval > 0 ? 'bg-teal-100/60 text-teal-800' : 'bg-amber-100/60 text-amber-800'}`}>{records[word.id].interval > 0 ? `已保存 · 下次复习 ${records[word.id].due}` : '已保存 · 今天还需要重练，不会延后复习'}</p>}
+      <div className="mt-5 flex flex-wrap gap-3"><button className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-teal-700 text-white px-4 py-2" onClick={() => answer(word, true)}><Check size={17} aria-hidden="true" />记住了</button><button className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-amber-50 text-amber-900 px-4 py-2" onClick={() => answer(word, false)}><RotateCcw size={16} aria-hidden="true" />还不熟</button></div>
     </article>)}</div>}
+    {feedback && <LearningFeedback key={feedback.sequence} tone={!feedback.record ? 'error' : feedback.remembered ? 'success' : 'retry'} message={!feedback.record ? `${feedback.word} 未保存，请检查浏览器存储权限后重试。` : feedback.remembered ? `${feedback.word} 记住了！已保存，下次复习：${feedback.record.due}。` : `${feedback.word} 已加入今天的重练队列，再看一次例句和记忆提示吧。`} onDismiss={() => setFeedback(null)} />}
     {tab === 'source' && <section className="space-y-5">
       <div className="rounded-2xl border p-5"><h2 className="font-bold text-xl">本期完整原文</h2><p className="text-xs text-slate-500 my-3">{lesson.source} · 含助记卡、场景故事、易混辨析、自测题与原文答案（按各期实际内容展示）。</p><Markdown source={lesson.markdown} /></div>
       <details className="rounded-2xl border p-5"><summary className="cursor-pointer font-bold">累计复习窗口原文</summary><div className="mt-4"><Markdown source={library.review_window} /></div></details>
