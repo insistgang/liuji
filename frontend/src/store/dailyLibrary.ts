@@ -31,7 +31,7 @@ export function scheduleReview(old: RecordEntry | undefined, remembered: boolean
 }
 
 function validDay(value: unknown): value is string {
-  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(new Date(`${value}T12:00:00`).getTime())
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && day(new Date(`${value}T12:00:00`)) === value
 }
 
 export function readRecordsStrict(): DailyRecords {

@@ -55,6 +55,9 @@ def publish(date: str, dry_run: bool = False) -> None:
     if dry_run:
         print(f'校验通过：{date}；dry-run 不提交、不推送。')
         return
+    if not git('status', '--porcelain', '--', *SCOPE):
+        print(f'{date} 没有词表或配图改动，跳过本次发布。')
+        return
     if git('branch', '--show-current') != 'main':
         raise ValueError('当前不在 main，拒绝自动切换分支')
     if git('diff', '--cached', '--name-only'):

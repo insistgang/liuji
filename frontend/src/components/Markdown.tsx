@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react'
 
 function inline(text: string): ReactNode[] {
-  const pattern = /(\*\*[^*]+\*\*|\*[^*\n]+\*|`[^`]+`|!?\[[^\]]*\]\([^)]+\))/g
+  const pattern = /(\*\*[^*]+?\*\*|\*[^*\n]+\*|`[^`]+`|!?\[[^\]]*\]\([^)]+\))/g
   const nodes: ReactNode[] = []
   let last = 0
   for (const match of text.matchAll(pattern)) {

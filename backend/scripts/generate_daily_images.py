@@ -111,6 +111,8 @@ def generate(path: Path, base: str, key: str, model: str, force: bool = False) -
             and not (line.startswith('> **配套**') and '场景记忆图' in line)
         )
     marker = f'> **场景记忆图**：`场景配图/{name}`（{model}，WORK / LIFE 双场景）。\n\n![场景记忆图](../场景配图/{name})\n\n'
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    text = re.sub(r'(^---+\s*\n)(?:\s*---+\s*\n)+', r'\1', text, flags=re.MULTILINE)
     lines = text.splitlines()
     insert_at = next((i for i, line in enumerate(lines) if line.startswith('## ')), len(lines))
     while insert_at > 0 and not lines[insert_at - 1].strip():

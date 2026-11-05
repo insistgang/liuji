@@ -64,8 +64,14 @@ test('legacy progress retains dates and is mapped to the closest completed inter
   assert.deepEqual(readRecordsStrict(), { word: old })
 })
 
-test('malformed stored progress is rejected rather than overwritten', () => {
-  for (const value of ['null', '[]', '{', JSON.stringify({ word: { learned: 'bad' } })]) {
+test('malformed stored progress and impossible dates are rejected rather than overwritten', () => {
+  const valid = { learned: '2026-11-05', reviewed: [], due: '2026-11-06', interval: 1, stage: 1 }
+  const invalid = [
+    'null', '[]', '{', JSON.stringify({ word: { learned: 'bad' } }),
+    JSON.stringify({ word: { ...valid, due: '2026-02-30' } }),
+    JSON.stringify({ word: { ...valid, learned: '2026-11-31' } }),
+  ]
+  for (const value of invalid) {
     globalThis.localStorage = { getItem: () => value }
     assert.throws(() => readRecordsStrict())
   }

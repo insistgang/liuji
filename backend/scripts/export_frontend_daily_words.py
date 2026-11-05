@@ -59,7 +59,8 @@ def parse_lesson(path: Path) -> dict:
             current['memory'] = clean.removeprefix('💡').strip()
         elif clean.startswith('>'):
             field = 'example_cn' if current['example_en'] else 'example_en'
-            current[field] = clean.lstrip('> ')
+            example = re.sub(r'^>\s*', '', clean)
+            current[field] = (current[field] + ' ' + example).strip()
         elif clean.startswith('（'):
             current['example_cn'] = clean.strip('（）')
     if current:
