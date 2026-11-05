@@ -1,72 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Markdown from '../components/Markdown'
-
-type Word = {
-  id: string; no: number; word: string; phonetic: string; definition_cn: string
-  example_en: string; example_cn: string; memory: string; group: string
-}
-type Lesson = { date: string; title: string; words: Word[]; image: string; markdown: string; source: string }
-type Library = { lessons: Lesson[]; total_words: number; review_window: string }
-type RecordEntry = { learned: string; reviewed: string[]; due: string; interval: number }
-type Records = Record<string, RecordEntry>
-const KEY = 'liuji-daily-library-progress-v1'
-const day = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-const readRecordsStrict = (): Records => {
-  const value: unknown = JSON.parse(localStorage.getItem(KEY) || '{}')
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('学习记录格式异常')
-  for (const item of Object.values(value)) {
-    if (!item || typeof item.learned !== 'string' || typeof item.due !== 'string' ||
-      !Array.isArray(item.reviewed) || !item.reviewed.every((date: unknown) => typeof date === 'string') ||
-      !Number.isFinite(item.interval) || item.interval < 0) throw new Error('学习记录格式异常')
-  }
-  return value as Records
-}
-const readRecords = (): Records => {
-  try { return readRecordsStrict() } catch { return {} }
-}
+import { day, useDailyLibrary, useDailyRecords } from '../store/dailyLibrary'
 
 export default function DailyWords() {
-  const [library, setLibrary] = useState<Library | null>(null)
-  const [error, setError] = useState('')
+  const { library, error } = useDailyLibrary()
+  const { records, storageError, save } = useDailyRecords()
   const [selected, setSelected] = useState('')
   const [tab, setTab] = useState('lesson')
   const [search, setSearch] = useState('')
-  const [records, setRecords] = useState<Records>(readRecords)
-  const [storageError, setStorageError] = useState('')
   const today = day()
-  useEffect(() => {
-    const controller = new AbortController()
-    fetch(`${import.meta.env.BASE_URL}data/daily_words.json`, { signal: controller.signal })
-      .then(res => { if (!res.ok) throw new Error(`词表读取失败：${res.status}`); return res.json() })
-      .then((data: Library) => {
-        if (!data.lessons?.length) throw new Error('知识库还没有期次')
-        setLibrary(data)
-        setSelected((data.lessons.find(item => item.date <= day()) || data.lessons[0]).date)
-      }).catch((err: Error) => { if (err.name !== 'AbortError') setError(err.message) })
-    return () => controller.abort()
-  }, [])
-
-  function save(word: Word, remembered: boolean) {
-    try {
-      const current = readRecordsStrict()
-      const old = current[word.id]
-      const repeatedToday = old?.reviewed.includes(today) && old.interval > 0
-      const interval = remembered ? (old ? (repeatedToday ? old.interval : Math.min(old.interval * 2 || 1, 60)) : 1) : 0
-      const due = new Date()
-      due.setDate(due.getDate() + interval)
-      current[word.id] = { learned: old?.learned || today,
-        reviewed: [...new Set([...(old?.reviewed || []), today])], due: day(due), interval }
-      localStorage.setItem(KEY, JSON.stringify(current))
-      setRecords(current)
-      setStorageError('')
-    } catch {
-      setStorageError('学习记录未保存。请检查浏览器存储权限或原有记录格式；没有覆盖已有数据。')
-    }
-  }
 
   if (error) return <div role="alert" className="p-8 text-red-700">{error}。请刷新重试。</div>
   if (!library) return <div className="p-8">正在读取每日词表知识库…</div>
-  const lesson = library.lessons.find(item => item.date === selected) || library.lessons[0]
+  const lesson = library.lessons.find(item => item.date === selected) || library.lessons.find(item => item.date <= today) || library.lessons[0]
   const all = library.lessons.flatMap(item => item.words.map(word => ({ ...word, date: item.date })))
   const due = all.filter(word => records[word.id] && records[word.id].due <= today)
   const activities = new Set(Object.values(records).flatMap(item => [item.learned, ...item.reviewed]))
@@ -98,10 +44,10 @@ export default function DailyWords() {
     </div>
     <div className="flex flex-wrap items-center gap-3">
       <label htmlFor="lesson-date">选择期次</label>
-      <select id="lesson-date" value={selected} onChange={event => setSelected(event.target.value)} className="rounded-xl border p-3 bg-white">
+      <select id="lesson-date" value={lesson.date} onChange={event => setSelected(event.target.value)} className="rounded-xl border p-3 bg-white">
         {library.lessons.map(item => <option key={item.date} value={item.date}>{item.date} · {item.words.length} 词</option>)}
       </select>
-      {selected !== today && <span className="text-sm text-amber-700">当前展示 {selected} 的词表，不是今天新生成的词表。</span>}
+      {lesson.date !== today && <span className="text-sm text-amber-700">当前展示 {lesson.date} 的词表，不是今天新生成的词表。</span>}
     </div>
     {tab === 'lesson' && lesson.image &&
       <figure><img className="w-full rounded-2xl border" src={`${import.meta.env.BASE_URL}${lesson.image}`} alt={`${lesson.date} 工作与生活场景记忆图`} /><figcaption className="mt-2 text-sm text-slate-500">知识库原始场景配图 · {lesson.date}</figcaption></figure>}
