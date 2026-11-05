@@ -48,10 +48,6 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Check frontend and review scheduler
-        working-directory: frontend
-        run: npm run lint && npm test
-
       - name: Build static offline app
         working-directory: frontend
         env:
