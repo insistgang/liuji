@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import fcntl
 import hashlib
 import json
 import os
@@ -50,12 +51,31 @@ def prompt_for(work: list[str], life: list[str]) -> str:
     return (
         'Wide landscape educational memory illustration, clean flat vector art, soft teal and amber palette. '
         'Split into two equal panels side by side. Left panel has a dark blue label WORK, right panel a warm amber label LIFE. '
-        'Each panel is a grid of small square illustrated tiles, one tile per English word, with the exact English word printed in small clear lowercase letters under the tile. '
-        'WORK tiles, in this order: ' + ', '.join(work) + '. '
-        'LIFE tiles, in this order: ' + ', '.join(life) + '. '
-        'Each tile depicts the meaning of its word with a simple recognizable scene or object. '
-        'Do not print any Chinese text, no other words, no watermark, no logos.'
+        'Each panel is a grid of illustrated tiles. Every vocabulary word must have its own tile, with a clear lowercase English caption below the image. '
+        'Do not omit any vocabulary word or caption, do not add decorative replacement tiles, and do not merge two words into one scene. '
+        'WORK tiles, in this order: ' + '; '.join(f'{word}: {VISUAL_HINTS.get(word, "illustrate its exact meaning")}' for word in work) + '. '
+        'LIFE tiles, in this order: ' + '; '.join(f'{word}: {VISUAL_HINTS.get(word, "illustrate its exact meaning")}' for word in life) + '. '
+        'Keep all tiles the same size and their English captions correctly aligned. '
+        'The only allowed text is WORK, LIFE, and the exact lowercase vocabulary captions. No Chinese, no extra words, no watermark, no logos.'
     )
+
+
+VISUAL_HINTS = {
+    'offset': 'red expenses on one side balanced by an equal green income arrow on the other, visibly cancelling the costs; no scales',
+    'grease': 'a person applying golden cooking oil to a frying pan with a brush, an oil bottle nearby; no bacon',
+    'specify': 'a specification checklist with exact details being pointed out',
+    'verify': 'a magnifying glass comparing two matching documents with a check mark',
+    'exceed': 'a rising bar visibly crossing a marked limit line',
+    'neglect': 'an unfinished unchecked task sitting forgotten on a desk',
+    'prohibit': 'a red prohibition sign over a personal laptop storing files',
+    'commence': 'a project launch ceremony beginning at a desk',
+    'conform': 'identical modules fitting the same standard template',
+    'constrain': 'a project compressed inside a tight box or clamp',
+    'dispatch': 'a work order being sent to an engineer',
+    'deduct': 'a small service fee visibly subtracted from a payment total',
+    'convene': 'one person gathering colleagues around a meeting table',
+    'chill': 'a cold autumn breeze and falling leaves around a person wearing a scarf; no illness',
+}
 
 
 def generate(path: Path, base: str, key: str, model: str, force: bool = False) -> Path | None:
@@ -87,6 +107,8 @@ def generate(path: Path, base: str, key: str, model: str, force: bool = False) -
             line for line in text.splitlines()
             if not re.match(r'^!\[[^]]*\]\(\.\./场景配图/[^)]+\)\s*$', line)
             and not line.startswith('> **场景记忆图**')
+            and not (line.startswith('> **配图**') and '场景配图/' in line)
+            and not (line.startswith('> **配套**') and '场景记忆图' in line)
         )
     marker = f'> **场景记忆图**：`场景配图/{name}`（{model}，WORK / LIFE 双场景）。\n\n![场景记忆图](../场景配图/{name})\n\n'
     lines = text.splitlines()
@@ -110,13 +132,17 @@ def main() -> int:
         paths = [path for path in paths if path.name.startswith(args.date)]
     if not paths:
         raise SystemExit('没有找到对应日期的词表')
+    state_dir = PROJECT / '.git/daily-publish'
+    state_dir.mkdir(parents=True, exist_ok=True)
     failed = 0
-    for path in paths:
-        try:
-            generate(path, base, key, model, args.force)
-        except Exception as error:
-            failed += 1
-            print(f'失败：{path.name}: {error}')
+    with (state_dir / 'content').open('w') as content_lock:
+        fcntl.flock(content_lock, fcntl.LOCK_EX)
+        for path in paths:
+            try:
+                generate(path, base, key, model, args.force)
+            except Exception as error:
+                failed += 1
+                print(f'失败：{path.name}: {error}')
     print(f'完成：{len(paths) - failed} 成功 / {failed} 失败')
     return 1 if failed else 0
 

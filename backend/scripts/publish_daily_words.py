@@ -94,7 +94,9 @@ def main() -> int:
         return 0
     state_dir = PROJECT / '.git/daily-publish'
     state_dir.mkdir(parents=True, exist_ok=True)
-    with (state_dir / 'lock').open('w') as lock:
+    with (state_dir / 'lock').open('w') as lock, (state_dir / 'content').open('w') as content_lock:
+        fcntl.flock(content_lock, fcntl.LOCK_EX)
+
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
