@@ -1,5 +1,6 @@
 import { Volume2 } from 'lucide-react'
 import type { VocabularyWord } from '../../types/vocabulary'
+import { plainText } from '../../lib/text'
 
 interface WordCardProps {
   word: VocabularyWord
@@ -41,7 +42,7 @@ export default function WordCard({ word, isFlipped, onFlip }: WordCardProps) {
           {word.definition_en && <p className="text-blue-100 mb-4 text-center">{word.definition_en}</p>}
           {word.example_en && (
             <div className="mt-4 text-left w-full">
-              <p className="text-blue-100 italic text-sm">"{word.example_en}"</p>
+              <p className="text-blue-100 italic text-sm">"{plainText(word.example_en)}"</p>
               {word.example_cn && <p className="text-blue-200 text-sm mt-1">{word.example_cn}</p>}
             </div>
           )}

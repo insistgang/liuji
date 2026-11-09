@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Volume2 } from 'lucide-react'
 import LearningFeedback from '../components/LearningFeedback'
 import { buildChoices, summarizeDefinition } from '../lib/quiz'
+import { plainText } from '../lib/text'
 import { addDays, day, REVIEW_INTERVALS, reviewStage, useDailyLibrary, useDailyRecords, type ReviewQuality } from '../store/dailyLibrary'
 
 const RATINGS: { quality: ReviewQuality; label: string; hint: string; color: string }[] = [
@@ -166,14 +167,14 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
           {result.kind === 'correct' ? '答对了！这个词已记入复习计划。' : `选错了，正确释义是「${summarizeDefinition(current.definition_cn)}」。这个词会在本轮稍后再考一次。`}
         </p>
         <p className="text-lg font-semibold leading-8">{current.definition_cn}</p>
-        <div className="space-y-2 leading-7"><p>{current.example_en}</p><p className="text-slate-500 dark:text-slate-400">{current.example_cn}</p></div>
+        <div className="space-y-2 leading-7"><p>{plainText(current.example_en)}</p><p className="text-slate-500 dark:text-slate-400">{current.example_cn}</p></div>
         {current.memory && <p className="rounded-xl bg-amber-50 dark:bg-amber-950 p-4 leading-7">{current.memory}</p>}
         <button className="w-full rounded-xl bg-teal-700 px-5 py-3 font-medium text-white" onClick={continueAfterAnswer}>继续下一个</button>
       </div>}
       {mode === 'review' && !revealed && <button className="mt-8 w-full rounded-xl bg-teal-50 dark:bg-teal-950 px-5 py-4 font-medium text-teal-800 dark:text-teal-200" onClick={() => setRevealedId(current.id)}>先回忆，再查看释义与记忆提示</button>}
       {mode === 'review' && revealed && <div className="mt-6 space-y-4">
         <p className="text-lg font-semibold leading-8">{current.definition_cn}</p>
-        <div className="space-y-2 leading-7"><p>{current.example_en}</p><p className="text-slate-500 dark:text-slate-400">{current.example_cn}</p></div>
+        <div className="space-y-2 leading-7"><p>{plainText(current.example_en)}</p><p className="text-slate-500 dark:text-slate-400">{current.example_cn}</p></div>
         {current.memory && <p className="rounded-xl bg-amber-50 dark:bg-amber-950 p-4 leading-7">{current.memory}</p>}
         <div className="grid gap-3 pt-3 sm:grid-cols-2">
           {RATINGS.map(rating => <button key={rating.quality} type="button" onClick={() => rate(rating.quality)} className={`rounded-xl px-5 py-3 text-white ${rating.color}`}>

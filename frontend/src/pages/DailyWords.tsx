@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Markdown from '../components/Markdown'
 import LearningFeedback from '../components/LearningFeedback'
 import { Check, RotateCcw } from 'lucide-react'
+import { plainText } from '../lib/text'
 import { day, useDailyLibrary, useDailyRecords, type RecordEntry } from '../store/dailyLibrary'
 
 export default function DailyWords() {
@@ -67,7 +68,7 @@ export default function DailyWords() {
       <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">{word.id.split(':')[0]} · {word.group}</p>
       {tab === 'review' ? <details className="mt-4"><summary className="cursor-pointer font-medium text-teal-700 dark:text-teal-300">先回忆，再展开词义</summary><p className="mt-3">{word.definition_cn}</p></details> : <p className="font-medium mt-4">{word.definition_cn}</p>}
       <details className="mt-4"><summary className="cursor-pointer text-teal-700 dark:text-teal-300">查看例句与记忆提示</summary>
-        <p className="mt-3 leading-7">{word.example_en}</p><p className="text-slate-500 dark:text-slate-400 leading-7">{word.example_cn}</p>
+        <p className="mt-3 leading-7">{plainText(word.example_en)}</p><p className="text-slate-500 dark:text-slate-400 leading-7">{word.example_cn}</p>
         {word.memory && <p className="mt-3 rounded-xl bg-amber-50 dark:bg-amber-950 p-3 leading-7">{word.memory}</p>}
       </details>
       {records[word.id] && <p className={`mt-4 rounded-xl px-3 py-2 text-sm ${records[word.id].interval > 0 ? 'bg-teal-100/60 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200' : 'bg-amber-100/60 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200'}`}>{records[word.id].interval > 0 ? `已保存 · 下次复习 ${records[word.id].due}` : '已保存 · 今天还需要重练，不会延后复习'}</p>}
