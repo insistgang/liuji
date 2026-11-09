@@ -1,6 +1,7 @@
 import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuthStore } from './store/authStore'
+import { useThemeEffect } from './store/themeStore'
 import AppShell from './components/layout/AppShell'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -26,7 +27,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500">加载中...</div>
+        <div className="text-gray-500 dark:text-slate-400">加载中...</div>
       </div>
     )
   }
@@ -40,6 +41,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const init = useAuthStore((s) => s.init)
+  useThemeEffect()
 
   useEffect(() => {
     init()

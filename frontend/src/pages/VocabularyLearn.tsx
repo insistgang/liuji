@@ -26,7 +26,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
   const [feedback, setFeedback] = useState<{ message: string; tone: 'success' | 'retry' | 'error'; sequence: number } | null>(null)
   const today = day()
 
-  if (error) return <div role="alert" className="p-8 text-red-700">{error}。请刷新重试。</div>
+  if (error) return <div role="alert" className="p-8 text-red-700 dark:text-red-300">{error}。请刷新重试。</div>
   if (!library) return <div className="p-8">正在读取你的每日词库…</div>
   const lesson = library.lessons.find(item => item.date === selected) || library.lessons.find(item => item.date <= today) || library.lessons[0]
   const all = library.lessons.flatMap(item => item.words.map(word => ({ ...word, date: item.date })))
@@ -128,53 +128,53 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
       <p className="mt-4 leading-7 text-slate-300">四选一释义测验 + 记忆强度评级，像「默默背单词」一样用排除法记住每个词。</p>
       <div className="mt-5 flex flex-wrap gap-5 text-sm"><span>本期待学 {unlearned.length}</span><span>到期复习 {due.length}</span><span>今天记住 {completedToday} 词</span></div>
     </header>
-    <p className="text-sm leading-6 text-slate-500">复习间隔采用递增档位：{REVIEW_INTERVALS.join(' → ')} 天。评级「记得」进入下一档，「很熟」直接跳过一档，「有点难」保持当前档位，「忘记」当天重练。进度与每日词表共用，仅保存在当前浏览器。</p>
-    {storageError && <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">{storageError}</p>}
+    <p className="text-sm leading-6 text-slate-500 dark:text-slate-400">复习间隔采用递增档位：{REVIEW_INTERVALS.join(' → ')} 天。评级「记得」进入下一档，「很熟」直接跳过一档，「有点难」保持当前档位，「忘记」当天重练。进度与每日词表共用，仅保存在当前浏览器。</p>
+    {storageError && <p role="alert" className="rounded-xl bg-red-50 dark:bg-red-950 p-4 text-red-700 dark:text-red-300">{storageError}</p>}
     <div className="flex flex-wrap gap-3">
-      <button onClick={() => changeMode('learn')} className={`rounded-full px-5 py-2 ${mode === 'learn' ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700'}`}>学习每日词汇</button>
-      <button onClick={() => changeMode('review')} className={`rounded-full px-5 py-2 ${mode === 'review' ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700'}`}>到期复习（{due.length}）</button>
-      <Link to="/daily" className="px-3 py-2 text-teal-700 underline underline-offset-4">词表、配图与完整资料</Link>
+      <button onClick={() => changeMode('learn')} className={`rounded-full px-5 py-2 ${mode === 'learn' ? 'bg-teal-700 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}>学习每日词汇</button>
+      <button onClick={() => changeMode('review')} className={`rounded-full px-5 py-2 ${mode === 'review' ? 'bg-teal-700 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'}`}>到期复习（{due.length}）</button>
+      <Link to="/daily" className="px-3 py-2 text-teal-700 dark:text-teal-300 underline underline-offset-4">词表、配图与完整资料</Link>
     </div>
     {mode === 'learn' && <div className="flex flex-wrap items-center gap-3">
       <label htmlFor="vocabulary-lesson">选择每日词表</label>
-      <select id="vocabulary-lesson" value={lesson.date} onChange={event => changeLesson(event.target.value)} className="max-w-full rounded-xl border bg-white p-3">
+      <select id="vocabulary-lesson" value={lesson.date} onChange={event => changeLesson(event.target.value)} className="max-w-full rounded-xl border dark:border-slate-700 bg-white dark:bg-slate-800 p-3 dark:text-slate-100">
         {library.lessons.map(item => <option key={item.date} value={item.date}>{item.date} · {item.words.length} 词</option>)}
       </select>
-      {lesson.date !== today && <p className="text-sm text-amber-700">这是 {lesson.date} 的历史词表，不是今天新生成的词表。</p>}
+      {lesson.date !== today && <p className="text-sm text-amber-700 dark:text-amber-300">这是 {lesson.date} 的历史词表，不是今天新生成的词表。</p>}
     </div>}
     {feedback && <LearningFeedback key={feedback.sequence} message={feedback.message} tone={feedback.tone} onDismiss={() => setFeedback(null)} />}
-    {current ? <article key={current.id} className="feedback-enter rounded-3xl border bg-white p-6 shadow-sm md:p-8">
-      <p className="text-sm text-slate-500">{current.id.split(':')[0]} · {current.group} · {mode === 'review' ? `本轮还剩 ${due.length} 词` : `本轮还剩 ${queueIds.length} 词`}</p>
+    {current ? <article key={current.id} className="feedback-enter rounded-3xl border dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm md:p-8">
+      <p className="text-sm text-slate-500 dark:text-slate-400">{current.id.split(':')[0]} · {current.group} · {mode === 'review' ? `本轮还剩 ${due.length} 词` : `本轮还剩 ${queueIds.length} 词`}</p>
       <div className="mt-4 flex items-start gap-3">
-        <h2 className="min-w-0 flex-1 break-words text-4xl font-bold text-slate-900">{current.word}</h2>
-        <button type="button" onClick={() => speak(current.word)} aria-label={`朗读 ${current.word}`} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700"><Volume2 size={19} aria-hidden="true" /></button>
+        <h2 className="min-w-0 flex-1 break-words text-4xl font-bold text-slate-900 dark:text-slate-100">{current.word}</h2>
+        <button type="button" onClick={() => speak(current.word)} aria-label={`朗读 ${current.word}`} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200"><Volume2 size={19} aria-hidden="true" /></button>
       </div>
-      <p className="mt-3 break-words text-slate-500">{current.phonetic}</p>
-      {mode === 'review' && <p className="mt-3 text-sm text-amber-700">计划复习日：{records[current.id].due} · 第 {reviewStage(records[current.id])} 档</p>}
-      {mode === 'learn' && !revealed && <button className="mt-8 w-full rounded-xl bg-teal-50 px-5 py-4 font-medium text-teal-800" onClick={() => setRevealedId(current.id)}>先回忆，再选出正确释义</button>}
+      <p className="mt-3 break-words text-slate-500 dark:text-slate-400">{current.phonetic}</p>
+      {mode === 'review' && <p className="mt-3 text-sm text-amber-700 dark:text-amber-300">计划复习日：{records[current.id].due} · 第 {reviewStage(records[current.id])} 档</p>}
+      {mode === 'learn' && !revealed && <button className="mt-8 w-full rounded-xl bg-teal-50 dark:bg-teal-950 px-5 py-4 font-medium text-teal-800 dark:text-teal-200" onClick={() => setRevealedId(current.id)}>先回忆，再选出正确释义</button>}
       {mode === 'learn' && revealed && !result && <div className="mt-6 space-y-3">
-        <p className="text-sm text-slate-500">选出下面正确的中文释义：</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">选出下面正确的中文释义：</p>
         <div className="grid gap-3">
           {options.map(option => <button key={option.word.id} type="button" onClick={() => answerChoice(option.word.id)}
-            className="rounded-xl border border-slate-200 bg-white px-4 py-4 text-left text-sm leading-6 text-slate-700 hover:border-teal-300">
+            className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-4 text-left text-sm leading-6 text-slate-700 dark:text-slate-200 hover:border-teal-300">
             {summarizeDefinition(option.word.definition_cn)}
           </button>)}
         </div>
       </div>}
       {mode === 'learn' && result && <div className="mt-6 space-y-4">
-        <p className={`rounded-xl px-4 py-3 text-sm leading-6 ${result.kind === 'correct' ? 'bg-teal-50 text-teal-900' : 'bg-red-50 text-red-800'}`}>
+        <p className={`rounded-xl px-4 py-3 text-sm leading-6 ${result.kind === 'correct' ? 'bg-teal-50 dark:bg-teal-950 text-teal-900 dark:text-teal-100' : 'bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200'}`}>
           {result.kind === 'correct' ? '答对了！这个词已记入复习计划。' : `选错了，正确释义是「${summarizeDefinition(current.definition_cn)}」。这个词会在本轮稍后再考一次。`}
         </p>
         <p className="text-lg font-semibold leading-8">{current.definition_cn}</p>
-        <div className="space-y-2 leading-7"><p>{current.example_en}</p><p className="text-slate-500">{current.example_cn}</p></div>
-        {current.memory && <p className="rounded-xl bg-amber-50 p-4 leading-7">{current.memory}</p>}
+        <div className="space-y-2 leading-7"><p>{current.example_en}</p><p className="text-slate-500 dark:text-slate-400">{current.example_cn}</p></div>
+        {current.memory && <p className="rounded-xl bg-amber-50 dark:bg-amber-950 p-4 leading-7">{current.memory}</p>}
         <button className="w-full rounded-xl bg-teal-700 px-5 py-3 font-medium text-white" onClick={continueAfterAnswer}>继续下一个</button>
       </div>}
-      {mode === 'review' && !revealed && <button className="mt-8 w-full rounded-xl bg-teal-50 px-5 py-4 font-medium text-teal-800" onClick={() => setRevealedId(current.id)}>先回忆，再查看释义与记忆提示</button>}
+      {mode === 'review' && !revealed && <button className="mt-8 w-full rounded-xl bg-teal-50 dark:bg-teal-950 px-5 py-4 font-medium text-teal-800 dark:text-teal-200" onClick={() => setRevealedId(current.id)}>先回忆，再查看释义与记忆提示</button>}
       {mode === 'review' && revealed && <div className="mt-6 space-y-4">
         <p className="text-lg font-semibold leading-8">{current.definition_cn}</p>
-        <div className="space-y-2 leading-7"><p>{current.example_en}</p><p className="text-slate-500">{current.example_cn}</p></div>
-        {current.memory && <p className="rounded-xl bg-amber-50 p-4 leading-7">{current.memory}</p>}
+        <div className="space-y-2 leading-7"><p>{current.example_en}</p><p className="text-slate-500 dark:text-slate-400">{current.example_cn}</p></div>
+        {current.memory && <p className="rounded-xl bg-amber-50 dark:bg-amber-950 p-4 leading-7">{current.memory}</p>}
         <div className="grid gap-3 pt-3 sm:grid-cols-2">
           {RATINGS.map(rating => <button key={rating.quality} type="button" onClick={() => rate(rating.quality)} className={`rounded-xl px-5 py-3 text-white ${rating.color}`}>
             <span className="block font-medium">{rating.label}</span>
@@ -182,13 +182,13 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
           </button>)}
         </div>
       </div>}
-    </article> : <div className="rounded-2xl bg-teal-50 p-6 leading-8 text-teal-900">
+    </article> : <div className="rounded-2xl bg-teal-50 dark:bg-teal-950 p-6 leading-8 text-teal-900 dark:text-teal-100">
       <h2 className="text-xl font-bold">{mode === 'review' ? '当前没有到期词汇' : '本期新词已学完'}</h2>
       <p>{mode === 'review' ? '只有实际学过的词才会加入复习计划；新词不会被自动标成已学。' : '可以切换其他日期学习，或进入到期复习重练还不熟的词。'}</p>
     </div>}
-    <section className="rounded-2xl border p-5">
-      <h2 className="font-bold text-slate-900">未来 7 天复习量预测</h2>
-      <ul className="mt-3 space-y-2 text-slate-600">
+    <section className="rounded-2xl border dark:border-slate-800 p-5">
+      <h2 className="font-bold text-slate-900 dark:text-slate-100">未来 7 天复习量预测</h2>
+      <ul className="mt-3 space-y-2 text-slate-600 dark:text-slate-300">
         {forecast.map(item => <li key={item.date} className="flex items-center justify-between gap-4">
           <span>{item.date === today ? '今天' : item.date}</span>
           <span className="flex items-center gap-2">
@@ -197,7 +197,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
           </span>
         </li>)}
       </ul>
-      {due.length > 0 && <p className="mt-3 text-amber-700">今天及逾期：{due.length} 词</p>}
+      {due.length > 0 && <p className="mt-3 text-amber-700 dark:text-amber-300">今天及逾期：{due.length} 词</p>}
     </section>
   </div>
 }

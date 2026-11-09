@@ -33,13 +33,13 @@ export default function ExamPractice() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500" size={32} />
+        <Loader2 className="animate-spin text-blue-500 dark:text-blue-400" size={32} />
       </div>
     )
   }
 
   if (questions.length === 0) {
-    return <div className="text-center py-20 text-gray-500">暂无题目</div>
+    return <div className="text-center py-20 text-gray-500 dark:text-slate-400">暂无题目</div>
   }
 
   const current = questions[currentIndex]
@@ -73,7 +73,7 @@ export default function ExamPractice() {
       <div className="flex items-center justify-between">
         <button
           onClick={() => navigate(`/exams/${id}`)}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+          className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100"
         >
           <ArrowLeft size={20} />
           返回
@@ -90,8 +90,8 @@ export default function ExamPractice() {
               idx === currentIndex
                 ? 'bg-blue-600 text-white'
                 : answers[q.id]
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                  : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
             }`}
           >
             {q.question_num}
@@ -99,18 +99,18 @@ export default function ExamPractice() {
         ))}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6">
+      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-slate-400">
             第 {current.question_num} 题 ({current.points} 分)
           </span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-slate-400">
             {answeredCount}/{questions.length} 已答
           </span>
         </div>
 
         {current.content && (
-          <div className="text-gray-900 mb-6 whitespace-pre-wrap leading-relaxed">{current.content}</div>
+          <div className="text-gray-900 dark:text-slate-100 mb-6 whitespace-pre-wrap leading-relaxed">{current.content}</div>
         )}
 
         {isWritingOrTranslation ? (
@@ -118,10 +118,10 @@ export default function ExamPractice() {
             <textarea
               value={answers[current.id] || ''}
               onChange={(e) => handleSelect(e.target.value)}
-              className="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
+              className="w-full h-48 p-4 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none resize-none"
               placeholder="在此输入你的答案..."
             />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
               字数: {(answers[current.id] || '').length}
             </p>
           </div>
@@ -136,8 +136,8 @@ export default function ExamPractice() {
                   onClick={() => handleSelect(letter)}
                   className={`w-full p-4 rounded-xl border-2 text-left transition-colors ${
                     isSelected
-                      ? 'bg-blue-50 border-blue-500 text-blue-700'
-                      : 'bg-white border-gray-200 hover:bg-gray-50'
+                      ? 'bg-blue-50 dark:bg-blue-950 border-blue-500 text-blue-700 dark:text-blue-300'
+                      : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-950'
                   }`}
                 >
                   {option}
@@ -152,7 +152,7 @@ export default function ExamPractice() {
         <button
           onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
           disabled={currentIndex === 0}
-          className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-30"
+          className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100 disabled:opacity-30"
         >
           <ArrowLeft size={18} />
           上一题
@@ -170,7 +170,7 @@ export default function ExamPractice() {
         ) : (
           <button
             onClick={() => setCurrentIndex(currentIndex + 1)}
-            className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:text-blue-700"
+            className="flex items-center gap-2 px-4 py-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
           >
             下一题
             <ArrowRight size={18} />

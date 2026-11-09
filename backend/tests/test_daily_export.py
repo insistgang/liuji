@@ -26,6 +26,7 @@ class DailyExportTests(unittest.TestCase):
                         self.assertGreater(len(word['word']), 1)
                         self.assertTrue(word['example_en'], word['word'])
                         self.assertTrue(word['example_cn'], word['word'])
+                        self.assertTrue(word['memory'], word['word'])
                         self.assertNotIn(word['example_en'].lower(), word['word'].lower())
                         self.assertTrue(word['definition_cn'], word['word'])
                     if lesson['image']:

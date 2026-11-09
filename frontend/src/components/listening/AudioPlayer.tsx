@@ -81,24 +81,24 @@ export default function AudioPlayer({ audioUrl, onTimeUpdate }: AudioPlayerProps
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-4">
       <audio ref={audioRef} src={audioUrl} preload="metadata" />
 
       <div className="flex items-center gap-3 mb-3">
-        <span className="text-sm text-gray-500 w-12 text-right">{formatTime(currentTime)}</span>
+        <span className="text-sm text-gray-500 dark:text-slate-400 w-12 text-right">{formatTime(currentTime)}</span>
         <input
           type="range"
           min={0}
           max={duration || 0}
           value={currentTime}
           onChange={seek}
-          className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          className="flex-1 h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:accent-blue-400"
         />
-        <span className="text-sm text-gray-500 w-12">{formatTime(duration)}</span>
+        <span className="text-sm text-gray-500 dark:text-slate-400 w-12">{formatTime(duration)}</span>
       </div>
 
       <div className="flex items-center justify-center gap-4">
-        <button onClick={() => skip(-10)} className="p-2 text-gray-600 hover:text-gray-900">
+        <button onClick={() => skip(-10)} className="p-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
           <SkipBack size={20} />
         </button>
         <button
@@ -107,10 +107,10 @@ export default function AudioPlayer({ audioUrl, onTimeUpdate }: AudioPlayerProps
         >
           {isPlaying ? <Pause size={24} /> : <Play size={24} className="ml-1" />}
         </button>
-        <button onClick={() => skip(10)} className="p-2 text-gray-600 hover:text-gray-900">
+        <button onClick={() => skip(10)} className="p-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
           <SkipForward size={20} />
         </button>
-        <button onClick={cycleSpeed} className="px-3 py-1 bg-gray-100 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-200">
+        <button onClick={cycleSpeed} className="px-3 py-1 bg-gray-100 dark:bg-slate-800 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700">
           {playbackRate}x
         </button>
       </div>

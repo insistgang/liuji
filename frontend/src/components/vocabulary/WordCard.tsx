@@ -19,20 +19,20 @@ export default function WordCard({ word, isFlipped, onFlip }: WordCardProps) {
     <div className="flip-card w-full max-w-md mx-auto h-80 cursor-pointer" onClick={onFlip}>
       <div className={`flip-card-inner w-full h-full ${isFlipped ? 'flipped' : ''}`}>
         {/* Front */}
-        <div className="flip-card-front bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center">
+        <div className="flip-card-front bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center">
           <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-3xl font-bold text-gray-900">{word.word}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-slate-100">{word.word}</h2>
             {word.audio_url && (
-              <button onClick={playAudio} className="text-blue-500 hover:text-blue-600">
+              <button onClick={playAudio} className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-400">
                 <Volume2 size={24} />
               </button>
             )}
           </div>
-          {word.phonetic && <p className="text-gray-500 text-lg mb-2">{word.phonetic}</p>}
+          {word.phonetic && <p className="text-gray-500 dark:text-slate-400 text-lg mb-2">{word.phonetic}</p>}
           {word.part_of_speech && (
-            <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">{word.part_of_speech}</span>
+            <span className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm">{word.part_of_speech}</span>
           )}
-          <p className="text-gray-400 mt-6 text-sm">点击翻转查看释义</p>
+          <p className="text-gray-400 dark:text-slate-500 mt-6 text-sm">点击翻转查看释义</p>
         </div>
 
         {/* Back */}

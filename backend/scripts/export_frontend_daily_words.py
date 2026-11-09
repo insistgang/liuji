@@ -53,6 +53,10 @@ def parse_lesson(path: Path) -> dict:
             current['example_en'] = english.strip()
             if sep:
                 current['example_cn'] = chinese.rstrip('）')
+        elif clean.startswith('- **翻译**'):
+            current['example_cn'] = value
+        elif clean.startswith('- **记忆提示（联想）**'):
+            current['memory'] = value
         elif '记忆**' in clean or '记忆提示**' in clean:
             current['memory'] = value
         elif clean.startswith('💡'):

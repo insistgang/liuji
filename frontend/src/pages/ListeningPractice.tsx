@@ -24,13 +24,13 @@ export default function ListeningPractice() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500" size={32} />
+        <Loader2 className="animate-spin text-blue-500 dark:text-blue-400" size={32} />
       </div>
     )
   }
 
   if (!detail) {
-    return <div className="text-center py-20 text-gray-500">材料未找到</div>
+    return <div className="text-center py-20 text-gray-500 dark:text-slate-400">材料未找到</div>
   }
 
   const { material, exercises } = detail
@@ -53,15 +53,15 @@ export default function ListeningPractice() {
     <div className="space-y-6">
       <button
         onClick={() => navigate('/listening')}
-        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+        className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100"
       >
         <ArrowLeft size={20} />
         返回列表
       </button>
 
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{material.title}</h1>
-        <p className="text-gray-500 text-sm">
+      <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-2">{material.title}</h1>
+        <p className="text-gray-500 dark:text-slate-400 text-sm">
           {material.source && `来源: ${material.source}`}
           {material.duration > 0 && ` | 时长: ${Math.floor(material.duration / 60)}:${(material.duration % 60).toString().padStart(2, '0')}`}
         </p>
@@ -71,7 +71,7 @@ export default function ListeningPractice() {
       {material.audio_url ? (
         <AudioPlayer audioUrl={material.audio_url} />
       ) : (
-        <div className="bg-orange-50 rounded-xl p-4 text-orange-700 text-sm">
+        <div className="bg-orange-50 dark:bg-orange-950 rounded-xl p-4 text-orange-700 dark:text-orange-300 text-sm">
           音频文件暂未配置，请先阅读文稿进行练习
         </div>
       )}
@@ -81,13 +81,13 @@ export default function ListeningPractice() {
         <div>
           <button
             onClick={() => setShowTranscript(!showTranscript)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm"
+            className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100 text-sm"
           >
             {showTranscript ? <EyeOff size={16} /> : <Eye size={16} />}
             {showTranscript ? '隐藏文稿' : '显示文稿'}
           </button>
           {showTranscript && (
-            <div className="mt-3 bg-gray-50 rounded-xl p-4 text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+            <div className="mt-3 bg-gray-50 dark:bg-slate-950 rounded-xl p-4 text-gray-700 dark:text-slate-200 text-sm leading-relaxed whitespace-pre-wrap">
               {material.transcript}
             </div>
           )}
@@ -96,11 +96,11 @@ export default function ListeningPractice() {
 
       {/* Exercises */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900">练习题目</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">练习题目</h2>
 
         {exercises.map((exercise, idx) => (
-          <div key={exercise.id} className="bg-white rounded-xl shadow-sm p-5">
-            <p className="font-medium text-gray-900 mb-3">
+          <div key={exercise.id} className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-5">
+            <p className="font-medium text-gray-900 dark:text-slate-100 mb-3">
               {idx + 1}. {exercise.question_text}
             </p>
             <div className="space-y-2">
@@ -109,13 +109,13 @@ export default function ListeningPractice() {
                 const isSelected = answers[exercise.id] === letter
                 const isCorrect = letter === exercise.correct_answer
 
-                let style = 'bg-white border-gray-200 hover:bg-gray-50'
+                let style = 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-950'
                 if (showResults) {
-                  if (isCorrect) style = 'bg-green-50 border-green-500 text-green-700'
-                  else if (isSelected) style = 'bg-red-50 border-red-500 text-red-700'
-                  else style = 'bg-gray-50 border-gray-200 opacity-50'
+                  if (isCorrect) style = 'bg-green-50 dark:bg-green-950 border-green-500 text-green-700 dark:text-green-300'
+                  else if (isSelected) style = 'bg-red-50 dark:bg-red-950 border-red-500 text-red-700 dark:text-red-300'
+                  else style = 'bg-gray-50 dark:bg-slate-950 border-gray-200 dark:border-slate-700 opacity-50'
                 } else if (isSelected) {
-                  style = 'bg-blue-50 border-blue-500 text-blue-700'
+                  style = 'bg-blue-50 dark:bg-blue-950 border-blue-500 text-blue-700 dark:text-blue-300'
                 }
 
                 return (
@@ -131,20 +131,20 @@ export default function ListeningPractice() {
             </div>
 
             {showResults && (
-              <div className="mt-3 pt-3 border-t border-gray-100">
+              <div className="mt-3 pt-3 border-t border-gray-100 dark:border-slate-800">
                 <div className="flex items-center gap-2 text-sm">
                   {answers[exercise.id] === exercise.correct_answer ? (
-                    <span className="text-green-600 flex items-center gap-1">
+                    <span className="text-green-600 dark:text-green-400 flex items-center gap-1">
                       <CheckCircle size={16} /> 正确
                     </span>
                   ) : (
-                    <span className="text-red-600 flex items-center gap-1">
+                    <span className="text-red-600 dark:text-red-400 flex items-center gap-1">
                       <XCircle size={16} /> 错误 (正确答案: {exercise.correct_answer})
                     </span>
                   )}
                 </div>
                 {exercise.explanation && (
-                  <p className="text-sm text-gray-600 mt-2">解析: {exercise.explanation}</p>
+                  <p className="text-sm text-gray-600 dark:text-slate-300 mt-2">解析: {exercise.explanation}</p>
                 )}
               </div>
             )}
@@ -163,12 +163,12 @@ export default function ListeningPractice() {
             提交答案
           </button>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm p-6 inline-block">
-            <CheckCircle className="mx-auto text-green-500 mb-2" size={32} />
-            <p className="text-lg font-semibold text-gray-900">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 inline-block">
+            <CheckCircle className="mx-auto text-green-500 dark:text-green-400 mb-2" size={32} />
+            <p className="text-lg font-semibold text-gray-900 dark:text-slate-100">
               答对 {correctCount}/{exercises.length} 题
             </p>
-            <p className="text-gray-500 mt-1">
+            <p className="text-gray-500 dark:text-slate-400 mt-1">
               正确率: {exercises.length > 0 ? Math.round((correctCount / exercises.length) * 100) : 0}%
             </p>
           </div>

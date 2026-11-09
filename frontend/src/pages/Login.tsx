@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { isAxiosError } from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
+import ThemeToggle from '../components/layout/ThemeToggle'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -26,33 +27,34 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 px-4">
+      <ThemeToggle className="fixed right-4 top-4 z-50" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600">六级学习系统</h1>
-          <p className="text-gray-500 mt-2">登录以继续学习</p>
+          <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">六级学习系统</h1>
+          <p className="text-gray-500 dark:text-slate-400 mt-2">登录以继续学习</p>
         </div>
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-8 space-y-5">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-8 space-y-5">
           {error && (
-            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">{error}</div>
+            <div className="bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg text-sm">{error}</div>
           )}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1">用户名</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">密码</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-1">密码</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none"
               required
             />
           </div>
@@ -63,9 +65,9 @@ export default function Login() {
           >
             {loading ? '登录中...' : '登录'}
           </button>
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-gray-500 dark:text-slate-400">
             还没有账号？{' '}
-            <Link to="/register" className="text-blue-600 hover:underline">
+            <Link to="/register" className="text-blue-600 dark:text-blue-400 hover:underline">
               注册
             </Link>
           </p>

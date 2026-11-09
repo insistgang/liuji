@@ -1,11 +1,25 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f8fafc;
+}
+
+.dark body {
+  background-color: #020617;
 }
 
 .flip-card {
@@ -65,6 +79,19 @@ select:focus-visible,
 input:focus-visible {
   outline: 3px solid rgb(13 148 136 / 30%);
   outline-offset: 3px;
+}
+
+/* 夜间模式下阴影几乎不可见，改用细描边保持卡片层次 */
+.dark .shadow-sm {
+  box-shadow: 0 0 0 1px rgb(30 41 59 / 0.7);
+}
+
+.dark .shadow-md {
+  box-shadow: 0 0 0 1px rgb(30 41 59 / 0.85);
+}
+
+.dark .shadow-lg {
+  box-shadow: 0 0 0 1px rgb(51 65 85 / 0.9), 0 14px 34px -14px rgb(0 0 0 / 0.75);
 }
 
 .feedback-enter {

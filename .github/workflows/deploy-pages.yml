@@ -44,6 +44,9 @@ jobs:
       - name: Export daily knowledge base
         run: python backend/scripts/export_frontend_daily_words.py
 
+      - name: Verify exported knowledge base
+        run: python -m unittest discover -s backend/tests -t backend -p 'test_daily_export.py'
+
       - name: Install dependencies
         working-directory: frontend
         run: npm ci

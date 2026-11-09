@@ -8,15 +8,15 @@ function inline(text: string): ReactNode[] {
     const index = match.index ?? 0
     if (index > last) nodes.push(text.slice(last, index))
     const token = match[0]
-    if (token.startsWith('**')) nodes.push(<strong key={index} className="font-semibold text-slate-900">{token.slice(2, -2)}</strong>)
-    else if (token.startsWith('`')) nodes.push(<code key={index} className="rounded bg-slate-100 px-1.5 py-0.5 text-sm text-rose-700">{token.slice(1, -1)}</code>)
+    if (token.startsWith('**')) nodes.push(<strong key={index} className="font-semibold text-slate-900 dark:text-slate-100">{token.slice(2, -2)}</strong>)
+    else if (token.startsWith('`')) nodes.push(<code key={index} className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-sm text-rose-700 dark:text-rose-300">{token.slice(1, -1)}</code>)
     else if (token.startsWith('![')) {
       const m = token.match(/!\[([^\]]*)\]\(([^)]+)\)/)
-      if (m) nodes.push(<img key={index} src={asset(m[2])} alt={m[1]} className="my-3 max-w-full rounded-xl border" loading="lazy" />)
+      if (m) nodes.push(<img key={index} src={asset(m[2])} alt={m[1]} className="my-3 max-w-full rounded-xl border dark:border-slate-800" loading="lazy" />)
     } else if (token.startsWith('[')) {
       const m = token.match(/\[([^\]]*)\]\(([^)]+)\)/)
-      if (m) nodes.push(<a key={index} href={m[2]} target="_blank" rel="noreferrer" className="text-teal-700 underline underline-offset-2">{m[1]}</a>)
-    } else nodes.push(<em key={index} className="text-slate-600">{token.slice(1, -1)}</em>)
+      if (m) nodes.push(<a key={index} href={m[2]} target="_blank" rel="noreferrer" className="text-teal-700 dark:text-teal-300 underline underline-offset-2">{m[1]}</a>)
+    } else nodes.push(<em key={index} className="text-slate-600 dark:text-slate-300">{token.slice(1, -1)}</em>)
     last = index + token.length
   }
   if (last < text.length) nodes.push(text.slice(last))
@@ -31,9 +31,9 @@ function asset(src: string) {
 
 function Table({ rows }: { rows: string[][] }) {
   const [head, ...body] = rows
-  return <div className="my-4 overflow-x-auto rounded-xl border border-slate-200"><table className="min-w-full text-sm">
-    <thead className="bg-slate-50"><tr>{head.map((cell, i) => <th key={i} className="px-4 py-3 text-left font-semibold text-slate-700">{inline(cell)}</th>)}</tr></thead>
-    <tbody>{body.map((row, i) => <tr key={i} className="border-t border-slate-100">{row.map((cell, j) => <td key={j} className="px-4 py-3 align-top leading-6 text-slate-600">{inline(cell)}</td>)}</tr>)}</tbody>
+  return <div className="my-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700"><table className="min-w-full text-sm">
+    <thead className="bg-slate-50 dark:bg-slate-900"><tr>{head.map((cell, i) => <th key={i} className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-200">{inline(cell)}</th>)}</tr></thead>
+    <tbody>{body.map((row, i) => <tr key={i} className="border-t border-slate-100 dark:border-slate-800">{row.map((cell, j) => <td key={j} className="px-4 py-3 align-top leading-6 text-slate-600 dark:text-slate-300">{inline(cell)}</td>)}</tr>)}</tbody>
   </table></div>
 }
 
@@ -45,13 +45,13 @@ function blocks(source: string): ReactNode[] {
   while (i < lines.length) {
     const line = lines[i]
     if (!line.trim()) { i++; continue }
-    if (/^---+\s*$/.test(line)) { out.push(<hr key={key++} className="my-6 border-slate-200" />); i++; continue }
+    if (/^---+\s*$/.test(line)) { out.push(<hr key={key++} className="my-6 border-slate-200 dark:border-slate-700" />); i++; continue }
     const heading = line.match(/^(#{1,4})\s+(.*)$/)
     if (heading) {
       const level = heading[1].length
-      const cls = level === 1 ? 'text-2xl font-bold text-slate-900 mt-6 mb-4'
-        : level === 2 ? 'text-xl font-bold text-slate-900 mt-7 mb-3 pb-2 border-b border-slate-100'
-          : 'text-base font-semibold text-teal-800 mt-5 mb-2'
+      const cls = level === 1 ? 'text-2xl font-bold text-slate-900 dark:text-slate-100 mt-6 mb-4'
+        : level === 2 ? 'text-xl font-bold text-slate-900 dark:text-slate-100 mt-7 mb-3 pb-2 border-b border-slate-100 dark:border-slate-800'
+          : 'text-base font-semibold text-teal-800 dark:text-teal-200 mt-5 mb-2'
       out.push(<p key={key++} className={cls}>{inline(heading[2])}</p>)
       i++; continue
     }
@@ -68,7 +68,7 @@ function blocks(source: string): ReactNode[] {
     if (line.startsWith('>')) {
       const quote: string[] = []
       while (i < lines.length && lines[i].startsWith('>')) { quote.push(lines[i].replace(/^>\s?/, '')); i++ }
-      out.push(<blockquote key={key++} className="my-4 rounded-r-xl border-l-4 border-teal-200 bg-teal-50/60 px-4 py-3 text-slate-600 space-y-2">{quote.map((q, j) => <p key={j} className="leading-7">{inline(q)}</p>)}</blockquote>)
+      out.push(<blockquote key={key++} className="my-4 rounded-r-xl border-l-4 border-teal-200 dark:border-teal-800 bg-teal-50/60 dark:bg-teal-950/60 px-4 py-3 text-slate-600 dark:text-slate-300 space-y-2">{quote.map((q, j) => <p key={j} className="leading-7">{inline(q)}</p>)}</blockquote>)
       continue
     }
     if (/^\s*<details/.test(line)) {
@@ -78,8 +78,8 @@ function blocks(source: string): ReactNode[] {
       i++
       const summaryLine = inner.find(l => /<summary>/.test(l))
       const body = inner.filter(l => !/<\/?summary>/.test(l)).join('\n')
-      out.push(<details key={key++} className="my-4 rounded-xl border border-teal-100 bg-teal-50/40 px-4 py-3">
-        <summary className="cursor-pointer font-medium text-teal-800">{summaryLine ? summaryLine.replace(/<\/?summary>/g, '').trim() : '展开'}</summary>
+      out.push(<details key={key++} className="my-4 rounded-xl border border-teal-100 dark:border-teal-900 bg-teal-50/40 dark:bg-teal-950/40 px-4 py-3">
+        <summary className="cursor-pointer font-medium text-teal-800 dark:text-teal-200">{summaryLine ? summaryLine.replace(/<\/?summary>/g, '').trim() : '展开'}</summary>
         <div className="mt-3">{blocks(body)}</div>
       </details>)
       continue
@@ -92,8 +92,8 @@ function blocks(source: string): ReactNode[] {
         i++
       }
       out.push(ordered
-        ? <ol key={key++} className="my-3 list-decimal space-y-2 pl-6 text-slate-700">{items.map((item, j) => <li key={j} className="leading-7">{inline(item)}</li>)}</ol>
-        : <ul key={key++} className="my-3 list-disc space-y-2 pl-6 text-slate-700">{items.map((item, j) => <li key={j} className="leading-7">{inline(item)}</li>)}</ul>)
+        ? <ol key={key++} className="my-3 list-decimal space-y-2 pl-6 text-slate-700 dark:text-slate-200">{items.map((item, j) => <li key={j} className="leading-7">{inline(item)}</li>)}</ol>
+        : <ul key={key++} className="my-3 list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-200">{items.map((item, j) => <li key={j} className="leading-7">{inline(item)}</li>)}</ul>)
       continue
     }
     const paragraph: string[] = [line]
@@ -101,7 +101,7 @@ function blocks(source: string): ReactNode[] {
     while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|\s*\||\s*[-*]\s|\s*\d+\.\s|---+$|\s*<details)/.test(lines[i])) {
       paragraph.push(lines[i]); i++
     }
-    out.push(<p key={key++} className="my-3 leading-8 text-slate-700">{inline(paragraph.join(' '))}</p>)
+    out.push(<p key={key++} className="my-3 leading-8 text-slate-700 dark:text-slate-200">{inline(paragraph.join(' '))}</p>)
   }
   return out
 }

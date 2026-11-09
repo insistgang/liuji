@@ -5,6 +5,20 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>每日英语词表 · 六级复习</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('liuji-theme')
+          var theme = stored === 'light' || stored === 'dark'
+            ? stored
+            : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          if (theme === 'dark') document.documentElement.classList.add('dark')
+          document.documentElement.style.colorScheme = theme
+        } catch (error) {
+          /* 隐私模式下无法读取偏好时保持浅色 */
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

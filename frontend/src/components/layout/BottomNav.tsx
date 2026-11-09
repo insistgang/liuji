@@ -13,7 +13,7 @@ const navItems = [
 
 export default function BottomNav() {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 z-50">
       <div className="flex justify-around">
         {navItems.filter(item => !isStaticMode || ['/daily', '/vocabulary/learn'].includes(item.to)).map(({ to, icon: Icon, label }) => (
           <NavLink
@@ -21,7 +21,7 @@ export default function BottomNav() {
             to={to}
             className={({ isActive }) =>
               `flex flex-col items-center py-2 px-2 text-xs ${
-                isActive ? 'text-blue-600' : 'text-gray-500'
+                isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-slate-400'
               }`
             }
           >

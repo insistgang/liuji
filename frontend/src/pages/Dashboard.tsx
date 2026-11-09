@@ -42,14 +42,14 @@ export default function Dashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">学习仪表盘</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">学习仪表盘</h1>
+          <p className="text-gray-500 dark:text-slate-400 mt-1">
             {isStaticMode ? '离线模式：进度保存在当前浏览器' : '坚持每天学习，攻克六级！'}
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-orange-50 px-4 py-2 rounded-full">
-          <Flame size={20} className="text-orange-500" />
-          <span className="font-semibold text-orange-600">连续 {plan?.streak_days ?? 0} 天</span>
+        <div className="flex items-center gap-2 bg-orange-50 dark:bg-orange-950 px-4 py-2 rounded-full">
+          <Flame size={20} className="text-orange-500 dark:text-orange-400" />
+          <span className="font-semibold text-orange-600 dark:text-orange-300">连续 {plan?.streak_days ?? 0} 天</span>
         </div>
       </div>
 
@@ -65,7 +65,7 @@ export default function Dashboard() {
               <span className="ml-2 text-xl text-blue-100">/ {target} 词</span>
             </div>
             <div className="h-3 w-full max-w-md overflow-hidden rounded-full bg-white/20">
-              <div className="h-full rounded-full bg-white transition-all" style={{ width: `${percent}%` }} />
+              <div className="h-full rounded-full bg-white dark:bg-slate-900 transition-all" style={{ width: `${percent}%` }} />
             </div>
             <p className="text-sm text-blue-100">
               {remaining > 0 ? `还差 ${remaining} 个新词完成今日目标` : '今日新词目标已完成'}
@@ -80,7 +80,7 @@ export default function Dashboard() {
             )}
             <Link
               to="/vocabulary/learn"
-              className="rounded-xl bg-white px-6 py-3 font-semibold text-blue-700 shadow transition hover:bg-blue-50"
+              className="rounded-xl bg-white dark:bg-slate-900 px-6 py-3 font-semibold text-blue-700 dark:text-blue-300 shadow transition hover:bg-blue-50 dark:hover:bg-blue-950"
             >
               {learned > 0 && remaining > 0 ? '继续背词' : '开始背 20 个单词'}
             </Link>
@@ -94,21 +94,21 @@ export default function Dashboard() {
           <Link
             key={label}
             to={to}
-            className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4"
+            className="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4"
           >
             <div className={`${color} p-3 rounded-lg text-white`}>
               <Icon size={24} />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">{label}</h3>
-              <p className="text-sm text-gray-500 mt-1">{desc}</p>
+              <h3 className="font-semibold text-gray-900 dark:text-slate-100">{label}</h3>
+              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">{desc}</p>
             </div>
           </Link>
         ))}
       </div>
 
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">学习统计</h2>
+      <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">学习统计</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: '已学词汇', value: isStaticMode ? (plan?.total_learned ?? 0) : stats.vocab_learned },
@@ -117,8 +117,8 @@ export default function Dashboard() {
             { label: '写作提交', value: stats.writings_submitted },
           ].map(({ label, value }) => (
             <div key={label} className="text-center">
-              <div className="text-3xl font-bold text-blue-600">{value}</div>
-              <div className="text-sm text-gray-500 mt-1">{label}</div>
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{value}</div>
+              <div className="text-sm text-gray-500 dark:text-slate-400 mt-1">{label}</div>
             </div>
           ))}
         </div>

@@ -28,13 +28,13 @@ export default function ExamDetail() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500" size={32} />
+        <Loader2 className="animate-spin text-blue-500 dark:text-blue-400" size={32} />
       </div>
     )
   }
 
   if (!paper) {
-    return <div className="text-center py-20 text-gray-500">试卷未找到</div>
+    return <div className="text-center py-20 text-gray-500 dark:text-slate-400">试卷未找到</div>
   }
 
   const handleStart = async (section: string) => {
@@ -49,20 +49,20 @@ export default function ExamDetail() {
 
   return (
     <div className="space-y-6">
-      <button onClick={() => navigate('/exams')} className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+      <button onClick={() => navigate('/exams')} className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
         <ArrowLeft size={20} />
         返回列表
       </button>
 
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{paper.title}</h1>
-        <p className="text-gray-500">
+      <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-2">{paper.title}</h1>
+        <p className="text-gray-500 dark:text-slate-400">
           {paper.exam_date && `考试日期: ${paper.exam_date} | `}
           满分: {paper.total_score}
         </p>
       </div>
 
-      <h2 className="text-lg font-semibold text-gray-900">选择练习板块</h2>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">选择练习板块</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {Object.entries(paper.sections || {}).map(([section, count]) => {
@@ -72,14 +72,14 @@ export default function ExamDetail() {
             <button
               key={section}
               onClick={() => handleStart(section)}
-              className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4 text-left"
+              className="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4 text-left"
             >
               <div className={`${info.color} p-3 rounded-lg text-white`}>
                 <Icon size={24} />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">{info.label}</h3>
-                <p className="text-sm text-gray-500">{String(count)} 道题</p>
+                <h3 className="font-semibold text-gray-900 dark:text-slate-100">{info.label}</h3>
+                <p className="text-sm text-gray-500 dark:text-slate-400">{String(count)} 道题</p>
               </div>
             </button>
           )

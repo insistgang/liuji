@@ -28,7 +28,7 @@ export default function Timer({ startTime, onTimeUpdate }: TimerProps) {
   const format = (n: number) => n.toString().padStart(2, '0')
 
   return (
-    <div className="flex items-center gap-2 text-gray-600">
+    <div className="flex items-center gap-2 text-gray-600 dark:text-slate-300">
       <Clock size={18} />
       <span className="font-mono text-lg">
         {hours > 0 ? `${format(hours)}:` : ''}{format(minutes)}:{format(seconds)}

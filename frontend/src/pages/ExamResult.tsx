@@ -20,13 +20,13 @@ export default function ExamResult() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500" size={32} />
+        <Loader2 className="animate-spin text-blue-500 dark:text-blue-400" size={32} />
       </div>
     )
   }
 
   if (!result) {
-    return <div className="text-center py-20 text-gray-500">结果未找到</div>
+    return <div className="text-center py-20 text-gray-500 dark:text-slate-400">结果未找到</div>
   }
 
   const percent = result.total_score > 0 ? Math.round((result.score / result.total_score) * 100) : 0
@@ -36,24 +36,24 @@ export default function ExamResult() {
 
   return (
     <div className="space-y-6">
-      <button onClick={() => navigate('/exams')} className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+      <button onClick={() => navigate('/exams')} className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
         <ArrowLeft size={20} />
         返回列表
       </button>
 
       {/* Score card */}
-      <div className="bg-white rounded-2xl shadow-sm p-8 text-center">
-        <Trophy className="mx-auto text-yellow-500 mb-4" size={48} />
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{result.paper_title}</h1>
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm p-8 text-center">
+        <Trophy className="mx-auto text-yellow-500 dark:text-yellow-400 mb-4" size={48} />
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-2">{result.paper_title}</h1>
 
         <div className="mt-6">
-          <div className="text-5xl font-bold text-blue-600">{result.score}</div>
-          <div className="text-gray-500 mt-1">/ {result.total_score} 分 ({percent}%)</div>
+          <div className="text-5xl font-bold text-blue-600 dark:text-blue-400">{result.score}</div>
+          <div className="text-gray-500 dark:text-slate-400 mt-1">/ {result.total_score} 分 ({percent}%)</div>
         </div>
 
-        <div className="flex justify-center gap-8 mt-6 text-sm text-gray-600">
+        <div className="flex justify-center gap-8 mt-6 text-sm text-gray-600 dark:text-slate-300">
           <div className="flex items-center gap-2">
-            <CheckCircle size={16} className="text-green-500" />
+            <CheckCircle size={16} className="text-green-500 dark:text-green-400" />
             答对 {correctCount}/{result.questions.length} 题
           </div>
           <div className="flex items-center gap-2">
@@ -65,13 +65,13 @@ export default function ExamResult() {
 
       {/* Section scores */}
       {Object.keys(result.section_scores).length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">各板块得分</h2>
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">各板块得分</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {Object.entries(result.section_scores).map(([section, score]) => (
               <div key={section} className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{score}</div>
-                <div className="text-sm text-gray-500 mt-1">{section}</div>
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{score}</div>
+                <div className="text-sm text-gray-500 dark:text-slate-400 mt-1">{section}</div>
               </div>
             ))}
           </div>
@@ -79,35 +79,35 @@ export default function ExamResult() {
       )}
 
       {/* Question details */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">答题详情</h2>
+      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">答题详情</h2>
         <div className="space-y-4">
           {result.questions.map((q) => (
             <div
               key={q.question_id}
               className={`p-4 rounded-lg border ${
-                q.is_correct ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'
+                q.is_correct ? 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950' : 'border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950'
               }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <span className="text-sm text-gray-500">第 {q.question_num} 题 ({q.points}分)</span>
-                  <p className="text-gray-900 mt-1 text-sm line-clamp-2">{q.content}</p>
+                  <span className="text-sm text-gray-500 dark:text-slate-400">第 {q.question_num} 题 ({q.points}分)</span>
+                  <p className="text-gray-900 dark:text-slate-100 mt-1 text-sm line-clamp-2">{q.content}</p>
                 </div>
                 {q.is_correct ? (
-                  <CheckCircle size={20} className="text-green-500 flex-shrink-0 ml-2" />
+                  <CheckCircle size={20} className="text-green-500 dark:text-green-400 flex-shrink-0 ml-2" />
                 ) : (
-                  <XCircle size={20} className="text-red-500 flex-shrink-0 ml-2" />
+                  <XCircle size={20} className="text-red-500 dark:text-red-400 flex-shrink-0 ml-2" />
                 )}
               </div>
               {!q.is_correct && (
                 <div className="mt-2 text-sm">
-                  <span className="text-red-600">你的答案: {q.user_answer || '未作答'}</span>
-                  <span className="text-green-600 ml-4">正确答案: {q.correct_answer}</span>
+                  <span className="text-red-600 dark:text-red-400">你的答案: {q.user_answer || '未作答'}</span>
+                  <span className="text-green-600 dark:text-green-400 ml-4">正确答案: {q.correct_answer}</span>
                 </div>
               )}
               {q.explanation && (
-                <p className="mt-2 text-sm text-gray-600">解析: {q.explanation}</p>
+                <p className="mt-2 text-sm text-gray-600 dark:text-slate-300">解析: {q.explanation}</p>
               )}
             </div>
           ))}
