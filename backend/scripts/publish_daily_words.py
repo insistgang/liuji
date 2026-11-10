@@ -16,15 +16,36 @@ SCOPE = ['每日英语单词', 'frontend/public/data/daily_words.json', 'fronten
 PREFIX = 'chore: 发布每日英语词表 '
 
 
-def git(*args: str) -> str:
-    result = subprocess.run(['git', '-c', 'core.quotePath=false',
-                             '-c', 'url.git@github.com:.insteadOf=https://github.com/',
-                             *args], cwd=PROJECT, text=True, capture_output=True,
-                            timeout=180, env={**os.environ, 'GIT_TERMINAL_PROMPT': '0',
-                                             'GIT_SSH_COMMAND': 'ssh -o BatchMode=yes -o ConnectTimeout=15'})
+TRANSPORT_ERRORS = ('Connection closed', 'Could not read from remote repository',
+                    'Connection timed out', 'Connection refused', 'Permission denied (publickey)',
+                    'ssh: connect to host', 'port 22')
+
+
+def _exec(prefix: list[str], args: tuple[str, ...]) -> str:
+    result = subprocess.run(['git', '-c', 'core.quotePath=false', *prefix, *args],
+                            cwd=PROJECT, text=True, capture_output=True, timeout=180,
+                            env={**os.environ, 'GIT_TERMINAL_PROMPT': '0',
+                                 'GIT_SSH_COMMAND': 'ssh -o BatchMode=yes -o ConnectTimeout=15'})
     if result.returncode:
         raise RuntimeError(result.stderr.strip() or result.stdout.strip())
     return result.stdout.strip()
+
+
+def git(*args: str, network: bool = False) -> str:
+    """默认沿用项目原有的 SSH 通道；网络操作遇传输层故障时回退 HTTPS（gh 凭据）。
+
+    SSH 22 端口在部分网络下会被中间设备拒绝，此时 HTTPS 443 仍可用。
+    只对 fetch/push 这类网络命令回退，本地命令失败一律按原样抛错。
+    """
+    try:
+        return _exec(['-c', 'url.git@github.com:.insteadOf=https://github.com/'], args)
+    except RuntimeError as error:
+        if not network or not any(hint in str(error) for hint in TRANSPORT_ERRORS):
+            raise
+        print(f'SSH 通道不可用（{str(error).splitlines()[0]}），回退 HTTPS 重试。',
+              file=sys.stderr, flush=True)
+        return _exec([], args)
+
 
 
 def validate(date: str) -> None:
@@ -62,7 +83,7 @@ def publish(date: str, dry_run: bool = False) -> None:
         raise ValueError('当前不在 main，拒绝自动切换分支')
     if git('diff', '--cached', '--name-only'):
         raise ValueError('暂存区已有改动，拒绝混入自动提交')
-    git('fetch', 'origin', 'main')
+    git('fetch', 'origin', 'main', network=True)
     behind = int(git('rev-list', '--count', 'HEAD..origin/main'))
     if behind:
         raise ValueError('远端有尚未合入的提交，需要人工检查；不自动覆盖本地文件')
@@ -79,7 +100,7 @@ def publish(date: str, dry_run: bool = False) -> None:
     if staged:
         git('diff', '--cached', '--check')
         git('commit', '-m', PREFIX + date)
-    git('push', 'origin', 'main:main')
+    git('push', 'origin', 'main:main', network=True)
     sha = git('rev-parse', 'HEAD')
     print(f'推送成功：{date} {sha}。GitHub Actions 将构建和发布；推送成功不等于部署成功。')
 
