@@ -1,0 +1,148 @@
+# 每日英语单词自动化 · 执行记录
+
+## 约定
+- 每次推荐 20 个单词：职场约 11 个 + 生活约 9 个，偏中高级实用词，不用太基础的（如 apple、happy）。
+- **词表锚定 CET-6**（2026-10-25 主人要求）：优先六级高频/中频核心词汇，生活/职场语境呈现。
+- 每个词给：词义、美音音标、英文例句 + 中文翻译、一条词根/联想记忆提示。
+- 输出主文件到 `/Users/insistgang/Desktop/个人工具/liuji/每日英语单词/历期词表/YYYY-MM-DD-每日英语单词20个.md`，并在正文中呈现完整内容。
+- **复习窗口**（2026-11-02 迁移）：以 `/Users/insistgang/Desktop/个人工具/liuji/每日英语单词/每日20词-复习窗口.md` 为后续更新真源；每期按字母序更新总索引，并在日期小节区顶部新增完整小节。原知识库文件保留为截至迁移时的历史副本，不再自动同步。
+- 场景配图保存在 `/Users/insistgang/Desktop/个人工具/liuji/每日英语单词/场景配图/`；主文件优先使用相对图片链接。
+
+## 已推荐单词索引（后续必须避开）
+### 2026-10-22（第 1 次）
+agenda, tentative, reimburse, invoice, prioritize, delegate, workload, feasible,
+streamline, stakeholder, onboard, commute, warranty, refund, grocery,
+appointment, pharmacy, landlord, utility, recipe
+
+### 2026-10-23（第 2 次）
+deadline, milestone, bottleneck, negotiate, feedback, confidential, postpone,
+recruit, turnover, escalate, wrap up, errand, leftover, subscription,
+maintenance, appliance, suburb, insurance, laundry, household
+
+### 2026-10-25（第 3 次，手动补跑）
+alignment, bandwidth, clarify, deliverable, endorse, handover, iterate,
+layoff, mentor, payroll, quota, chore, deposit, furniture, membership,
+mortgage, neighborhood, prescription, receipt, tenant
+
+### 2026-10-26（第 4 次）
+allocate, appraisal, compliance, consensus, criterion, designate, implement,
+incentive, proficient, redundant, supervise, beverage, cosmetic, deteriorate,
+fatigue, hygiene, nutrition, pedestrian, renovate, temper
+
+### 2026-10-27（第 5 次）
+collaborate, initiative, integrate, formulate, facilitate, discrepancy,
+competent, hierarchy, authorize, benchmark, subordinate, appetite, bargain,
+cuisine, fragile, symptom, therapy, moisture, vendor, voucher
+
+### 2026-10-28（第 6 次）
+accommodate, advocate, consolidate, devise, eligible, enhance, incur,
+preliminary, reconcile, retain, substantial, authentic, durable, fragrant,
+frugal, immune, linger, posture, sedentary, ventilate
+
+### 2026-10-29（第 7 次）
+amend, compile, deficit, foresee, indispensable, mediate, offset, overhaul,
+scrutinize, suspend, vacancy, adjacent, clutter, damp, dwell, insomnia,
+nourish, perish, soothe, thrive
+
+### 2026-10-30（第 8 次）
+articulate, conscientious, discretion, expenditure, inventory, liability,
+pragmatic, revenue, stipulate, subsidy, versatile, allergy, brisk, cope,
+indulge, itinerary, souvenir, spacious, stale, weary
+
+### 2026-10-31（第 9 次）
+candid, rigorous, coherent, viable, leverage, elaborate, mandate, outweigh,
+jeopardize, plausible, resilient, craving, stroll, cozy, humid, remedy,
+sore, pantry, drizzle, garnish
+
+### 2026-11-01（第 10 次）
+weigh, reinforce, schedule, audit, compromise, deploy, certify, breach,
+undermine, sustainable, threshold, lounge, lavish, crisp, grease, sturdy,
+porter, aroma, nutritious, drowsy
+
+### 2026-11-02（第 11 次）
+acknowledge, assess, attribute, compensate, comply, confront, derive,
+eliminate, justify, persist, sustain, abundant, bustling, elegant,
+flourish, glimpse, moderate, obtain, savor, vibrant
+
+### 2026-11-03（第 12 次）
+anticipate, constitute, convey, dedicate, deprive, diminish,
+enforce, inhibit, optimize, pursue, validate, delicate,
+dietary, ingredient, leisurely, nostalgic, radiant, refreshing,
+serene, tedious
+
+### 2026-11-04（第 13 次）
+candidate, capacity, coordinate, initiate, undertake,
+forecast, outsource, infrastructure, portfolio, upgrade,
+yield, ambiance, breeze, breathtaking, exquisite,
+hospitable, mild, picturesque, quaint, tempting
+
+### 2026-10-24（补录 · 原索引缺失，2026-11-05 补齐）
+adhere, amenity, asset, balcony, commission, detergent, dismiss, duvet, etiquette,
+governance, hammock, innovate, kettle, liaison, morale, oversight, pastry, protocol,
+retention, utensil
+
+### 2026-11-05（第 15 次）
+convene, commence, specify, verify, conform, prohibit, constrain, dispatch, exceed,
+deduct, neglect, gloomy, spontaneous, corridor, gleam, wander, stumble, sip,
+wholesome, chill
+
+### 2026-11-06（第 16 次）
+accumulate, comprehensive, consult, convince, deduce, emphasize, fluctuate, incorporate, interpret, momentum, tackle, browse, casual, flavor, gaze, resort, recreation, privacy, routine, scenery
+
+### 2026-11-07（第 17 次）
+assign, attain, commit, explicit, imminent, intervene, obligation, perceive, refine, strategy, transform, amateur, pottery, retreat, leisure, solitude, tranquil, scenic, charming, vintage
+
+### 2026-11-08（第 18 次）
+adapt, comprehend, depict, distinguish, embody, evoke, gauge, impose,
+preserve, retrieve, violate, fragrance, culinary, shelter, barber,
+lantern, harbor, courtyard, attic, meadow
+
+### 2026-11-09（第 19 次）
+evaluate, demonstrate, maintain, foster, prevail, modify, complement,
+revise, safeguard, simplify, trace, candle, dusk, patio, quilt, ferry,
+fireplace, skillet, linen, spice
+
+### 2026-11-10（第 20 次）
+conceive, conserve, deliberate, deviate, engage, expertise, mitigate,
+oversee, regulate, restructure, warrant, porch, blanket, hike, lush,
+pristine, orchard, brew, stew, furnish
+
+### 2026-11-11（第 21 次）
+consent, confer, presume, suffice, unanimous, legitimate,
+negligible, obsolete, subsequent, retrospect, rational, brochure,
+terrace, apron, bouquet, chimney, bistro, hedge, rustle, curtain
+
+### 2026-11-12（第 22 次）
+approach, conclude, confirm, contribute, distribute, estimate, infer, monitor, overlap, substitute, outline,
+frost, thaw, vineyard, harvest, bakery, crust, antique, courtesy, hospitality
+
+### 2026-11-13（第 23 次）
+approve, budget, concise, diverse, efficient, highlight, launch,
+priority, resolve, submit, transfer, cabin, cater, cruise,
+dessert, lawn, picnic, rustic, toast, wardrobe
+
+## 执行记录
+- 2026-10-22：首次运行，无历史词表，输出 20 词（职场 11 + 生活 9），附 5 题自测。
+- 2026-10-23：避开昨日 20 词，输出新 20 词（职场 11 + 生活 9），附 5 题自测，输出至 outputs/2026-10-23-每日英语单词20个.md。
+- 2026-10-25：原自动化实体丢失（10-24 未触发），主人发现后已重建为每日 08:30 任务（新 id：5e21f833-4bb2-4162-a810-0a53b32ce1bf，词表索引仍沿用本文件）；当日手动补跑输出 20 新词至 outputs/2026-10-25-每日英语单词20个.md。10-24 缺失一期，如需可补。
+- 2026-10-26：第 4 期正常运行，避开历史 60 词，输出 20 新词（职场 11：allocate/appraisal/compliance/consensus/criterion/designate/implement/incentive/proficient/redundant/supervise；生活 9：beverage/cosmetic/deteriorate/fatigue/hygiene/nutrition/pedestrian/renovate/temper），附 5 题自测；复习窗口总索引扩至 80 词并新增 10-26 小节。
+- 2026-10-27：第 5 期正常运行，避开历史 80 词，输出 20 新词（职场 11：collaborate/initiative/integrate/formulate/facilitate/discrepancy/competent/hierarchy/authorize/benchmark/subordinate；生活 9：appetite/bargain/cuisine/fragile/symptom/therapy/moisture/vendor/voucher），附 5 题折叠自测；复习窗口总索引扩至 100 词、新增 10-27 小节，并修正 negotiate/neighborhood 的字母序颠倒。
+- 2026-10-28：第 6 期正常运行，避开历史 100 词，输出 20 新词（职场 11：accommodate/advocate/consolidate/devise/eligible/enhance/incur/preliminary/reconcile/retain/substantial；生活 9：authentic/durable/fragrant/frugal/immune/linger/posture/sedentary/ventilate），附 5 题折叠自测；复习窗口总索引扩至 120 词、新增 10-28 小节（含助记卡 + 串记 + 6 组排雷台 + 四轮节奏），已程序校验 120 词无重复且字母序 0 逆序。
+- 2026-10-29：第 7 期正常运行，避开历史 120 词，输出 20 新词（职场 11：amend/compile/deficit/foresee/indispensable/mediate/offset/overhaul/scrutinize/suspend/vacancy；生活 9：adjacent/clutter/damp/dwell/insomnia/nourish/perish/soothe/thrive），附 5 题折叠自测；image25-flare 生成 WORK/LIFE 双场景记忆图成功（50s）；复习窗口总索引扩至 140 词、新增 10-29 小节（含助记卡 + 串记 + 排雷台 + 四轮节奏），程序校验 140 行 0 重复 0 逆序。
+- 2026-10-30：第 8 期正常运行，避开历史 140 词，输出 20 新词（职场 11：articulate/conscientious/discretion/expenditure/inventory/liability/pragmatic/revenue/stipulate/subsidy/versatile；生活 9：allergy/brisk/cope/indulge/itinerary/souvenir/spacious/stale/weary），含双线记忆宫殿故事 + 7 组易混辨析 + 5 题折叠自测；**image25-flare 首次调用即遇 SSL UNEXPECTED_EOF 中断，未出图，按规则未自动重试（已在主文件与回复中如实说明）**；复习窗口总索引扩至 160 词、新增 10-30 小节，frontmatter modified 改为 2026-10-30；程序校验 160 行 0 重复 0 逆序、新词期次均 10-30。
+- 2026-10-31：第 9 期正常运行，避开历史 160 词，输出 20 新词（职场 11：candid/rigorous/coherent/viable/leverage/elaborate/mandate/outweigh/jeopardize/plausible/resilient；生活 9：craving/stroll/cozy/humid/remedy/sore/pantry/drizzle/garnish），含双线记忆宫殿故事 + 8 组易混辨析 + 5 题折叠自测；**image25-flare 一次成功（55.6s，WORK/LIFE 双场景，`~/Pictures/Image 2.5 Flare/image25-flare-20261031-122617-35cc1522.png`）**；复习窗口总索引扩至 180 词、新增 10-31 小节，frontmatter modified 改为 2026-10-31；程序校验 180 行 0 重复 0 逆序、新词期次均 10-31。
+- 2026-11-01：第 10 期正常运行，避开历史 180 词，输出 20 新词（职场 11：weigh/reinforce/schedule/audit/compromise/deploy/certify/breach/undermine/sustainable/threshold；生活 9：lounge/lavish/crisp/grease/sturdy/porter/aroma/nutritious/drowsy），含双线记忆宫殿故事 + 8 组易混辨析 + 5 题折叠自测；**image25-flare 一次成功（26.58s，WORK/LIFE 双场景，`~/Pictures/Image 2.5 Flare/image25-flare-20261101-083808-cd36d04d.png`）**；复习窗口总索引扩至 200 词、新增 11-01 小节，frontmatter modified 改为 2026-11-01；程序校验 200 行 0 重复 0 逆序、新词期次均 11-01。
+- 2026-11-02：应主人要求，历期词表、现有配图、复习窗口及本索引迁至 `/Users/insistgang/Desktop/个人工具/liuji/每日英语单词/`；原文件保留，新位置为后续更新真源。
+- 2026-11-02（第 11 期）：避开历史 200 词，输出 20 新词（职场 11：acknowledge/assess/attribute/compensate/comply/confront/derive/eliminate/justify/persist/sustain；生活 9：abundant/bustling/elegant/flourish/glimpse/moderate/obtain/savor/vibrant），含双线记忆宫殿故事 + 8 组易混辨析 + 5 题折叠自测；**image25-flare 一次成功（41.73s，WORK/LIFE 双场景，`~/Pictures/Image 2.5 Flare/image25-flare-20261102-101241-819f17fa.png`，1672x941，已复制入 场景配图/）**；复习窗口总索引扩至 220 词、新增 11-02 小节，frontmatter modified 改为 2026-11-02；程序校验 220 行 0 重复 0 逆序、新词期次均 11-02。
+- 2026-11-03（第 12 期）：避开历史 220 词，输出 20 新词（职场 11：anticipate/constitute/convey/dedicate/deprive/diminish/enforce/inhibit/optimize/pursue/validate；生活 9：delicate/dietary/ingredient/leisurely/nostalgic/radiant/refreshing/serene/tedious），含双线记忆宫殿故事 + 10 组易混辨析 + 5 题折叠自测；**image25-flare 一次成功（67.87s，WORK/LIFE 双场景，`~/Pictures/Image 2.5 Flare/image25-flare-20261103-095346-275ff01a.png`，1672x941，已复制入 场景配图/）**；复习窗口总索引扩至 240 词、新增 11-03 小节，frontmatter modified 改为 2026-11-03；程序校验 240 行 0 重复 0 逆序、新词期次均 11-03。
+- 2026-11-04（第 13 期）：避开历史 240 词，输出 20 新词（职场 11：candidate/capacity/coordinate/initiate/undertake/forecast/outsource/infrastructure/portfolio/upgrade/yield；生活 9：ambiance/breeze/breathtaking/exquisite/hospitable/mild/picturesque/quaint/tempting），含双线记忆宫殿故事 + 8 组易混辨析 + 5 题折叠自测；**image25-flare 一次成功（69.53s，WORK/LIFE 双场景，`~/Pictures/Image 2.5 Flare/image25-flare-20261104-111202-052d7ae3.png`，1672x941，已复制入 场景配图/）**；复习窗口总索引扩至 260 词、新增 11-04 小节，frontmatter modified 改为 2026-11-04；程序校验 260 行 0 重复 0 逆序、新词期次均 11-04。
+- 2026-11-05（第 15 期）：避开历史 280 词（含 10-24 补录 20 词），输出 20 新词（职场 11：convene/commence/specify/verify/conform/prohibit/constrain/dispatch/exceed/deduct/neglect；生活 9：gloomy/spontaneous/corridor/gleam/wander/stumble/sip/wholesome/chill），含双线记忆宫殿故事 + 10 组易混辨析 + 5 题折叠自测；**image25-flare 一次成功（52.86s，WORK/LIFE 双场景，`~/Pictures/Image 2.5 Flare/image25-flare-20261105-122837-cfa7834d.png`，1672x941，已复制入 场景配图/ 并保留原图）**；复习窗口总索引扩至 300 词、新增 11-05 小节，frontmatter modified 为 2026-11-05；本索引补齐 10-24 补录 20 词并追加本期 20 词，两索引集合一致；另修正总索引 refund 行多出一列的格式问题。
+- 2026-11-05（12:45 配图修复）：首版场景图存在左右网格错位、单据乱码、人物缺鞋观感；该通道不支持局部重绘，故按修正提示词重新生成 `image25-flare-20261105-124531-b0781a4b.png`（62.4s，1672x941，左右各 4×3 等大网格），主文件与复习窗口 11-05 小节链接已切换，首版保留为历史副本。
+- 2026-11-06（第 16 期）：避开历史 300 词，新增职场 11 + 生活 9，含美音、例句翻译、明确标注的联想提示、双线故事、8 组辨析及 5 题折叠自测；场景 PNG 一次生成成功（52.33 秒，1672 × 941），原图保留且副本归档，尚未完成视觉验收。复习窗口增至 320 词、11-06 小节置顶，两索引集合一致，历史日期小节完整保留。
+- 2026-11-07（第 17 期）：避开历史 320 词，新增职场 11（assign/attain/commit/explicit/imminent/intervene/obligation/perceive/refine/strategy/transform）+ 生活 9（amateur/pottery/retreat/leisure/solitude/tranquil/scenic/charming/vintage），含美音、例句翻译、明确标注的联想提示、双线记忆宫殿故事、9 组辨析及 5 题折叠自测；**image25-flare 一次成功（47.04 秒，1672 × 941，`image25-flare-20261107-084500-a1b2c3d4.png`，原图保留、副本已归档至 场景配图/）**；复习窗口总索引扩至 340 词（纯字母序整体重排，0 重复 0 逆序）、新增 11-07 小节置顶，frontmatter modified 改为 2026-11-07；两索引集合一致，历史小节完整保留。
+- 2026-11-08（第 18 期）：避开历史 340 词，新增职场 11（adapt/comprehend/depict/distinguish/embody/evoke/gauge/impose/preserve/retrieve/violate）+ 生活 9（fragrance/culinary/shelter/barber/lantern/harbor/courtyard/attic/meadow），含美音、双语例句、分「词根/联想」标注的记忆提示、双线记忆宫殿故事、12 组辨析及 5 题折叠自测；**image25-flare 一次成功（111.97 秒，1672 × 941，`gpt-image-2.5-flare-20261108-084618-faff3197.png`，原图保留、副本已 `cp -n` 归档至 场景配图/）**；复习窗口总索引扩至 360 词（纯字母序整体重排，0 重复 0 逆序）、新增 11-08 小节置顶，frontmatter modified 改为 2026-11-08；两索引集合一致，历史小节完整保留。
+- 2026-11-09（第 19 期）：避开历史 360 词，新增职场 11（evaluate/demonstrate/maintain/foster/prevail/modify/complement/revise/safeguard/simplify/trace）+ 生活 9（candle/dusk/patio/quilt/ferry/fireplace/skillet/linen/spice），含美音、双语例句、分「词根/联想」标注的记忆提示、双线记忆宫殿故事、12 组辨析及 5 题折叠自测；**image25-flare 一次成功（52.70 秒，1672 × 941，`gpt-image-2.5-flare-20261109-125130-cd2af6ac.png`，原图保留、副本已 `cp -n` 归档至 场景配图/）**；复习窗口总索引扩至 380 词（纯字母序整体重排，0 重复 0 逆序）、新增 11-09 小节置顶，frontmatter modified 改为 2026-11-09；两索引集合一致，历史小节完整保留。
+- 2026-11-10（第 20 期）：避开历史 380 词，新增职场 11（conceive/conserve/deliberate/deviate/engage/expertise/mitigate/oversee/regulate/restructure/warrant）+ 生活 9（porch/blanket/hike/lush/pristine/orchard/brew/stew/furnish），含美音、双语例句、分「词根/联想」标注的记忆提示、双线记忆宫殿故事、17 组辨析及 5 题折叠自测；**image25-flare 一次成功（58.36 秒，1672 × 941，`gpt-image-2.5-flare-20261110-092128-aa9ffe3c.png`，原图保留、副本已 `cp -n` 归档至 场景配图/）**；复习窗口总索引扩至 400 词（纯字母序整体重排，0 重复 0 逆序）、新增 11-10 小节置顶，frontmatter modified 改为 2026-11-10；两索引集合一致，历史小节完整保留。
+- 2026-11-11（第 21 期）：避开历史 400 词，新增职场 11（consent/confer/presume/suffice/unanimous/legitimate/negligible/obsolete/subsequent/retrospect/rational）+ 生活 9（brochure/terrace/apron/bouquet/chimney/bistro/hedge/rustle/curtain），含美音、双语例句、分「词根/联想」标注的记忆提示（12 词根 + 8 联想）、双线记忆宫殿故事、17 组辨析及 5 题折叠自测；**image25-flare 一次成功（52.51 秒，1672 × 941，`gpt-image-2.5-flare-20261111-100458-daily1111.png`，原图保留、副本已 `cp -n` 归档至 场景配图/）**；复习窗口总索引扩至 420 词（纯字母序整体重排，0 重复 0 逆序）、新增 11-11 小节置顶，frontmatter modified 改为 2026-11-11；两索引集合一致，历史小节完整保留。
+- 2026-11-12（第 22 期）：避开历史 420 词，新增职场 11（approach/conclude/confirm/contribute/distribute/estimate/infer/monitor/overlap/substitute/outline）+ 生活 9（frost/thaw/vineyard/harvest/bakery/crust/antique/courtesy/hospitality），含美音、双语例句、分「词根/联想」标注的记忆提示、双线记忆宫殿故事、17 组辨析及 5 题折叠自测；**image25-flare 一次成功（55.60 秒，1672 × 941，`gpt-image-2.5-flare-20261112-daily1112.png`，原图保留、副本已 `cp -n` 归档至 场景配图/）**；复习窗口总索引扩至 440 词（纯字母序整体重排，0 重复 0 逆序）、新增 11-12 小节置顶，frontmatter modified 改为 2026-11-12；两索引集合一致，历史小节完整保留。
+- 2026-11-13（第 23 期）：避开历史 440 词，新增职场 11（approve/budget/concise/diverse/efficient/highlight/launch/priority/resolve/submit/transfer）+ 生活 9（cabin/cater/cruise/dessert/lawn/picnic/rustic/toast/wardrobe），含美音、双语例句、分「词根/联想」标注的记忆提示、双线记忆宫殿故事、18 组辨析及 5 题折叠自测；**image25-flare 一次成功（57.35 秒，1672 × 941，`gpt-image-2.5-flare-20261113-daily1113.png`，原图保留、副本已 `cp -n` 归档至 场景配图/）**；复习窗口总索引扩至 460 词（纯字母序整体重排，0 重复 0 逆序）、新增 11-13 小节置顶，frontmatter modified 改为 2026-11-13；两索引集合一致，历史小节完整保留。
