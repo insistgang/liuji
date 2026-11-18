@@ -33,13 +33,13 @@ export default function ExamPractice() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500 dark:text-blue-400" size={32} />
+        <Loader2 className="animate-spin text-[var(--accent)]" size={32} />
       </div>
     )
   }
 
   if (questions.length === 0) {
-    return <div className="text-center py-20 text-gray-500 dark:text-slate-400">暂无题目</div>
+    return <div className="app-card rounded-2xl py-16 text-center text-sm text-[var(--text-muted)]">暂无题目</div>
   }
 
   const current = questions[currentIndex]
@@ -72,11 +72,12 @@ export default function ExamPractice() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <button
+          type="button"
           onClick={() => navigate(`/exams/${id}`)}
-          className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
         >
-          <ArrowLeft size={20} />
-          返回
+          <ArrowLeft size={18} />
+          返回板块
         </button>
         <Timer startTime={startTime} />
       </div>
@@ -85,13 +86,14 @@ export default function ExamPractice() {
         {questions.map((q, idx) => (
           <button
             key={q.id}
+            type="button"
             onClick={() => setCurrentIndex(idx)}
-            className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
+            className={`h-9 w-9 rounded-xl text-xs font-semibold transition-all ${
               idx === currentIndex
-                ? 'bg-blue-600 text-white'
+                ? 'app-accent-solid shadow-xs'
                 : answers[q.id]
-                  ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                  : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
+                  ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'
+                  : 'app-muted-pill'
             }`}
           >
             {q.question_num}
@@ -99,18 +101,20 @@ export default function ExamPractice() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-sm text-gray-500 dark:text-slate-400">
-            第 {current.question_num} 题 ({current.points} 分)
+      <div className="app-card rounded-3xl p-6 sm:p-8">
+        <div className="mb-4 flex items-center justify-between text-xs font-medium text-[var(--text-muted)]">
+          <span>
+            第 {current.question_num} 题（{current.points} 分）
           </span>
-          <span className="text-sm text-gray-500 dark:text-slate-400">
-            {answeredCount}/{questions.length} 已答
+          <span>
+            已答 {answeredCount}/{questions.length}
           </span>
         </div>
 
         {current.content && (
-          <div className="text-gray-900 dark:text-slate-100 mb-6 whitespace-pre-wrap leading-relaxed">{current.content}</div>
+          <div className="mb-6 whitespace-pre-wrap text-sm leading-7 text-[var(--text-primary)]">
+            {current.content}
+          </div>
         )}
 
         {isWritingOrTranslation ? (
@@ -118,11 +122,11 @@ export default function ExamPractice() {
             <textarea
               value={answers[current.id] || ''}
               onChange={(e) => handleSelect(e.target.value)}
-              className="w-full h-48 p-4 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none resize-none"
-              placeholder="在此输入你的答案..."
+              className="app-input h-52 w-full resize-none rounded-2xl p-4 text-sm leading-6"
+              placeholder="在此输入你的作答内容..."
             />
-            <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
-              字数: {(answers[current.id] || '').length}
+            <p className="mt-2 text-xs text-[var(--text-muted)]">
+              当前字符数：{(answers[current.id] || '').length}
             </p>
           </div>
         ) : (
@@ -133,11 +137,12 @@ export default function ExamPractice() {
               return (
                 <button
                   key={idx}
+                  type="button"
                   onClick={() => handleSelect(letter)}
-                  className={`w-full p-4 rounded-xl border-2 text-left transition-colors ${
+                  className={`w-full rounded-2xl border p-4 text-left text-sm transition-all ${
                     isSelected
-                      ? 'bg-blue-50 dark:bg-blue-950 border-blue-500 text-blue-700 dark:text-blue-300'
-                      : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-950'
+                      ? 'app-accent-soft border-[var(--accent)] font-semibold'
+                      : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-primary)] hover:border-[var(--border-strong)]'
                   }`}
                 >
                   {option}
@@ -150,30 +155,33 @@ export default function ExamPractice() {
 
       <div className="flex items-center justify-between">
         <button
+          type="button"
           onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
           disabled={currentIndex === 0}
-          className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100 disabled:opacity-30"
+          className="app-muted-pill inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium disabled:opacity-35"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={16} />
           上一题
         </button>
 
         {isLast ? (
           <button
+            type="button"
             onClick={handleSubmit}
             disabled={submitting}
-            className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50"
+            className="app-accent-solid inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-sm disabled:opacity-50"
           >
-            <CheckCircle size={18} />
+            <CheckCircle size={17} />
             {submitting ? '提交中...' : '提交试卷'}
           </button>
         ) : (
           <button
+            type="button"
             onClick={() => setCurrentIndex(currentIndex + 1)}
-            className="flex items-center gap-2 px-4 py-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+            className="app-accent-soft inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold"
           >
             下一题
-            <ArrowRight size={18} />
+            <ArrowRight size={16} />
           </button>
         )}
       </div>

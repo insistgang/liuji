@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { examApi, type ExamPaper } from '../api/exam'
 import type { LucideIcon } from 'lucide-react'
-import { BookOpen, Headphones, PenTool, Languages, Loader2, ArrowLeft } from 'lucide-react'
+import { BookOpen, Headphones, PenTool, Languages, Loader2, ArrowLeft, ChevronRight } from 'lucide-react'
 
 const sectionInfo: Record<string, { icon: LucideIcon; label: string; color: string }> = {
-  reading: { icon: BookOpen, label: '阅读理解', color: 'bg-blue-500' },
-  listening: { icon: Headphones, label: '听力理解', color: 'bg-orange-500' },
-  writing: { icon: PenTool, label: '写作', color: 'bg-pink-500' },
-  translation: { icon: Languages, label: '翻译', color: 'bg-green-500' },
+  reading: { icon: BookOpen, label: '阅读理解', color: 'bg-blue-600' },
+  listening: { icon: Headphones, label: '听力理解', color: 'bg-amber-600' },
+  writing: { icon: PenTool, label: '写作', color: 'bg-rose-600' },
+  translation: { icon: Languages, label: '段落翻译', color: 'bg-emerald-600' },
 }
 
 export default function ExamDetail() {
@@ -28,13 +28,13 @@ export default function ExamDetail() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500 dark:text-blue-400" size={32} />
+        <Loader2 className="animate-spin text-[var(--accent)]" size={32} />
       </div>
     )
   }
 
   if (!paper) {
-    return <div className="text-center py-20 text-gray-500 dark:text-slate-400">试卷未找到</div>
+    return <div className="app-card rounded-2xl py-16 text-center text-sm text-[var(--text-muted)]">试卷未找到</div>
   }
 
   const handleStart = async (section: string) => {
@@ -49,38 +49,43 @@ export default function ExamDetail() {
 
   return (
     <div className="space-y-6">
-      <button onClick={() => navigate('/exams')} className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
-        <ArrowLeft size={20} />
+      <button
+        type="button"
+        onClick={() => navigate('/exams')}
+        className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+      >
+        <ArrowLeft size={18} />
         返回列表
       </button>
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-2">{paper.title}</h1>
-        <p className="text-gray-500 dark:text-slate-400">
-          {paper.exam_date && `考试日期: ${paper.exam_date} | `}
-          满分: {paper.total_score}
+      <div className="app-hero rounded-3xl p-6 md:p-8">
+        <h1 className="headword-font text-2xl font-bold">{paper.title}</h1>
+        <p className="mt-2 text-sm text-white/80">
+          {paper.exam_date && `考试日期：${paper.exam_date} · `}满分：{paper.total_score} 分
         </p>
       </div>
 
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">选择练习板块</h2>
+      <h2 className="text-base font-bold text-[var(--text-primary)]">选择练习板块</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {Object.entries(paper.sections || {}).map(([section, count]) => {
-          const info = sectionInfo[section] || { icon: BookOpen, label: section, color: 'bg-gray-500' }
+          const info = sectionInfo[section] || { icon: BookOpen, label: section, color: 'bg-slate-600' }
           const Icon = info.icon
           return (
             <button
               key={section}
+              type="button"
               onClick={() => handleStart(section)}
-              className="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4 text-left"
+              className="app-card-interactive flex items-center gap-4 rounded-2xl p-5 text-left"
             >
-              <div className={`${info.color} p-3 rounded-lg text-white`}>
-                <Icon size={24} />
+              <div className={`${info.color} flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-xs`}>
+                <Icon size={22} />
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-slate-100">{info.label}</h3>
-                <p className="text-sm text-gray-500 dark:text-slate-400">{String(count)} 道题</p>
+              <div className="flex-1">
+                <h3 className="font-semibold text-[var(--text-primary)]">{info.label}</h3>
+                <p className="mt-0.5 text-xs text-[var(--text-muted)]">共 {String(count)} 道题</p>
               </div>
+              <ChevronRight size={17} className="text-[var(--text-muted)]" />
             </button>
           )
         })}

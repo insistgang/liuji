@@ -1,16 +1,51 @@
 import { useEffect, useEffectEvent } from 'react'
 import { CheckCircle2, RotateCcw, X, AlertCircle } from 'lucide-react'
 
-export default function LearningFeedback({ message, tone, onDismiss }: { message: string; tone: 'success' | 'retry' | 'error'; onDismiss: () => void }) {
+export default function LearningFeedback({
+  message,
+  tone,
+  onDismiss,
+}: {
+  message: string
+  tone: 'success' | 'retry' | 'error'
+  onDismiss: () => void
+}) {
   const dismiss = useEffectEvent(onDismiss)
   useEffect(() => {
     const timer = window.setTimeout(() => dismiss(), 1000)
     return () => window.clearTimeout(timer)
   }, [])
+
   const Icon = tone === 'success' ? CheckCircle2 : tone === 'retry' ? RotateCcw : AlertCircle
-  return <div className={`feedback-enter fixed bottom-24 md:bottom-6 left-4 right-4 z-50 mx-auto flex max-w-lg items-start gap-3 rounded-2xl border p-4 shadow-lg ${tone === 'success' ? 'border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-950 text-teal-900 dark:text-teal-100' : tone === 'retry' ? 'border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-100' : 'border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950 text-red-900 dark:text-red-100'}`}>
-    <Icon size={22} className="mt-0.5 shrink-0" aria-hidden="true" />
-    <p role={tone === 'error' ? 'alert' : 'status'} className="min-w-0 flex-1 break-words text-sm leading-6">{message}</p>
-    <button type="button" onClick={onDismiss} aria-label="关闭操作反馈" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"><X size={18} aria-hidden="true" /></button>
-  </div>
+  const toneClasses =
+    tone === 'success'
+      ? 'border-emerald-500/35 bg-[var(--bg-surface)] text-[var(--text-primary)]'
+      : tone === 'retry'
+        ? 'border-amber-500/40 bg-[var(--bg-surface)] text-[var(--text-primary)]'
+        : 'border-rose-500/45 bg-[var(--bg-surface)] text-rose-700 dark:text-rose-300'
+  const iconColor =
+    tone === 'success'
+      ? 'text-emerald-600 dark:text-emerald-400'
+      : tone === 'retry'
+        ? 'text-amber-600 dark:text-amber-400'
+        : 'text-rose-600 dark:text-rose-400'
+
+  return (
+    <div
+      className={`feedback-enter fixed bottom-24 md:bottom-6 left-4 right-4 z-50 mx-auto flex max-w-lg items-center gap-3 rounded-2xl border px-4 py-3.5 shadow-xl backdrop-blur-md ${toneClasses}`}
+    >
+      <Icon size={20} className={`shrink-0 ${iconColor}`} aria-hidden="true" />
+      <p role={tone === 'error' ? 'alert' : 'status'} className="min-w-0 flex-1 break-words text-sm font-medium leading-5">
+        {message}
+      </p>
+      <button
+        type="button"
+        onClick={onDismiss}
+        aria-label="关闭操作反馈"
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--text-muted)] hover:bg-[var(--bg-muted)] hover:text-[var(--text-primary)]"
+      >
+        <X size={16} aria-hidden="true" />
+      </button>
+    </div>
+  )
 }

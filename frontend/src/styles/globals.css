@@ -2,32 +2,298 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
+:root,
+[data-theme="light"] {
   color-scheme: light;
+  --bg-canvas: #f3f7f8;
+  --bg-glow: radial-gradient(1100px 420px at 50% -110px, rgba(13, 148, 136, 0.11), transparent 70%);
+  --bg-surface: #ffffff;
+  --bg-elevated: rgba(255, 255, 255, 0.86);
+  --bg-muted: #ebf1f3;
+  --bg-subtle: #f7fafb;
+  --border-subtle: #dde6e9;
+  --border-strong: #c4d3d8;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent: #0d9488;
+  --accent-hover: #0f766e;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(13, 148, 136, 0.10);
+  --accent-soft-border: rgba(13, 148, 136, 0.26);
+  --accent-text: #0f766e;
+  --accent-ring: rgba(13, 148, 136, 0.28);
+  --hero-bg: linear-gradient(135deg, #0f172a 0%, #134e4a 58%, #0f766e 100%);
+  --hero-border: rgba(255, 255, 255, 0.08);
+  --hero-badge: #5eead4;
+  --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.07);
+  --card-shadow-hover: 0 10px 28px -10px rgba(15, 23, 42, 0.13);
+  --font-headword: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.dark {
+[data-theme="sepia"] {
+  color-scheme: light;
+  --bg-canvas: #f4eee1;
+  --bg-glow: radial-gradient(1100px 420px at 50% -110px, rgba(180, 83, 9, 0.11), transparent 70%);
+  --bg-surface: #fcf9f2;
+  --bg-elevated: rgba(252, 249, 242, 0.90);
+  --bg-muted: #ebe2d0;
+  --bg-subtle: #f8f3e8;
+  --border-subtle: #dfd3bc;
+  --border-strong: #cab99b;
+  --text-primary: #261d15;
+  --text-secondary: #5c4b3b;
+  --text-muted: #7d6a56;
+  --accent: #b45309;
+  --accent-hover: #92400e;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(180, 83, 9, 0.11);
+  --accent-soft-border: rgba(180, 83, 9, 0.28);
+  --accent-text: #92400e;
+  --accent-ring: rgba(180, 83, 9, 0.26);
+  --hero-bg: linear-gradient(135deg, #322014 0%, #57341a 56%, #78350f 100%);
+  --hero-border: rgba(253, 230, 138, 0.16);
+  --hero-badge: #fcd34d;
+  --card-shadow: 0 1px 3px rgba(60, 40, 20, 0.05), 0 8px 24px -12px rgba(60, 40, 20, 0.09);
+  --card-shadow-hover: 0 12px 28px -10px rgba(60, 40, 20, 0.15);
+  --font-headword: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, 'Songti SC', serif;
+}
+
+[data-theme="forest"] {
+  color-scheme: light;
+  --bg-canvas: #eaf3ed;
+  --bg-glow: radial-gradient(1100px 420px at 50% -110px, rgba(21, 128, 61, 0.11), transparent 70%);
+  --bg-surface: #f9fcfa;
+  --bg-elevated: rgba(249, 252, 250, 0.88);
+  --bg-muted: #dfece3;
+  --bg-subtle: #f2f8f4;
+  --border-subtle: #cde0d3;
+  --border-strong: #b2ccbc;
+  --text-primary: #11241a;
+  --text-secondary: #395545;
+  --text-muted: #5a7766;
+  --accent: #15803d;
+  --accent-hover: #166534;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(21, 128, 61, 0.10);
+  --accent-soft-border: rgba(21, 128, 61, 0.26);
+  --accent-text: #166534;
+  --accent-ring: rgba(21, 128, 61, 0.26);
+  --hero-bg: linear-gradient(135deg, #0d261b 0%, #14532d 56%, #15803d 100%);
+  --hero-border: rgba(187, 247, 208, 0.14);
+  --hero-badge: #86efac;
+  --card-shadow: 0 1px 3px rgba(17, 36, 26, 0.04), 0 8px 24px -12px rgba(17, 36, 26, 0.08);
+  --card-shadow-hover: 0 12px 28px -10px rgba(17, 36, 26, 0.13);
+  --font-headword: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+[data-theme="sakura"] {
+  color-scheme: light;
+  --bg-canvas: #fcf3f6;
+  --bg-glow: radial-gradient(1100px 420px at 50% -110px, rgba(219, 39, 119, 0.10), transparent 70%);
+  --bg-surface: #ffffff;
+  --bg-elevated: rgba(255, 255, 255, 0.88);
+  --bg-muted: #f7e6ec;
+  --bg-subtle: #fdf8fa;
+  --border-subtle: #efd5df;
+  --border-strong: #e0bac9;
+  --text-primary: #2a131f;
+  --text-secondary: #634252;
+  --text-muted: #8a6477;
+  --accent: #db2777;
+  --accent-hover: #be185d;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(219, 39, 119, 0.09);
+  --accent-soft-border: rgba(219, 39, 119, 0.24);
+  --accent-text: #be185d;
+  --accent-ring: rgba(219, 39, 119, 0.25);
+  --hero-bg: linear-gradient(135deg, #380e24 0%, #701a45 55%, #9d174d 100%);
+  --hero-border: rgba(251, 207, 232, 0.16);
+  --hero-badge: #f9a8d4;
+  --card-shadow: 0 1px 3px rgba(60, 18, 40, 0.04), 0 8px 24px -12px rgba(60, 18, 40, 0.08);
+  --card-shadow-hover: 0 12px 28px -10px rgba(60, 18, 40, 0.13);
+  --font-headword: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.dark,
+[data-theme="dark"] {
   color-scheme: dark;
+  --bg-canvas: #080d19;
+  --bg-glow: radial-gradient(1100px 420px at 50% -110px, rgba(45, 212, 191, 0.10), transparent 70%);
+  --bg-surface: #101827;
+  --bg-elevated: rgba(16, 24, 39, 0.86);
+  --bg-muted: #182338;
+  --bg-subtle: #0c1322;
+  --border-subtle: #1f2d47;
+  --border-strong: #2f4368;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #0d9488;
+  --accent-hover: #14b8a6;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(45, 212, 191, 0.13);
+  --accent-soft-border: rgba(45, 212, 191, 0.28);
+  --accent-text: #5eead4;
+  --accent-ring: rgba(45, 212, 191, 0.30);
+  --hero-bg: linear-gradient(135deg, #0c1427 0%, #102a3a 55%, #113e3e 100%);
+  --hero-border: rgba(94, 234, 212, 0.18);
+  --hero-badge: #5eead4;
+  --card-shadow: 0 0 0 1px rgba(31, 45, 71, 0.8), 0 12px 28px -16px rgba(0, 0, 0, 0.7);
+  --card-shadow-hover: 0 0 0 1px rgba(45, 212, 191, 0.35), 0 16px 34px -14px rgba(0, 0, 0, 0.8);
+  --font-headword: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+[data-theme="obsidian"] {
+  color-scheme: dark;
+  --bg-canvas: #11100e;
+  --bg-glow: radial-gradient(1100px 420px at 50% -110px, rgba(245, 158, 11, 0.11), transparent 70%);
+  --bg-surface: #1b1815;
+  --bg-elevated: rgba(27, 24, 21, 0.88);
+  --bg-muted: #26221d;
+  --bg-subtle: #151310;
+  --border-subtle: #312b24;
+  --border-strong: #493f34;
+  --text-primary: #f5f0e6;
+  --text-secondary: #b9ac9a;
+  --text-muted: #8a7c69;
+  --accent: #d97706;
+  --accent-hover: #f59e0b;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(245, 158, 11, 0.14);
+  --accent-soft-border: rgba(245, 158, 11, 0.30);
+  --accent-text: #fbbf24;
+  --accent-ring: rgba(245, 158, 11, 0.30);
+  --hero-bg: linear-gradient(135deg, #1b1611 0%, #2f2316 56%, #4a2f13 100%);
+  --hero-border: rgba(251, 191, 36, 0.20);
+  --hero-badge: #fcd34d;
+  --card-shadow: 0 0 0 1px rgba(49, 43, 36, 0.85), 0 12px 28px -16px rgba(0, 0, 0, 0.75);
+  --card-shadow-hover: 0 0 0 1px rgba(245, 158, 11, 0.36), 0 16px 34px -14px rgba(0, 0, 0, 0.85);
+  --font-headword: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, 'Songti SC', serif;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8fafc;
+  background-color: var(--bg-canvas);
+  background-image: var(--bg-glow);
+  background-repeat: no-repeat;
+  color: var(--text-primary);
+  transition: background-color 220ms ease, color 220ms ease;
 }
 
-.dark body {
-  background-color: #020617;
+/* Semantic Theme Building Blocks */
+.app-canvas {
+  background-color: var(--bg-canvas);
+  background-image: var(--bg-glow);
+  background-repeat: no-repeat;
+  color: var(--text-primary);
 }
 
+.app-surface {
+  background-color: var(--bg-surface);
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.app-topbar {
+  background-color: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.app-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--card-shadow);
+  color: var(--text-primary);
+}
+
+.app-card-interactive {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--card-shadow);
+  color: var(--text-primary);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.app-card-interactive:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.app-hero {
+  background-image: var(--hero-bg);
+  border: 1px solid var(--hero-border);
+  box-shadow: 0 18px 40px -20px rgba(15, 23, 42, 0.45);
+  color: #ffffff;
+}
+
+.app-hero-badge {
+  color: var(--hero-badge);
+}
+
+.app-accent-solid {
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.app-accent-solid:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+.app-accent-soft {
+  background-color: var(--accent-soft);
+  color: var(--accent-text);
+  border-color: var(--accent-soft-border);
+}
+
+.app-muted-pill {
+  background-color: var(--bg-muted);
+  color: var(--text-secondary);
+}
+
+.app-muted-pill:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.app-input {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.app-input::placeholder {
+  color: var(--text-muted);
+}
+
+.app-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+  outline: none;
+}
+
+.headword-font {
+  font-family: var(--font-headword);
+  letter-spacing: -0.015em;
+}
+
+.phonetic-font {
+  font-family: 'SF Pro Text', 'Segoe UI', 'Lucida Sans Unicode', 'Arial Unicode MS', sans-serif;
+}
+
+/* 3D Flip Card */
 .flip-card {
-  perspective: 1000px;
+  perspective: 1200px;
 }
 
 .flip-card-inner {
-  transition: transform 0.6s;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   transform-style: preserve-3d;
 }
 
@@ -49,6 +315,20 @@ body {
   transform: rotateY(180deg);
 }
 
+/* Smooth Details / Disclosure Styling */
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .details-chevron {
+  transform: rotate(180deg);
+}
+
+/* Interactive Controls */
 button,
 summary,
 a,
@@ -59,49 +339,45 @@ select {
 button:not(:disabled),
 select:not(:disabled),
 summary {
-  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
-}
-
-button:not(:disabled):hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgb(15 23 42 / 9%);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease, border-color 150ms ease, color 150ms ease, opacity 150ms ease;
 }
 
 button:not(:disabled):active,
 summary:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 button:focus-visible,
 a:focus-visible,
 summary:focus-visible,
 select:focus-visible,
-input:focus-visible {
-  outline: 3px solid rgb(13 148 136 / 30%);
-  outline-offset: 3px;
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--accent-ring);
+  outline-offset: 2px;
 }
 
-/* 夜间模式下阴影几乎不可见，改用细描边保持卡片层次 */
+/* Dark Shadow Normalization */
 .dark .shadow-sm {
-  box-shadow: 0 0 0 1px rgb(30 41 59 / 0.7);
+  box-shadow: 0 0 0 1px var(--border-subtle);
 }
 
 .dark .shadow-md {
-  box-shadow: 0 0 0 1px rgb(30 41 59 / 0.85);
+  box-shadow: 0 0 0 1px var(--border-strong);
 }
 
 .dark .shadow-lg {
-  box-shadow: 0 0 0 1px rgb(51 65 85 / 0.9), 0 14px 34px -14px rgb(0 0 0 / 0.75);
+  box-shadow: 0 0 0 1px var(--border-strong), 0 14px 34px -14px rgb(0 0 0 / 0.75);
 }
 
 .feedback-enter {
-  animation: feedback-enter 240ms ease-out both;
+  animation: feedback-enter 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes feedback-enter {
   from {
     opacity: 0;
-    transform: translateY(6px) scale(0.98);
+    transform: translateY(6px) scale(0.985);
   }
   to {
     opacity: 1;
@@ -109,16 +385,21 @@ input:focus-visible {
   }
 }
 
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   button:not(:disabled),
   select:not(:disabled),
-  summary {
+  summary,
+  .app-card-interactive {
     transition: none;
   }
 
-  button:not(:disabled):hover,
   button:not(:disabled):active,
-  summary:active {
+  summary:active,
+  .app-card-interactive:hover {
     transform: none;
   }
 

@@ -45,7 +45,7 @@ export default function AudioPlayer({ audioUrl, onTimeUpdate }: AudioPlayerProps
     if (isPlaying) {
       audio.pause()
     } else {
-      audio.play()
+      void audio.play()
     }
     setIsPlaying(!isPlaying)
   }
@@ -81,36 +81,55 @@ export default function AudioPlayer({ audioUrl, onTimeUpdate }: AudioPlayerProps
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-4">
+    <div className="app-card rounded-2xl p-5">
       <audio ref={audioRef} src={audioUrl} preload="metadata" />
 
-      <div className="flex items-center gap-3 mb-3">
-        <span className="text-sm text-gray-500 dark:text-slate-400 w-12 text-right">{formatTime(currentTime)}</span>
+      <div className="mb-4 flex items-center gap-3">
+        <span className="w-11 text-right font-mono text-xs text-[var(--text-muted)]">
+          {formatTime(currentTime)}
+        </span>
         <input
           type="range"
           min={0}
           max={duration || 0}
           value={currentTime}
           onChange={seek}
-          className="flex-1 h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:accent-blue-400"
+          aria-label="播放进度"
+          className="h-2 flex-1 cursor-pointer appearance-none rounded-lg bg-[var(--bg-muted)] accent-[var(--accent)]"
         />
-        <span className="text-sm text-gray-500 dark:text-slate-400 w-12">{formatTime(duration)}</span>
+        <span className="w-11 font-mono text-xs text-[var(--text-muted)]">{formatTime(duration)}</span>
       </div>
 
       <div className="flex items-center justify-center gap-4">
-        <button onClick={() => skip(-10)} className="p-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
-          <SkipBack size={20} />
+        <button
+          type="button"
+          onClick={() => skip(-10)}
+          aria-label="后退 10 秒"
+          className="app-muted-pill flex h-10 w-10 items-center justify-center rounded-full"
+        >
+          <SkipBack size={18} />
         </button>
         <button
+          type="button"
           onClick={togglePlay}
-          className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700"
+          aria-label={isPlaying ? '暂停播放' : '开始播放'}
+          className="app-accent-solid flex h-12 w-12 items-center justify-center rounded-full shadow-sm"
         >
-          {isPlaying ? <Pause size={24} /> : <Play size={24} className="ml-1" />}
+          {isPlaying ? <Pause size={22} /> : <Play size={22} className="ml-0.5" />}
         </button>
-        <button onClick={() => skip(10)} className="p-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
-          <SkipForward size={20} />
+        <button
+          type="button"
+          onClick={() => skip(10)}
+          aria-label="快进 10 秒"
+          className="app-muted-pill flex h-10 w-10 items-center justify-center rounded-full"
+        >
+          <SkipForward size={18} />
         </button>
-        <button onClick={cycleSpeed} className="px-3 py-1 bg-gray-100 dark:bg-slate-800 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700">
+        <button
+          type="button"
+          onClick={cycleSpeed}
+          className="app-muted-pill rounded-xl px-3 py-1.5 text-xs font-semibold"
+        >
           {playbackRate}x
         </button>
       </div>

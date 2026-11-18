@@ -20,13 +20,13 @@ export default function ExamResult() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500 dark:text-blue-400" size={32} />
+        <Loader2 className="animate-spin text-[var(--accent)]" size={32} />
       </div>
     )
   }
 
   if (!result) {
-    return <div className="text-center py-20 text-gray-500 dark:text-slate-400">结果未找到</div>
+    return <div className="app-card rounded-2xl py-16 text-center text-sm text-[var(--text-muted)]">结果未找到</div>
   }
 
   const percent = result.total_score > 0 ? Math.round((result.score / result.total_score) * 100) : 0
@@ -36,78 +36,87 @@ export default function ExamResult() {
 
   return (
     <div className="space-y-6">
-      <button onClick={() => navigate('/exams')} className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100">
-        <ArrowLeft size={20} />
+      <button
+        type="button"
+        onClick={() => navigate('/exams')}
+        className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+      >
+        <ArrowLeft size={18} />
         返回列表
       </button>
 
-      {/* Score card */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm p-8 text-center">
-        <Trophy className="mx-auto text-yellow-500 dark:text-yellow-400 mb-4" size={48} />
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 mb-2">{result.paper_title}</h1>
+      <div className="app-card rounded-3xl p-8 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-500">
+          <Trophy size={32} />
+        </div>
+        <h1 className="headword-font text-2xl font-bold text-[var(--text-primary)]">{result.paper_title}</h1>
 
-        <div className="mt-6">
-          <div className="text-5xl font-bold text-blue-600 dark:text-blue-400">{result.score}</div>
-          <div className="text-gray-500 dark:text-slate-400 mt-1">/ {result.total_score} 分 ({percent}%)</div>
+        <div className="mt-5">
+          <div className="text-5xl font-bold text-[var(--accent-text)]">{result.score}</div>
+          <div className="mt-1 text-sm text-[var(--text-muted)]">
+            / {result.total_score} 分（得分率 {percent}%）
+          </div>
         </div>
 
-        <div className="flex justify-center gap-8 mt-6 text-sm text-gray-600 dark:text-slate-300">
-          <div className="flex items-center gap-2">
-            <CheckCircle size={16} className="text-green-500 dark:text-green-400" />
+        <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs font-medium text-[var(--text-secondary)]">
+          <div className="inline-flex items-center gap-1.5">
+            <CheckCircle size={15} className="text-emerald-500" />
             答对 {correctCount}/{result.questions.length} 题
           </div>
-          <div className="flex items-center gap-2">
-            <Clock size={16} />
+          <div className="inline-flex items-center gap-1.5">
+            <Clock size={15} />
             用时 {minutes}分{seconds}秒
           </div>
         </div>
       </div>
 
-      {/* Section scores */}
       {Object.keys(result.section_scores).length > 0 && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">各板块得分</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="app-card rounded-2xl p-6">
+          <h2 className="mb-4 text-base font-bold text-[var(--text-primary)]">各板块得分</h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {Object.entries(result.section_scores).map(([section, score]) => (
-              <div key={section} className="text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{score}</div>
-                <div className="text-sm text-gray-500 dark:text-slate-400 mt-1">{section}</div>
+              <div key={section} className="rounded-xl bg-[var(--bg-subtle)] border border-[var(--border-subtle)] p-4 text-center">
+                <div className="text-2xl font-bold text-[var(--accent-text)]">{score}</div>
+                <div className="mt-1 text-xs text-[var(--text-muted)]">{section}</div>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Question details */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">答题详情</h2>
-        <div className="space-y-4">
+      <div className="app-card rounded-2xl p-6">
+        <h2 className="mb-4 text-base font-bold text-[var(--text-primary)]">逐题解析</h2>
+        <div className="space-y-3.5">
           {result.questions.map((q) => (
             <div
               key={q.question_id}
-              className={`p-4 rounded-lg border ${
-                q.is_correct ? 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950' : 'border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950'
+              className={`rounded-2xl border p-4 ${
+                q.is_correct
+                  ? 'border-emerald-500/30 bg-emerald-500/8'
+                  : 'border-rose-500/30 bg-rose-500/8'
               }`}
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
-                  <span className="text-sm text-gray-500 dark:text-slate-400">第 {q.question_num} 题 ({q.points}分)</span>
-                  <p className="text-gray-900 dark:text-slate-100 mt-1 text-sm line-clamp-2">{q.content}</p>
+                  <span className="text-xs font-medium text-[var(--text-muted)]">
+                    第 {q.question_num} 题（{q.points} 分）
+                  </span>
+                  <p className="mt-1 line-clamp-2 text-sm text-[var(--text-primary)]">{q.content}</p>
                 </div>
                 {q.is_correct ? (
-                  <CheckCircle size={20} className="text-green-500 dark:text-green-400 flex-shrink-0 ml-2" />
+                  <CheckCircle size={19} className="shrink-0 text-emerald-500" />
                 ) : (
-                  <XCircle size={20} className="text-red-500 dark:text-red-400 flex-shrink-0 ml-2" />
+                  <XCircle size={19} className="shrink-0 text-rose-500" />
                 )}
               </div>
               {!q.is_correct && (
-                <div className="mt-2 text-sm">
-                  <span className="text-red-600 dark:text-red-400">你的答案: {q.user_answer || '未作答'}</span>
-                  <span className="text-green-600 dark:text-green-400 ml-4">正确答案: {q.correct_answer}</span>
+                <div className="mt-2 flex flex-wrap gap-4 text-xs font-medium">
+                  <span className="text-rose-600 dark:text-rose-400">你的答案：{q.user_answer || '未作答'}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">正确答案：{q.correct_answer}</span>
                 </div>
               )}
               {q.explanation && (
-                <p className="mt-2 text-sm text-gray-600 dark:text-slate-300">解析: {q.explanation}</p>
+                <p className="mt-2 text-xs leading-5 text-[var(--text-secondary)]">解析：{q.explanation}</p>
               )}
             </div>
           ))}
@@ -116,8 +125,9 @@ export default function ExamResult() {
 
       <div className="text-center">
         <button
+          type="button"
           onClick={() => navigate('/exams')}
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700"
+          className="app-accent-solid rounded-2xl px-6 py-3 text-sm font-semibold"
         >
           返回真题列表
         </button>

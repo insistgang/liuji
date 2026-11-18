@@ -1,20 +1,43 @@
 import { Outlet } from 'react-router-dom'
+import { GraduationCap } from 'lucide-react'
 import Sidebar from './Sidebar'
 import BottomNav from './BottomNav'
 import ThemeToggle from './ThemeToggle'
+import { isStaticMode } from '../../api/runtime'
 
 export default function AppShell() {
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-slate-950">
+    <div className="app-canvas flex min-h-screen">
       <Sidebar />
-      <main className="min-w-0 flex-1 pb-16 md:pb-0">
-        <div className="flex items-center justify-end px-4 pt-4 md:px-6 md:pt-5">
-          <ThemeToggle />
-        </div>
-        <div className="max-w-5xl mx-auto p-4 md:p-6">
-          <Outlet />
-        </div>
-      </main>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="app-topbar sticky top-0 z-40 px-4 py-2.5 md:px-8">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="app-accent-solid flex h-8 w-8 shrink-0 items-center justify-center rounded-xl shadow-xs md:hidden">
+                <GraduationCap size={17} aria-hidden="true" />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-[var(--text-primary)] md:hidden">六级词境</p>
+                <div className="hidden items-center gap-2 md:flex">
+                  <span className="app-accent-soft rounded-full border px-2.5 py-0.5 text-xs font-medium">
+                    CET-6 备考
+                  </span>
+                  <span className="text-xs text-[var(--text-muted)]">
+                    {isStaticMode ? '本地离线记忆模式 · 真人词典双音发音' : '全栈同步模式 · 真人词典双音发音'}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <ThemeToggle />
+          </div>
+        </header>
+
+        <main className="min-w-0 flex-1 pb-24 md:pb-10">
+          <div className="mx-auto max-w-5xl px-4 py-5 md:px-8 md:py-7">
+            <Outlet />
+          </div>
+        </main>
+      </div>
       <BottomNav />
     </div>
   )

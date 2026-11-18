@@ -1,5 +1,6 @@
 import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { Loader2 } from 'lucide-react'
 import { useAuthStore } from './store/authStore'
 import { useThemeEffect } from './store/themeStore'
 import AppShell from './components/layout/AppShell'
@@ -26,8 +27,9 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500 dark:text-slate-400">加载中...</div>
+      <div className="app-canvas flex min-h-screen items-center justify-center gap-2 text-sm text-[var(--text-secondary)]">
+        <Loader2 size={20} className="animate-spin text-[var(--accent)]" />
+        <span>正在初始化学习环境…</span>
       </div>
     )
   }
@@ -76,6 +78,7 @@ export default function App() {
           <Route path="writing" element={<WritingList />} />
           <Route path="writing/:id" element={<WritingEditor />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="*" element={<Navigate to={isStaticMode ? '/daily' : '/dashboard'} replace />} />
         </Route>
       </Routes>
     </Router>
