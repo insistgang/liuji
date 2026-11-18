@@ -7,6 +7,7 @@ import {
   hashSeed,
   maskWordInSentence,
   summarizeDefinition,
+  updateQueueAfterAnswer,
 } from '../src/lib/quiz.ts'
 
 const pool = Array.from({ length: 30 }, (_, index) => ({
@@ -114,4 +115,13 @@ test('maskWordInSentence blanks base forms, inflections, phrases, and strips mar
     maskWordInSentence('His behaviour improved dramatically.', 'behavio(u)r'),
     'His ______ improved dramatically.',
   )
+})
+
+test('updateQueueAfterAnswer schedules retries and deduplicated confused words cleanly', () => {
+  const initial = ['w1', 'w2', 'w3']
+  assert.deepEqual(updateQueueAfterAnswer(initial, 'w1', true, 'w2'), ['w2', 'w3'])
+  assert.deepEqual(updateQueueAfterAnswer(initial, 'w1', false, 'w4'), ['w2', 'w3', 'w1', 'w4'])
+  assert.deepEqual(updateQueueAfterAnswer(initial, 'w1', false, 'w2'), ['w2', 'w3', 'w1'])
+  assert.deepEqual(updateQueueAfterAnswer(initial, 'w1', false, 'w1'), ['w2', 'w3', 'w1'])
+  assert.deepEqual(updateQueueAfterAnswer(initial, 'w1', false, null), ['w2', 'w3', 'w1'])
 })

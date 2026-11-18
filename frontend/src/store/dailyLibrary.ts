@@ -90,6 +90,52 @@ export function writeRecordsStrict(records: DailyRecords): DailyRecords {
   return checked
 }
 
+const DAILY_ID_PATTERN = /^\d{4}-\d{2}-\d{2}:.+$/
+
+export function applyWrongAnswerSync(
+  currentRecords: DailyRecords,
+  targetWordId: string,
+  confusedWordId?: string | null,
+  today = day(),
+): { updated: DailyRecords; targetRecord: RecordEntry; confusedRecord: RecordEntry | null } {
+  const targetRecord = scheduleReview(currentRecords[targetWordId], false, today, 1)
+  const updated: DailyRecords = { ...currentRecords, [targetWordId]: targetRecord }
+  let confusedRecord: RecordEntry | null = null
+  if (confusedWordId && confusedWordId !== targetWordId) {
+    confusedRecord = scheduleReview(updated[confusedWordId], false, today, 1)
+    updated[confusedWordId] = confusedRecord
+  }
+  return { updated, targetRecord, confusedRecord }
+}
+
+export function syncWrongWordsToStorage(
+  targetWordId?: string | null,
+  confusedWordId?: string | null,
+): { targetRecord: RecordEntry | null; confusedRecord: RecordEntry | null } | null {
+  const validTarget = targetWordId && DAILY_ID_PATTERN.test(targetWordId) ? targetWordId : null
+  const validConfused = confusedWordId && DAILY_ID_PATTERN.test(confusedWordId) ? confusedWordId : null
+  if (!validTarget && !validConfused) return { targetRecord: null, confusedRecord: null }
+  try {
+    const current = readRecordsStrict()
+    const today = day()
+    const updated: DailyRecords = { ...current }
+    let targetRecord: RecordEntry | null = null
+    let confusedRecord: RecordEntry | null = null
+    if (validTarget) {
+      targetRecord = scheduleReview(updated[validTarget], false, today, 1)
+      updated[validTarget] = targetRecord
+    }
+    if (validConfused && validConfused !== validTarget) {
+      confusedRecord = scheduleReview(updated[validConfused], false, today, 1)
+      updated[validConfused] = confusedRecord
+    }
+    writeRecordsStrict(updated)
+    return { targetRecord, confusedRecord }
+  } catch {
+    return null
+  }
+}
+
 export function useDailyRecords() {
   const [records, setRecords] = useState<DailyRecords>(() => {
     try { return readRecordsStrict() } catch { return {} }
@@ -124,7 +170,25 @@ export function useDailyRecords() {
       return null
     }
   }
-  return { records, storageError, save }
+
+  function saveWrongPair(
+    target: DailyWord,
+    confused?: DailyWord | null,
+  ): { targetRecord: RecordEntry; confusedRecord: RecordEntry | null } | null {
+    try {
+      const current = readRecordsStrict()
+      const synced = applyWrongAnswerSync(current, target.id, confused?.id, day())
+      writeRecordsStrict(synced.updated)
+      setRecords(synced.updated)
+      setStorageError('')
+      return { targetRecord: synced.targetRecord, confusedRecord: synced.confusedRecord }
+    } catch {
+      setStorageError('学习记录未保存。请检查浏览器存储权限或原有记录格式；没有覆盖已有数据。')
+      return null
+    }
+  }
+
+  return { records, storageError, save, saveWrongPair }
 }
 
 export function useDailyLibrary() {

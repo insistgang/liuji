@@ -44,7 +44,7 @@ export default function ThemeToggle({
   }
 
   return (
-    <div ref={containerRef} className={`relative inline-flex items-center gap-2 ${className}`}>
+    <div ref={containerRef} className={`relative inline-flex shrink-0 items-center gap-1.5 sm:gap-2 ${className}`}>
       {showAccentSwitch && (
         <div
           role="group"
@@ -57,7 +57,7 @@ export default function ThemeToggle({
               setAccent('us')
               void speakText('vocabulary', { accent: 'us', targetKey: 'preview:us' })
             }}
-            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-medium transition-all ${
+            className={`inline-flex items-center gap-1 rounded-full px-2 py-1 font-medium transition-all sm:px-2.5 ${
               accent === 'us'
                 ? 'app-accent-solid shadow-xs'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -65,7 +65,8 @@ export default function ThemeToggle({
             title="切换为美式发音（点击试听）"
           >
             <Volume2 size={12} aria-hidden="true" />
-            美音
+            <span className="sm:hidden">美</span>
+            <span className="hidden sm:inline">美音</span>
           </button>
           <button
             type="button"
@@ -73,14 +74,15 @@ export default function ThemeToggle({
               setAccent('uk')
               void speakText('vocabulary', { accent: 'uk', targetKey: 'preview:uk' })
             }}
-            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-medium transition-all ${
+            className={`inline-flex items-center gap-1 rounded-full px-2 py-1 font-medium transition-all sm:px-2.5 ${
               accent === 'uk'
                 ? 'app-accent-solid shadow-xs'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
             title="切换为英式发音（点击试听）"
           >
-            英音
+            <span className="sm:hidden">英</span>
+            <span className="hidden sm:inline">英音</span>
           </button>
         </div>
       )}
@@ -91,7 +93,7 @@ export default function ThemeToggle({
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label={`选择界面风格，当前为${currentMeta.name}`}
-        className="inline-flex h-9 items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 text-xs font-medium text-[var(--text-primary)] shadow-xs hover:border-[var(--border-strong)]"
+        className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 text-xs font-medium text-[var(--text-primary)] shadow-xs hover:border-[var(--border-strong)] sm:gap-2 sm:px-3"
       >
         <span
           className="h-3 w-3 rounded-full ring-2 ring-black/10 dark:ring-white/20"
@@ -100,7 +102,7 @@ export default function ThemeToggle({
         />
         <Palette size={14} className="text-[var(--text-secondary)]" aria-hidden="true" />
         <span className="hidden sm:inline">{currentMeta.name}</span>
-        <span className="sm:hidden">风格</span>
+        <span className="hidden min-[380px]:inline sm:hidden">风格</span>
       </button>
 
       <button
@@ -117,7 +119,7 @@ export default function ThemeToggle({
         <div
           role="dialog"
           aria-label="选择视觉风格"
-          className="feedback-enter absolute right-0 top-11 z-50 w-80 max-w-[calc(100vw-2rem)] sm:w-96 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 shadow-xl"
+          className="feedback-enter fixed inset-x-3 top-14 z-50 max-h-[calc(100dvh-4.5rem)] overflow-y-auto rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 shadow-xl sm:inset-x-auto sm:absolute sm:right-0 sm:top-11 sm:w-96"
         >
           <div className="mb-3 flex items-center justify-between">
             <div>

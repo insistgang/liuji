@@ -1,6 +1,6 @@
 import client from './client'
 import { isStaticMode } from './runtime'
-import { offlineApi } from './offline'
+import { offlineApi, type QuizMode, type QuizOptionDetail } from './offline'
 import type { ApiResponse, PaginatedResponse } from '../types/api'
 import type { VocabularyWord, WordProgress, VocabProgressStats } from '../types/vocabulary'
 
@@ -39,9 +39,25 @@ export const vocabApi = {
     })
   },
 
-  startQuiz: (count = 10) => {
-    if (isStaticMode) return offlineApi.startQuiz(count)
-    return client.post<ApiResponse<Array<{ word_id: number; word: string; phonetic: string; part_of_speech: string; question_type: string; prompt: string; options: string[]; correct_answer: string }>>>('/vocabulary/quiz/start', null, {
+  startQuiz: (count = 10, quizMode: QuizMode = 'mixed') => {
+    if (isStaticMode) return offlineApi.startQuiz(count, quizMode)
+    return client.post<
+      ApiResponse<
+        Array<{
+          word_id: number
+          word_key?: string
+          word: string
+          phonetic: string | null
+          part_of_speech: string | null
+          definition_cn?: string
+          question_type: string
+          prompt: string
+          options: string[]
+          correct_answer: string
+          option_details?: QuizOptionDetail[]
+        }>
+      >
+    >('/vocabulary/quiz/start', null, {
       params: { count },
     })
   },

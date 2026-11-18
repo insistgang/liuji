@@ -1,5 +1,5 @@
-import { type FormEvent, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { type FormEvent, useEffect, useRef, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   ArrowRight,
   BookOpen,
@@ -16,12 +16,15 @@ import {
 } from 'lucide-react'
 import LearningFeedback from '../components/LearningFeedback'
 import SpeakButton from '../components/vocabulary/SpeakButton'
+import SpellingPracticeBox from '../components/vocabulary/SpellingPracticeBox'
 import {
   buildChoices,
   buildSpellingHint,
   checkSpelling,
+  isDesktopFinePointer,
   maskWordInSentence,
   summarizeDefinition,
+  updateQueueAfterAnswer,
 } from '../lib/quiz'
 import { preloadWordAudio, speakText, useSpeechPreferences } from '../lib/speech'
 import { plainText } from '../lib/text'
@@ -36,7 +39,7 @@ import {
 } from '../store/dailyLibrary'
 
 type PracticeStyle = 'meaning' | 'listening' | 'spelling'
-type ReviewMethod = 'recall' | 'spelling'
+type ReviewMethod = 'recall' | PracticeStyle
 
 const PRACTICE_STYLE_KEY = 'liuji-practice-style'
 
@@ -44,6 +47,11 @@ const PRACTICE_STYLES: { id: PracticeStyle; label: string; icon: typeof BookOpen
   { id: 'meaning', label: '看词选义', icon: BookOpen },
   { id: 'listening', label: '听音辨义', icon: Headphones },
   { id: 'spelling', label: '拼写默写', icon: Keyboard },
+]
+
+const REVIEW_METHODS: { id: ReviewMethod; label: string; icon: typeof BookOpen }[] = [
+  { id: 'recall', label: '回忆自评', icon: Eye },
+  ...PRACTICE_STYLES,
 ]
 
 const RATINGS: { quality: ReviewQuality; keyHint: string; label: string; hint: string; color: string }[] = [
@@ -55,10 +63,14 @@ const RATINGS: { quality: ReviewQuality; keyHint: string; label: string; hint: s
 
 type Answer = { wordId: string; kind: 'correct' | 'wrong'; wrongChoiceId?: string }
 
+function isPracticeStyle(value: string | null): value is PracticeStyle {
+  return value === 'meaning' || value === 'listening' || value === 'spelling'
+}
+
 function readStoredPracticeStyle(): PracticeStyle {
   try {
     const raw = localStorage.getItem(PRACTICE_STYLE_KEY)
-    if (raw === 'meaning' || raw === 'listening' || raw === 'spelling') return raw
+    if (isPracticeStyle(raw)) return raw
   } catch {
     // 隐私模式无法读取时使用默认模式
   }
@@ -66,11 +78,23 @@ function readStoredPracticeStyle(): PracticeStyle {
 }
 
 export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: boolean }) {
+  const [searchParams, setSearchParams] = useSearchParams()
   const { library, error } = useDailyLibrary()
-  const { records, storageError, save } = useDailyRecords()
+  const { records, storageError, save, saveWrongPair } = useDailyRecords()
   const { accent, autoSpeak, setAutoSpeak } = useSpeechPreferences()
   const [mode, setMode] = useState<'learn' | 'review'>(reviewOnly ? 'review' : 'learn')
-  const [practiceStyle, setPracticeStyle] = useState<PracticeStyle>(() => readStoredPracticeStyle())
+  const [practiceStyle, setPracticeStyle] = useState<PracticeStyle>(() => {
+    const urlStyle = searchParams.get('style')
+    if (isPracticeStyle(urlStyle)) {
+      try {
+        localStorage.setItem(PRACTICE_STYLE_KEY, urlStyle)
+      } catch {
+        // Ignore storage failure
+      }
+      return urlStyle
+    }
+    return readStoredPracticeStyle()
+  })
   const [reviewMethod, setReviewMethod] = useState<ReviewMethod>('recall')
   const [selected, setSelected] = useState('')
   const [revealedId, setRevealedId] = useState<string | null>(null)
@@ -86,6 +110,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
     tone: 'success' | 'retry' | 'error'
     sequence: number
   } | null>(null)
+  const spellingInputRef = useRef<HTMLInputElement>(null)
   const today = day()
 
   const lesson = library
@@ -115,22 +140,31 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
   const result = current && answer?.wordId === current.id ? answer : null
   const hasResult = !!result
   const options = current ? buildChoices(current, all) : []
+  const wrongWord = result?.wrongChoiceId ? all.find((word) => word.id === result.wrongChoiceId) : null
 
   const currentId = current?.id
   const currentWord = current?.word
-  const isSpellingActive =
-    (mode === 'learn' && practiceStyle === 'spelling') ||
-    (mode === 'review' && reviewMethod === 'spelling')
-  const isListeningActive = mode === 'learn' && practiceStyle === 'listening'
+  const activeStyle: ReviewMethod = mode === 'learn' ? practiceStyle : reviewMethod
+  const isSpellingActive = activeStyle === 'spelling'
+  const isListeningActive = activeStyle === 'listening'
+  const isMeaningChoiceActive = activeStyle === 'meaning'
+  const isRecallReviewActive = mode === 'review' && reviewMethod === 'recall'
 
   // Preload dictionary audio for current word & auto-pronounce when enabled or in listening mode
   useEffect(() => {
     if (!currentId || !currentWord || hasResult) return
     preloadWordAudio(currentWord, accent)
-    if (autoSpeak || (mode === 'learn' && practiceStyle === 'listening')) {
+    if (autoSpeak || activeStyle === 'listening') {
       void speakText(currentWord, { accent, targetKey: `learn:${currentId}` })
     }
-  }, [currentId, currentWord, accent, autoSpeak, practiceStyle, mode, hasResult])
+  }, [currentId, currentWord, accent, autoSpeak, activeStyle, hasResult])
+
+  // Focus spelling input on desktop only (avoid mobile virtual keyboard jump)
+  useEffect(() => {
+    if (isSpellingActive && !hasResult && currentId && isDesktopFinePointer()) {
+      spellingInputRef.current?.focus()
+    }
+  }, [isSpellingActive, hasResult, currentId])
 
   function resetTransientState() {
     setRevealedId(null)
@@ -161,6 +195,9 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
     } catch {
       // Ignore storage failure
     }
+    if (searchParams.has('style')) {
+      setSearchParams({ style: next }, { replace: true })
+    }
     resetTransientState()
   }
 
@@ -177,24 +214,40 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
     if (!current || result) return
     const choice = options.find((option) => option.word.id === choiceId)
     if (!choice) return
-    if (!sessionQueue) setSessionQueue(unlearned.map((word) => word.id))
+    if (mode === 'learn' && !sessionQueue) {
+      setSessionQueue(unlearned.map((word) => word.id))
+    }
+
     if (choice.correct) {
       const record = save(current, true, 4)
       if (!record) {
         notify(`${current.word} 未保存，请检查浏览器存储权限后重试。`, 'error')
         return
       }
+      if (mode === 'review') {
+        setAttempts((value) => ({ ...value, [current.id]: (value[current.id] || 0) + 1 }))
+      }
       setAnswer({ wordId: current.id, kind: 'correct' })
       notify(`${current.word} 记住了！下次复习：${record.due}。`, 'success')
       return
     }
-    const record = save(current, false, 1)
-    if (!record) {
+
+    const confused = choice.word
+    const synced = saveWrongPair(current, confused)
+    if (!synced) {
       notify(`${current.word} 未保存，请检查浏览器存储权限后重试。`, 'error')
       return
     }
-    setAnswer({ wordId: current.id, kind: 'wrong', wrongChoiceId: choiceId })
-    notify(`${current.word} 答错了，已加入今天的重练队列。`, 'retry')
+    if (mode === 'review') {
+      setAttempts((value) => ({ ...value, [current.id]: (value[current.id] || 0) + 1 }))
+    }
+    setAnswer({ wordId: current.id, kind: 'wrong', wrongChoiceId: confused.id })
+    notify(
+      confused.id !== current.id
+        ? `${current.word} 答错了；误选对应的「${confused.word}」已同步加入今日待复习！`
+        : `${current.word} 答错了，已加入今天的重练队列。`,
+      'retry',
+    )
   }
 
   function submitSpellingResult(isCorrect: boolean, wrongAttempt = '') {
@@ -249,9 +302,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
     if (mode === 'learn') {
       const ids = sessionQueue ?? unlearned.map((word) => word.id)
       setSessionQueue(
-        result.kind === 'correct'
-          ? ids.filter((id) => id !== current.id)
-          : [...ids.slice(1), current.id],
+        updateQueueAfterAnswer(ids, current.id, result.kind === 'correct', result.wrongChoiceId),
       )
     }
     resetTransientState()
@@ -297,11 +348,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
         if (result) {
           event.preventDefault()
           continueAfterAnswer()
-        } else if (
-          ((mode === 'learn' && practiceStyle === 'meaning') ||
-            (mode === 'review' && reviewMethod === 'recall')) &&
-          !revealed
-        ) {
+        } else if ((isMeaningChoiceActive || isRecallReviewActive) && !revealed) {
           event.preventDefault()
           setRevealedId(current.id)
         }
@@ -311,14 +358,13 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
       if (['1', '2', '3', '4'].includes(key)) {
         const index = Number(key) - 1
         if (
-          mode === 'learn' &&
           !result &&
           options[index] &&
-          (practiceStyle === 'listening' || (practiceStyle === 'meaning' && revealed))
+          (isListeningActive || (isMeaningChoiceActive && revealed))
         ) {
           event.preventDefault()
           answerChoice(options[index].word.id)
-        } else if (mode === 'review' && reviewMethod === 'recall' && revealed && RATINGS[index]) {
+        } else if (isRecallReviewActive && revealed && RATINGS[index]) {
           event.preventDefault()
           rate(RATINGS[index].quality)
         }
@@ -365,17 +411,17 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
   const showHiddenWordHeader = !result && (isListeningActive || isSpellingActive)
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-5 sm:space-y-6">
       {/* Hero Banner */}
-      <header className="app-hero rounded-3xl p-6 md:p-8">
+      <header className="app-hero rounded-3xl p-5 sm:p-7 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur-xs">
-            <Sparkles size={13} className="app-hero-badge" aria-hidden="true" />
-            <span className="app-hero-badge">看词选义 · 听音辨义 · 拼写默写 · 艾宾浩斯复习</span>
+            <Sparkles size={13} className="app-hero-badge shrink-0" aria-hidden="true" />
+            <span className="app-hero-badge">看词 · 听音 · 拼写默写 · 艾宾浩斯复习</span>
           </span>
           <Link
             to="/daily"
-            className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-white/20"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-white/12 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-white/20"
           >
             <BookOpen size={13} aria-hidden="true" />
             查看词表、配图与讲义
@@ -383,22 +429,22 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
         </div>
 
         <h1 className="headword-font mt-3.5 text-2xl font-bold sm:text-3xl">词汇特训与间隔复习</h1>
-        <p className="mt-2 text-sm leading-6 text-white/80">
-          递增档位：{REVIEW_INTERVALS.join(' → ')} 天。「记得」进下一档，「很熟」跳一档，「有点难」保档，「忘记」当日重练。
+        <p className="mt-2 text-xs leading-5 text-white/80 sm:text-sm sm:leading-6">
+          递增档位：{REVIEW_INTERVALS.join(' → ')} 天。选错时将自动把本题词与误选释义对应词同步加入待复习队列。
         </p>
 
-        <div className="mt-5 grid grid-cols-3 gap-3">
+        <div className="mt-4 grid grid-cols-3 gap-2.5 sm:mt-5 sm:gap-3">
           <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-xs">
-            <p className="text-xs text-white/70">本期待学</p>
-            <p className="mt-0.5 text-xl font-bold">{unlearned.length} 词</p>
+            <p className="text-[11px] text-white/70 sm:text-xs">本期待学</p>
+            <p className="mt-0.5 text-lg font-bold sm:text-xl">{unlearned.length} 词</p>
           </div>
           <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-xs">
-            <p className="text-xs text-white/70">到期复习</p>
-            <p className="mt-0.5 text-xl font-bold">{due.length} 词</p>
+            <p className="text-[11px] text-white/70 sm:text-xs">到期复习</p>
+            <p className="mt-0.5 text-lg font-bold sm:text-xl">{due.length} 词</p>
           </div>
           <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-xs">
-            <p className="text-xs text-white/70">今日记住</p>
-            <p className="mt-0.5 text-xl font-bold">{completedToday} 词</p>
+            <p className="text-[11px] text-white/70 sm:text-xs">今日记住</p>
+            <p className="mt-0.5 text-lg font-bold sm:text-xl">{completedToday} 词</p>
           </div>
         </div>
       </header>
@@ -410,13 +456,13 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
       )}
 
       {/* Control Toolbar */}
-      <div className="app-card flex flex-col gap-3 rounded-2xl p-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2">
+      <div className="app-card flex flex-col gap-3 rounded-2xl p-3.5 sm:p-4">
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center">
             <button
               type="button"
               onClick={() => changeMode('learn')}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              className={`min-h-11 rounded-full px-3.5 py-2 text-xs font-medium transition-all sm:min-h-0 sm:px-4 sm:text-sm ${
                 mode === 'learn' ? 'app-accent-solid shadow-xs' : 'app-muted-pill'
               }`}
             >
@@ -425,7 +471,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
             <button
               type="button"
               onClick={() => changeMode('review')}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              className={`min-h-11 rounded-full px-3.5 py-2 text-xs font-medium transition-all sm:min-h-0 sm:px-4 sm:text-sm ${
                 mode === 'review' ? 'app-accent-solid shadow-xs' : 'app-muted-pill'
               }`}
             >
@@ -433,28 +479,26 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setAutoSpeak(!autoSpeak)}
-              aria-pressed={autoSpeak}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all ${
-                autoSpeak
-                  ? 'app-accent-soft border-[var(--accent-soft-border)] font-semibold'
-                  : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-secondary)]'
-              }`}
-            >
-              <Volume2 size={14} aria-hidden="true" />
-              自动朗读：{autoSpeak ? '开启' : '关闭'}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setAutoSpeak(!autoSpeak)}
+            aria-pressed={autoSpeak}
+            className={`inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all sm:min-h-0 ${
+              autoSpeak
+                ? 'app-accent-soft border-[var(--accent-soft-border)] font-semibold'
+                : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-secondary)]'
+            }`}
+          >
+            <Volume2 size={14} aria-hidden="true" />
+            自动朗读：{autoSpeak ? '开启' : '关闭'}
+          </button>
         </div>
 
         {/* Practice Mode Switcher + Lesson Picker */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border-subtle)] pt-3">
+        <div className="flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           {mode === 'learn' ? (
             <>
-              <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="特训模式">
+              <div className="grid w-full grid-cols-3 gap-1.5 sm:flex sm:w-auto sm:flex-wrap sm:items-center" role="group" aria-label="特训模式">
                 {PRACTICE_STYLES.map(({ id, label, icon: Icon }) => {
                   const active = practiceStyle === id
                   return (
@@ -462,7 +506,52 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                       key={id}
                       type="button"
                       onClick={() => changePracticeStyle(id)}
-                      className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
+                      className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border px-2.5 py-1.5 text-xs font-medium transition-all sm:min-h-0 sm:px-3 ${
+                        active
+                          ? 'app-accent-soft border-[var(--accent)] font-semibold'
+                          : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <Icon size={14} aria-hidden="true" />
+                      <span>{label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div className="flex w-full items-center gap-2 sm:w-auto">
+                <label htmlFor="vocabulary-lesson" className="shrink-0 text-xs font-medium text-[var(--text-secondary)]">
+                  期次
+                </label>
+                <select
+                  id="vocabulary-lesson"
+                  value={lesson.date}
+                  onChange={(event) => changeLesson(event.target.value)}
+                  className="app-input min-h-11 min-w-0 flex-1 rounded-xl px-3 py-1.5 text-xs font-medium sm:min-h-0 sm:flex-none"
+                >
+                  {library.lessons.map((item, idx) => (
+                    <option key={item.date} value={item.date}>
+                      {item.date} · 第 {library.lessons.length - idx} 期（{item.words.length} 词）
+                    </option>
+                  ))}
+                </select>
+                {lesson.date !== today && (
+                  <span className="shrink-0 text-[11px] text-amber-700 dark:text-amber-300">历史期次</span>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <span className="text-xs font-medium text-[var(--text-secondary)]">复习检验方式</span>
+              <div className="grid w-full grid-cols-2 gap-1.5 sm:flex sm:w-auto sm:flex-wrap sm:items-center" role="group" aria-label="复习检验方式">
+                {REVIEW_METHODS.map(({ id, label, icon: Icon }) => {
+                  const active = reviewMethod === id
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => changeReviewMethod(id)}
+                      className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all sm:min-h-0 ${
                         active
                           ? 'app-accent-soft border-[var(--accent)] font-semibold'
                           : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
@@ -473,57 +562,6 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                     </button>
                   )
                 })}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <label htmlFor="vocabulary-lesson" className="text-xs font-medium text-[var(--text-secondary)]">
-                  期次
-                </label>
-                <select
-                  id="vocabulary-lesson"
-                  value={lesson.date}
-                  onChange={(event) => changeLesson(event.target.value)}
-                  className="app-input rounded-xl px-3 py-1.5 text-xs font-medium"
-                >
-                  {library.lessons.map((item, idx) => (
-                    <option key={item.date} value={item.date}>
-                      {item.date} · 第 {library.lessons.length - idx} 期（{item.words.length} 词）
-                    </option>
-                  ))}
-                </select>
-                {lesson.date !== today && (
-                  <span className="text-[11px] text-amber-700 dark:text-amber-300">历史期次</span>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="flex w-full flex-wrap items-center justify-between gap-2">
-              <span className="text-xs font-medium text-[var(--text-secondary)]">复习检验方式</span>
-              <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="复习检验方式">
-                <button
-                  type="button"
-                  onClick={() => changeReviewMethod('recall')}
-                  className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
-                    reviewMethod === 'recall'
-                      ? 'app-accent-soft border-[var(--accent)] font-semibold'
-                      : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                  }`}
-                >
-                  <Eye size={14} aria-hidden="true" />
-                  回忆自评
-                </button>
-                <button
-                  type="button"
-                  onClick={() => changeReviewMethod('spelling')}
-                  className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
-                    reviewMethod === 'spelling'
-                      ? 'app-accent-soft border-[var(--accent)] font-semibold'
-                      : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                  }`}
-                >
-                  <Keyboard size={14} aria-hidden="true" />
-                  默写检验
-                </button>
               </div>
             </div>
           )}
@@ -553,7 +591,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
             />
           </div>
 
-          <div className="p-6 md:p-8">
+          <div className="p-4 sm:p-6 md:p-8">
             {/* Meta Row */}
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--text-muted)]">
               <span className="rounded-full bg-[var(--bg-muted)] px-3 py-1 font-medium text-[var(--text-secondary)]">
@@ -573,14 +611,14 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
               </p>
             )}
 
-            {/* Header: Standard Visible Headword vs Active-Recall Masked Prompt */}
+            {/* Header: Visible Headword vs Active-Recall Masked Prompt */}
             {!showHiddenWordHeader && (
               <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <h2 className="headword-font break-words text-4xl font-bold tracking-tight text-[var(--text-primary)] sm:text-5xl">
+                  <h2 className="headword-font break-words text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-5xl">
                     {current.word}
                   </h2>
-                  <p className="phonetic-font mt-2 text-base text-[var(--text-muted)]">
+                  <p className="phonetic-font mt-1.5 text-sm text-[var(--text-muted)] sm:mt-2 sm:text-base">
                     {current.phonetic}
                   </p>
                 </div>
@@ -593,11 +631,11 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
               </div>
             )}
 
-            {/* Learn Mode (Meaning): Step 1 - Recall */}
-            {mode === 'learn' && practiceStyle === 'meaning' && !revealed && (
+            {/* 4-Choice Meaning Mode: Step 1 - Recall */}
+            {isMeaningChoiceActive && !revealed && (
               <button
                 type="button"
-                className="app-accent-soft mt-8 flex w-full items-center justify-center gap-2 rounded-2xl border px-5 py-4 text-base font-semibold hover:opacity-95"
+                className="app-accent-soft mt-7 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border px-5 py-4 text-sm font-semibold hover:opacity-95 sm:mt-8 sm:text-base"
                 onClick={() => setRevealedId(current.id)}
               >
                 <Eye size={18} aria-hidden="true" />
@@ -605,19 +643,19 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
               </button>
             )}
 
-            {/* Learn Mode (Meaning): Step 2 - 4-Choice Selection */}
-            {mode === 'learn' && practiceStyle === 'meaning' && revealed && !result && (
-              <div className="mt-7 space-y-3">
+            {/* 4-Choice Meaning Mode: Step 2 - Selection */}
+            {isMeaningChoiceActive && revealed && !result && (
+              <div className="mt-6 space-y-3 sm:mt-7">
                 <p className="text-xs font-medium text-[var(--text-muted)]">
-                  选出最匹配的中文释义（支持数字键 1-4 选择）：
+                  选出最匹配的中文释义（选错时对应易混词将同步加入待复习）：
                 </p>
-                <div className="grid gap-3">
+                <div className="grid gap-2.5 sm:gap-3">
                   {options.map((option, idx) => (
                     <button
                       key={option.word.id}
                       type="button"
                       onClick={() => answerChoice(option.word.id)}
-                      className="group flex items-center gap-3.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3.5 text-left text-sm leading-6 text-[var(--text-primary)] hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]"
+                      className="group flex min-h-12 items-center gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3 text-left text-sm leading-6 text-[var(--text-primary)] hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]"
                     >
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-bold text-[var(--text-secondary)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent-text)]">
                         {String.fromCharCode(65 + idx)}
@@ -631,10 +669,10 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
               </div>
             )}
 
-            {/* Learn Mode (Listening): Direct Audio Prompt + 4 Choices */}
+            {/* Listening Mode: Direct Audio Prompt + 4 Choices */}
             {isListeningActive && !result && (
-              <div className="mt-6 space-y-5">
-                <div className="flex flex-col items-center gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-6 text-center">
+              <div className="mt-5 space-y-5 sm:mt-6">
+                <div className="flex flex-col items-center gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-5 text-center sm:p-6">
                   <SpeakButton
                     text={current.word}
                     targetKey={`learn:${current.id}`}
@@ -642,7 +680,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                     showAccentLabel
                   />
                   <p className="text-sm font-medium text-[var(--text-primary)]">
-                    请听真人发音，选出最匹配的中文释义（按 R 重播，数字 1-4 选择）
+                    请听真人发音，选出最匹配的中文释义
                   </p>
                   {showListeningPhonetic ? (
                     <p className="phonetic-font rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3.5 py-1 text-sm text-[var(--text-secondary)]">
@@ -652,7 +690,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                     <button
                       type="button"
                       onClick={() => setShowListeningPhonetic(true)}
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--accent-text)] hover:underline"
+                      className="inline-flex min-h-9 items-center gap-1.5 text-xs font-medium text-[var(--accent-text)] hover:underline"
                     >
                       <HelpCircle size={13} aria-hidden="true" />
                       听不清？显示音标提示
@@ -660,13 +698,13 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                   )}
                 </div>
 
-                <div className="grid gap-3">
+                <div className="grid gap-2.5 sm:gap-3">
                   {options.map((option, idx) => (
                     <button
                       key={option.word.id}
                       type="button"
                       onClick={() => answerChoice(option.word.id)}
-                      className="group flex items-center gap-3.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3.5 text-left text-sm leading-6 text-[var(--text-primary)] hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]"
+                      className="group flex min-h-12 items-center gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3 text-left text-sm leading-6 text-[var(--text-primary)] hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]"
                     >
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-bold text-[var(--text-secondary)] group-hover:border-[var(--accent)] group-hover:text-[var(--accent-text)]">
                         {String.fromCharCode(65 + idx)}
@@ -682,13 +720,13 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
 
             {/* Spelling Dictation Mode (Learn Spelling or Review Spelling) */}
             {isSpellingActive && !result && (
-              <div className="mt-5 space-y-5">
-                <div className="flex flex-wrap items-start justify-between gap-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-5">
+              <div className="mt-4 space-y-4 sm:mt-5 sm:space-y-5">
+                <div className="flex flex-wrap items-start justify-between gap-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-4 sm:p-5">
                   <div className="min-w-0 flex-1 space-y-1.5">
                     <p className="text-xs font-semibold uppercase tracking-wide text-[var(--accent-text)]">
                       根据释义与语境拼写单词
                     </p>
-                    <p className="text-lg font-bold leading-7 text-[var(--text-primary)]">
+                    <p className="text-base font-bold leading-7 text-[var(--text-primary)] sm:text-lg">
                       {current.definition_cn}
                     </p>
                     <p className="phonetic-font text-sm text-[var(--text-muted)]">{current.phonetic}</p>
@@ -711,14 +749,14 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
 
                 {/* Letter Mask + Hint Toggle */}
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-[var(--border-strong)] px-4 py-3">
-                  <span className="phonetic-font text-sm tracking-wide text-[var(--text-secondary)]">
+                  <span className="phonetic-font break-words text-sm tracking-wide text-[var(--text-secondary)]">
                     {buildSpellingHint(current.word, showEdgeHint)}
                   </span>
                   <button
                     type="button"
                     disabled={showEdgeHint}
                     onClick={() => setShowEdgeHint(true)}
-                    className="app-muted-pill rounded-lg px-3 py-1 text-xs font-medium disabled:opacity-45"
+                    className="app-muted-pill min-h-9 rounded-lg px-3 py-1.5 text-xs font-medium disabled:opacity-45"
                   >
                     {showEdgeHint ? '已显示首尾字母' : '提示首尾字母'}
                   </button>
@@ -730,30 +768,32 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                     输入英文单词或短语
                   </label>
                   <input
+                    ref={spellingInputRef}
                     id="spelling-answer"
                     type="text"
+                    inputMode="text"
+                    enterKeyHint="done"
                     value={spellingInput}
                     onChange={(event) => setSpellingInput(event.target.value)}
-                    autoFocus
                     autoComplete="off"
                     autoCapitalize="none"
                     autoCorrect="off"
                     spellCheck={false}
-                    placeholder="输入英文单词或短语，回车提交…"
-                    className="app-input headword-font w-full rounded-2xl px-4 py-3.5 text-lg font-medium"
+                    placeholder="输入英文单词或短语，提交核对…"
+                    className="app-input headword-font min-h-12 w-full rounded-2xl px-4 py-3 text-base font-medium sm:text-lg"
                   />
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-col gap-2.5 sm:flex-row">
                     <button
                       type="submit"
                       disabled={!spellingInput.trim()}
-                      className="app-accent-solid flex-1 rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm disabled:opacity-45"
+                      className="app-accent-solid min-h-12 flex-1 rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm disabled:opacity-45"
                     >
                       提交默写
                     </button>
                     <button
                       type="button"
                       onClick={giveUpSpelling}
-                      className="app-muted-pill rounded-2xl px-5 py-3 text-sm font-medium"
+                      className="app-muted-pill min-h-12 rounded-2xl px-5 py-3 text-sm font-medium"
                     >
                       不会写，查看答案
                     </button>
@@ -762,9 +802,9 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
               </div>
             )}
 
-            {/* Answer Explanation (Shared across Meaning / Listening / Spelling Learn & Review Spelling) */}
+            {/* Answer Explanation + Confused-Word Comparison + Post-Error Spelling */}
             {result && (
-              <div className="mt-6 space-y-4">
+              <div className="mt-5 space-y-4 sm:mt-6">
                 <div
                   className={`flex items-start gap-2.5 rounded-2xl border px-4 py-3.5 text-sm leading-6 ${
                     result.kind === 'correct'
@@ -780,15 +820,72 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                   <span>
                     {result.kind === 'correct'
                       ? mode === 'review'
-                        ? '默写正确！该词已按艾宾浩斯节奏进入下一复习阶段。'
+                        ? isSpellingActive
+                          ? '默写正确！该词已按艾宾浩斯节奏进入下一复习阶段。'
+                          : '复习正确！该词已进入下一复习阶段。'
                         : '回答正确！该词已正式纳入艾宾浩斯复习计划。'
                       : typedWrong
-                        ? `你输入的是「${typedWrong}」，正确拼写为「${current.word}」。本轮稍后会再次抽考巩固。`
+                        ? `你输入的是「${typedWrong}」，正确拼写为「${current.word}」。已加入今日重练。`
                         : isSpellingActive
                           ? `正确拼写为「${current.word}」。已加入重练队列，记住发音和词根后再试。`
-                          : `选错了，核心释义是「${summarizeDefinition(current.definition_cn)}」。本轮稍后会再次抽考巩固。`}
+                          : wrongWord && wrongWord.id !== current.id
+                            ? `选错了，本题释义是「${summarizeDefinition(current.definition_cn)}」；你误选的是「${wrongWord.word}」的释义，两词已同步加入今日待复习！`
+                            : `选错了，核心释义是「${summarizeDefinition(current.definition_cn)}」。本轮稍后会再次抽考巩固。`}
                   </span>
                 </div>
+
+                {/* Confused-Word Side-by-Side Comparison Sync */}
+                {result.kind === 'wrong' && wrongWord && wrongWord.id !== current.id && (
+                  <div className="space-y-3 rounded-2xl border border-amber-500/30 bg-amber-500/8 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-amber-800 dark:text-amber-300">
+                        易混词同步对照（均已加入今日待复习）
+                      </span>
+                      <span className="text-[11px] text-[var(--text-muted)]">
+                        点击喇叭听音辨析
+                      </span>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="min-w-0 space-y-1.5 rounded-xl border border-emerald-500/30 bg-[var(--bg-surface)] p-3.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="rounded-md bg-emerald-500/12 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                            本题目标词 · 已入重练
+                          </span>
+                          <SpeakButton
+                            text={current.word}
+                            targetKey={`cmp-target:${current.id}`}
+                            variant="inline"
+                            showAccentLabel
+                          />
+                        </div>
+                        <p className="headword-font break-words text-lg font-bold text-[var(--text-primary)]">
+                          {current.word}
+                        </p>
+                        <p className="phonetic-font text-xs text-[var(--text-muted)]">{current.phonetic}</p>
+                        <p className="text-xs leading-5 text-[var(--text-secondary)]">{current.definition_cn}</p>
+                      </div>
+
+                      <div className="min-w-0 space-y-1.5 rounded-xl border border-rose-500/30 bg-[var(--bg-surface)] p-3.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="rounded-md bg-rose-500/12 px-2 py-0.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">
+                            误选对应词 · 已同步复习
+                          </span>
+                          <SpeakButton
+                            text={wrongWord.word}
+                            targetKey={`cmp-wrong:${wrongWord.id}`}
+                            variant="inline"
+                            showAccentLabel
+                          />
+                        </div>
+                        <p className="headword-font break-words text-lg font-bold text-[var(--text-primary)]">
+                          {wrongWord.word}
+                        </p>
+                        <p className="phonetic-font text-xs text-[var(--text-muted)]">{wrongWord.phonetic}</p>
+                        <p className="text-xs leading-5 text-[var(--text-secondary)]">{wrongWord.definition_cn}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-4 sm:p-5 space-y-3">
                   <p className="text-base font-semibold leading-7 text-[var(--text-primary)]">
@@ -819,9 +916,19 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                   </div>
                 )}
 
+                {/* Post-Error Inline Spelling Reinforcement */}
+                {result.kind === 'wrong' && !isSpellingActive && (
+                  <SpellingPracticeBox
+                    word={current.word}
+                    targetKey={`reinforce:${current.id}`}
+                    promptLabel="错词手写拼一遍巩固记忆（选填）"
+                    autoFocusDesktop={false}
+                  />
+                )}
+
                 <button
                   type="button"
-                  className="app-accent-solid flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-base font-semibold shadow-sm"
+                  className="app-accent-solid flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-base font-semibold shadow-sm"
                   onClick={continueAfterAnswer}
                 >
                   <span>继续下一个</span>
@@ -831,10 +938,10 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
             )}
 
             {/* Review Mode (Recall): Step 1 - Recall */}
-            {mode === 'review' && reviewMethod === 'recall' && !revealed && (
+            {isRecallReviewActive && !revealed && (
               <button
                 type="button"
-                className="app-accent-soft mt-8 flex w-full items-center justify-center gap-2 rounded-2xl border px-5 py-4 text-base font-semibold hover:opacity-95"
+                className="app-accent-soft mt-7 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border px-5 py-4 text-sm font-semibold hover:opacity-95 sm:mt-8 sm:text-base"
                 onClick={() => setRevealedId(current.id)}
               >
                 <Eye size={18} aria-hidden="true" />
@@ -843,7 +950,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
             )}
 
             {/* Review Mode (Recall): Step 2 - Self Rating */}
-            {mode === 'review' && reviewMethod === 'recall' && revealed && (
+            {isRecallReviewActive && revealed && (
               <div className="mt-6 space-y-4">
                 <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-4 sm:p-5 space-y-3">
                   <p className="text-base font-semibold leading-7 text-[var(--text-primary)]">
@@ -874,13 +981,13 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-4">
+                <div className="grid grid-cols-2 gap-2.5 pt-2 sm:grid-cols-4 sm:gap-3">
                   {RATINGS.map((rating) => (
                     <button
                       key={rating.quality}
                       type="button"
                       onClick={() => rate(rating.quality)}
-                      className={`rounded-2xl px-4 py-3 text-white shadow-xs transition-all ${rating.color}`}
+                      className={`min-h-14 rounded-2xl px-4 py-3 text-white shadow-xs transition-all ${rating.color}`}
                     >
                       <span className="block text-sm font-semibold">
                         {rating.keyHint}. {rating.label}
@@ -937,7 +1044,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
       )}
 
       {/* 7-Day Review Forecast */}
-      <section className="app-card rounded-2xl p-5 sm:p-6">
+      <section className="app-card rounded-2xl p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-base font-bold text-[var(--text-primary)]">未来 7 天复习量预测</h2>
           {due.length > 0 && (
@@ -952,7 +1059,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
             const barPct = item.count === 0 ? 0 : Math.max(6, Math.round((item.count / maxForecast) * 100))
             return (
               <li key={item.date} className="flex items-center gap-3">
-                <span className="w-24 shrink-0 text-xs font-medium text-[var(--text-secondary)]">
+                <span className="w-16 shrink-0 text-xs font-medium text-[var(--text-secondary)] sm:w-24">
                   {item.date === today ? '今天' : item.date.slice(5)}
                 </span>
                 <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-[var(--bg-muted)]">
@@ -962,7 +1069,7 @@ export default function VocabularyLearn({ reviewOnly = false }: { reviewOnly?: b
                     aria-hidden="true"
                   />
                 </div>
-                <span className="w-14 shrink-0 text-right text-xs font-semibold text-[var(--text-primary)]">
+                <span className="w-12 shrink-0 text-right text-xs font-semibold text-[var(--text-primary)] sm:w-14">
                   {item.count} 词
                 </span>
               </li>

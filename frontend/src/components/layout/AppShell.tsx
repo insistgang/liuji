@@ -10,9 +10,9 @@ export default function AppShell() {
     <div className="app-canvas flex min-h-screen">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="app-topbar sticky top-0 z-40 px-4 py-2.5 md:px-8">
-          <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-2.5">
+        <header className="app-topbar sticky top-0 z-40 px-3 py-2.5 sm:px-4 md:px-8">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 sm:gap-3">
+            <div className="flex min-w-0 items-center gap-2 sm:gap-2.5">
               <span className="app-accent-solid flex h-8 w-8 shrink-0 items-center justify-center rounded-xl shadow-xs md:hidden">
                 <GraduationCap size={17} aria-hidden="true" />
               </span>
@@ -32,8 +32,8 @@ export default function AppShell() {
           </div>
         </header>
 
-        <main className="min-w-0 flex-1 pb-24 md:pb-10">
-          <div className="mx-auto max-w-5xl px-4 py-5 md:px-8 md:py-7">
+        <main className="pb-main-safe min-w-0 flex-1">
+          <div className="mx-auto max-w-5xl px-3.5 py-4 sm:px-4 sm:py-5 md:px-8 md:py-7">
             <Outlet />
           </div>
         </main>

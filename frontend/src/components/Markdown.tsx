@@ -47,7 +47,7 @@ function inline(text: string): ReactNode[] {
             href={m[2]}
             target="_blank"
             rel="noreferrer"
-            className="font-medium text-[var(--accent-text)] underline underline-offset-3"
+            className="font-medium text-[var(--accent-text)] underline underline-offset-3 [overflow-wrap:anywhere]"
           >
             {m[1]}
           </a>,
@@ -127,10 +127,10 @@ function blocks(source: string): ReactNode[] {
       const h3Word = level === 3 ? text.match(/^(\d+)\.\s+([A-Za-z][A-Za-z\s'-]*?)(?:\s+(\/.*))?$/) : null
       const cls =
         level === 1
-          ? 'headword-font text-2xl font-bold text-[var(--text-primary)] mt-6 mb-4'
+          ? 'headword-font break-words text-2xl font-bold text-[var(--text-primary)] mt-6 mb-4'
           : level === 2
-            ? 'text-lg font-bold text-[var(--text-primary)] mt-8 mb-3 pb-2 border-b border-[var(--border-subtle)]'
-            : 'text-base font-semibold text-[var(--accent-text)] mt-5 mb-2 flex flex-wrap items-center gap-2'
+            ? 'break-words text-lg font-bold text-[var(--text-primary)] mt-8 mb-3 pb-2 border-b border-[var(--border-subtle)]'
+            : 'break-words text-base font-semibold text-[var(--accent-text)] mt-5 mb-2 flex flex-wrap items-center gap-2'
       out.push(
         <div key={key++} className={cls}>
           <span>{inline(text)}</span>
@@ -162,7 +162,7 @@ function blocks(source: string): ReactNode[] {
           className="my-4 space-y-2 rounded-r-xl border-l-4 border-[var(--accent)] bg-[var(--accent-soft)] px-4 py-3 text-sm text-[var(--text-secondary)]"
         >
           {quote.map((q, j) => (
-            <p key={j} className="leading-7">
+            <p key={j} className="break-words leading-7">
               {inline(q)}
             </p>
           ))}
@@ -203,17 +203,17 @@ function blocks(source: string): ReactNode[] {
       }
       out.push(
         ordered ? (
-          <ol key={key++} className="my-3 list-decimal space-y-2 pl-6 text-[var(--text-secondary)]">
+          <ol key={key++} className="my-3 list-decimal space-y-2 pl-5 sm:pl-6 text-[var(--text-secondary)]">
             {items.map((item, j) => (
-              <li key={j} className="leading-7">
+              <li key={j} className="break-words leading-7">
                 {inline(item)}
               </li>
             ))}
           </ol>
         ) : (
-          <ul key={key++} className="my-3 list-disc space-y-1.5 pl-6 text-[var(--text-secondary)]">
+          <ul key={key++} className="my-3 list-disc space-y-1.5 pl-5 sm:pl-6 text-[var(--text-secondary)]">
             {items.map((item, j) => (
-              <li key={j} className="leading-7">
+              <li key={j} className="break-words leading-7">
                 {inline(item)}
               </li>
             ))}
@@ -255,7 +255,7 @@ function blocks(source: string): ReactNode[] {
       i++
     }
     out.push(
-      <p key={key++} className="my-3 leading-8 text-[var(--text-secondary)]">
+      <p key={key++} className="my-3 break-words leading-8 text-[var(--text-secondary)]">
         {inline(paragraph.join(' '))}
       </p>,
     )
@@ -265,7 +265,7 @@ function blocks(source: string): ReactNode[] {
 
 export default function Markdown({ source }: { source: string }) {
   return (
-    <article className="markdown-body text-[15px]">
+    <article className="markdown-body min-w-0 break-words [overflow-wrap:anywhere] text-[15px]">
       {blocks(source).map((node, i) => (
         <Fragment key={i}>{node}</Fragment>
       ))}

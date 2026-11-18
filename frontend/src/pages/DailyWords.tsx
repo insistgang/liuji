@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
+  Keyboard,
   Lightbulb,
   Maximize2,
   RotateCcw,
@@ -18,6 +19,8 @@ import {
 import Markdown from '../components/Markdown'
 import LearningFeedback from '../components/LearningFeedback'
 import SpeakButton from '../components/vocabulary/SpeakButton'
+import SpellingPracticeBox from '../components/vocabulary/SpellingPracticeBox'
+import { buildSpellingHint, maskWordInSentence } from '../lib/quiz'
 import { plainText } from '../lib/text'
 import { day, useDailyLibrary, useDailyRecords, type DailyWord, type RecordEntry } from '../store/dailyLibrary'
 
@@ -34,6 +37,8 @@ export default function DailyWords() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [visibleLimit, setVisibleLimit] = useState(PAGE_STEP)
+  const [spellingOpenIds, setSpellingOpenIds] = useState<Record<string, boolean>>({})
+  const [solvedSpellingIds, setSolvedSpellingIds] = useState<Record<string, boolean>>({})
   const [zoomImage, setZoomImage] = useState<{ src: string; caption: string } | null>(null)
   const [feedback, setFeedback] = useState<{
     word: string
@@ -60,6 +65,11 @@ export default function DailyWords() {
       record,
       sequence: (previous?.sequence || 0) + 1,
     }))
+  }
+
+  function toggleSpelling(wordId: string) {
+    setSpellingOpenIds((prev) => ({ ...prev, [wordId]: !prev[wordId] }))
+    setSolvedSpellingIds((prev) => ({ ...prev, [wordId]: false }))
   }
 
   if (error) {
@@ -142,11 +152,11 @@ export default function DailyWords() {
   return (
     <div className="space-y-6">
       {/* Hero Header */}
-      <header className="app-hero relative overflow-hidden rounded-3xl p-6 md:p-9">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <header className="app-hero relative overflow-hidden rounded-3xl p-5 sm:p-7 md:p-9">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur-xs">
-              <Sparkles size={13} className="app-hero-badge" aria-hidden="true" />
+              <Sparkles size={13} className="app-hero-badge shrink-0" aria-hidden="true" />
               <span className="app-hero-badge">每日英语单词知识库 · 共 {library.lessons.length} 期 {library.total_words} 词</span>
             </div>
             <h1 className="headword-font text-2xl font-bold tracking-tight sm:text-3xl">
@@ -157,13 +167,22 @@ export default function DailyWords() {
             </p>
           </div>
 
-          <Link
-            to="/vocabulary/learn"
-            className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-md hover:bg-white/95 lg:self-auto"
-          >
-            <Brain size={17} aria-hidden="true" />
-            进入四选一特训
-          </Link>
+          <div className="grid w-full grid-cols-2 gap-2.5 sm:flex sm:w-auto sm:flex-wrap lg:shrink-0">
+            <Link
+              to="/vocabulary/learn?style=meaning"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-md hover:bg-white/95"
+            >
+              <Brain size={17} aria-hidden="true" />
+              四选一特训
+            </Link>
+            <Link
+              to="/vocabulary/learn?style=spelling"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-white/25 bg-white/12 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-xs hover:bg-white/20"
+            >
+              <Keyboard size={17} aria-hidden="true" />
+              拼写默写
+            </Link>
+          </div>
         </div>
 
         {/* Stat Grid */}
@@ -220,9 +239,9 @@ export default function DailyWords() {
       )}
 
       {/* Navigation Tabs + Lesson Date Switcher */}
-      <div className="app-card flex flex-col gap-4 rounded-2xl p-4 sm:p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="词库导航">
+      <div className="app-card flex flex-col gap-4 rounded-2xl p-3.5 sm:p-5">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap" role="tablist" aria-label="词库导航">
             {(
               [
                 ['lesson', '每日 20 词', `${lesson.words.length}`],
@@ -242,15 +261,15 @@ export default function DailyWords() {
                     setTab(key)
                     if (key === 'library') setVisibleLimit(PAGE_STEP)
                   }}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                  className={`inline-flex min-h-11 items-center justify-between gap-2 rounded-2xl px-3.5 py-2 text-xs font-medium transition-all sm:min-h-0 sm:justify-center sm:rounded-full sm:px-4 sm:text-sm ${
                     active
                       ? 'app-accent-solid shadow-xs'
                       : 'app-muted-pill border border-transparent'
                   }`}
                 >
-                  <span>{label}</span>
+                  <span className="truncate">{label}</span>
                   <span
-                    className={`rounded-full px-2 py-0.5 text-[11px] ${
+                    className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] ${
                       active
                         ? 'bg-white/20 text-white'
                         : 'bg-[var(--bg-surface)] text-[var(--text-muted)]'
@@ -264,14 +283,14 @@ export default function DailyWords() {
           </div>
 
           {(tab === 'lesson' || tab === 'source') && (
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex w-full items-center gap-2 sm:w-auto">
               <button
                 type="button"
                 disabled={!hasOlderLesson}
                 onClick={() => setSelected(library.lessons[lessonIndex + 1].date)}
                 aria-label="查看上一期（更早日期）"
                 title="上一期（更早）"
-                className="app-input inline-flex h-10 w-10 items-center justify-center rounded-xl disabled:opacity-35"
+                className="app-input inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl disabled:opacity-35 sm:h-10 sm:w-10"
               >
                 <ChevronLeft size={17} aria-hidden="true" />
               </button>
@@ -282,7 +301,7 @@ export default function DailyWords() {
                 id="lesson-date"
                 value={lesson.date}
                 onChange={(event) => setSelected(event.target.value)}
-                className="app-input h-10 rounded-xl px-3.5 text-sm font-medium"
+                className="app-input h-11 min-w-0 flex-1 rounded-xl px-3 text-sm font-medium sm:h-10 sm:flex-none"
               >
                 {library.lessons.map((item, idx) => (
                   <option key={item.date} value={item.date}>
@@ -296,7 +315,7 @@ export default function DailyWords() {
                 onClick={() => setSelected(library.lessons[lessonIndex - 1].date)}
                 aria-label="查看下一期（更新日期）"
                 title="下一期（更新）"
-                className="app-input inline-flex h-10 w-10 items-center justify-center rounded-xl disabled:opacity-35"
+                className="app-input inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl disabled:opacity-35 sm:h-10 sm:w-10"
               >
                 <ChevronRight size={17} aria-hidden="true" />
               </button>
@@ -445,11 +464,16 @@ export default function DailyWords() {
               const statusTone = !rec ? 'unlearned' : rec.interval > 0 ? 'remembered' : 'retry'
               const wordDate = word.id.split(':')[0]
               const cleanExample = plainText(word.example_en)
+              const isSpellingOpen = !!spellingOpenIds[word.id]
+              const hideHeadwordForSpell = isSpellingOpen && !solvedSpellingIds[word.id]
+              const visibleExample = hideHeadwordForSpell
+                ? maskWordInSentence(cleanExample, word.word)
+                : cleanExample
 
               return (
                 <article
                   key={word.id}
-                  className={`app-card-interactive flex flex-col justify-between rounded-2xl p-5 sm:p-6 ${
+                  className={`app-card-interactive min-w-0 flex flex-col justify-between rounded-2xl p-4 sm:p-6 ${
                     statusTone === 'remembered'
                       ? 'border-teal-500/35'
                       : statusTone === 'retry'
@@ -460,7 +484,7 @@ export default function DailyWords() {
                   <div>
                     {/* Card Top Meta */}
                     <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="rounded-md bg-[var(--bg-muted)] px-2 py-0.5 font-medium text-[var(--text-secondary)]">
+                      <span className="truncate rounded-md bg-[var(--bg-muted)] px-2 py-0.5 font-medium text-[var(--text-secondary)]">
                         #{String(word.no).padStart(2, '0')} · {word.group.replace(/（.*?）/, '')} · {wordDate.slice(5)}
                       </span>
                       <span
@@ -482,10 +506,21 @@ export default function DailyWords() {
 
                     {/* Headword + Pronunciation */}
                     <div className="mt-3 flex items-center justify-between gap-3">
-                      <div className="min-w-0">
-                        <h2 className="headword-font break-words text-2xl font-bold text-[var(--text-primary)]">
-                          {word.word}
-                        </h2>
+                      <div className="min-w-0 flex-1">
+                        {hideHeadwordForSpell ? (
+                          <div className="space-y-1">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-[var(--accent-soft)] px-2 py-0.5 text-[11px] font-semibold text-[var(--accent-text)]">
+                              拼写默写中
+                            </span>
+                            <p className="phonetic-font break-words text-base font-medium tracking-wide text-[var(--text-secondary)]">
+                              {buildSpellingHint(word.word, false)}
+                            </p>
+                          </div>
+                        ) : (
+                          <h2 className="headword-font break-words text-2xl font-bold text-[var(--text-primary)]">
+                            {word.word}
+                          </h2>
+                        )}
                         <p className="phonetic-font mt-0.5 text-sm text-[var(--text-muted)]">
                           {word.phonetic}
                         </p>
@@ -498,7 +533,7 @@ export default function DailyWords() {
                     </div>
 
                     {/* Definition */}
-                    {tab === 'review' ? (
+                    {tab === 'review' && !isSpellingOpen ? (
                       <details className="mt-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-3.5">
                         <summary className="flex cursor-pointer items-center justify-between text-sm font-medium text-[var(--accent-text)]">
                           <span>先在脑海回忆词义，再点击揭晓</span>
@@ -514,6 +549,24 @@ export default function DailyWords() {
                       </p>
                     )}
 
+                    {/* Inline Spelling Mode Box */}
+                    {isSpellingOpen && (
+                      <SpellingPracticeBox
+                        word={word.word}
+                        targetKey={`daily-spell:${word.id}`}
+                        promptLabel="卡片默写（对则记住 · 错入重练）"
+                        onResult={(isCorrect) => {
+                          if (isCorrect) {
+                            setSolvedSpellingIds((prev) => ({ ...prev, [word.id]: true }))
+                            answer(word, true)
+                          } else {
+                            answer(word, false)
+                          }
+                        }}
+                        onClose={() => toggleSpelling(word.id)}
+                      />
+                    )}
+
                     {/* Example Sentence & Memory Tip */}
                     <details className="mt-3.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-3.5 py-2.5">
                       <summary className="flex cursor-pointer items-center justify-between py-0.5 text-xs font-medium text-[var(--accent-text)]">
@@ -526,7 +579,7 @@ export default function DailyWords() {
 
                       <div className="mt-3 space-y-2.5 border-t border-[var(--border-subtle)] pt-3 text-sm">
                         <div className="flex items-start justify-between gap-2.5">
-                          <p className="leading-6 text-[var(--text-primary)]">{cleanExample}</p>
+                          <p className="leading-6 text-[var(--text-primary)]">{visibleExample}</p>
                           <SpeakButton
                             text={cleanExample}
                             targetKey={`ex:${word.id}`}
@@ -565,22 +618,35 @@ export default function DailyWords() {
                       </p>
                     )}
 
-                    <div className="grid grid-cols-2 gap-2.5">
+                    <div className="grid grid-cols-3 gap-2">
                       <button
                         type="button"
-                        className="app-accent-solid inline-flex min-h-10 items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium shadow-2xs"
+                        className="app-accent-solid inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-xs sm:text-sm font-medium shadow-2xs"
                         onClick={() => answer(word, true)}
                       >
-                        <Check size={16} aria-hidden="true" />
+                        <Check size={15} aria-hidden="true" />
                         记住了
                       </button>
                       <button
                         type="button"
-                        className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-900 hover:bg-amber-500/20 dark:text-amber-200"
+                        className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2.5 py-2 text-xs sm:text-sm font-medium text-amber-900 hover:bg-amber-500/20 dark:text-amber-200"
                         onClick={() => answer(word, false)}
                       >
-                        <RotateCcw size={15} aria-hidden="true" />
+                        <RotateCcw size={14} aria-hidden="true" />
                         还不熟
+                      </button>
+                      <button
+                        type="button"
+                        aria-pressed={isSpellingOpen}
+                        className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border px-2.5 py-2 text-xs sm:text-sm font-medium transition-all ${
+                          isSpellingOpen
+                            ? 'app-accent-soft border-[var(--accent)] font-semibold'
+                            : 'border-[var(--border-subtle)] bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
+                        }`}
+                        onClick={() => toggleSpelling(word.id)}
+                      >
+                        <Keyboard size={14} aria-hidden="true" />
+                        拼写
                       </button>
                     </div>
                   </div>

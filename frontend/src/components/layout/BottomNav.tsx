@@ -24,13 +24,13 @@ export default function BottomNav() {
       aria-label="底部导航"
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--border-subtle)] bg-[var(--bg-elevated)] backdrop-blur-xl pb-safe"
     >
-      <div className="mx-auto flex max-w-lg justify-around px-2 py-1.5">
+      <div className="mx-auto flex max-w-lg items-stretch gap-1 px-2 py-1.5">
         {visibleItems.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex min-w-15 flex-col items-center gap-0.5 rounded-xl px-2.5 py-1.5 text-[11px] font-medium transition-all ${
+              `flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-1.5 py-1.5 text-[11px] font-medium transition-all ${
                 isActive
                   ? 'app-accent-soft text-[var(--accent-text)] font-semibold'
                   : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'

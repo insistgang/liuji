@@ -254,7 +254,7 @@ export default function Profile() {
       </section>
 
       {/* Progress Backup & Cross-Device Sync */}
-      <section id="backup" className="app-card space-y-5 rounded-2xl p-6">
+      <section id="backup" className="app-card space-y-5 rounded-2xl p-4 sm:p-6">
         <div>
           <h3 className="text-base font-bold text-[var(--text-primary)]">学习记录备份与跨设备同步</h3>
           <p className="mt-0.5 text-xs leading-5 text-[var(--text-muted)]">
@@ -290,11 +290,11 @@ export default function Profile() {
         )}
 
         {/* Export Controls */}
-        <div className="flex flex-wrap gap-3">
+        <div className="grid grid-cols-1 gap-2.5 sm:flex sm:flex-wrap sm:gap-3">
           <button
             type="button"
             onClick={handleExportJson}
-            className="app-accent-solid inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold shadow-xs"
+            className="app-accent-solid inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold shadow-xs"
           >
             <Download size={15} aria-hidden="true" />
             导出 JSON 备份
@@ -302,12 +302,12 @@ export default function Profile() {
           <button
             type="button"
             onClick={() => void handleCopySyncCode()}
-            className="app-muted-pill inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold"
+            className="app-muted-pill inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold"
           >
             <Copy size={15} aria-hidden="true" />
             复制跨设备同步码
           </button>
-          <label className="app-muted-pill inline-flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold">
+          <label className="app-muted-pill inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold">
             <Upload size={15} aria-hidden="true" />
             <span>从 JSON 文件导入</span>
             <input
@@ -320,21 +320,21 @@ export default function Profile() {
         </div>
 
         {/* Import Mode & Paste Box */}
-        <div className="space-y-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="space-y-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] p-3.5 sm:p-4">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span className="text-xs font-medium text-[var(--text-secondary)]">导入方式</span>
-            <div className="flex flex-wrap gap-1.5" role="group" aria-label="导入方式">
+            <div className="grid w-full grid-cols-2 gap-1.5 sm:flex sm:w-auto" role="group" aria-label="导入方式">
               <button
                 type="button"
                 onClick={() => {
                   setImportMode('merge')
                   setConfirmReplace(false)
                 }}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+                className={`min-h-10 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all sm:min-h-0 sm:px-3 ${
                   importMode === 'merge' ? 'app-accent-solid shadow-2xs' : 'app-muted-pill'
                 }`}
               >
-                智能合并（推荐 · 保留多端进度）
+                智能合并（推荐）
               </button>
               <button
                 type="button"
@@ -342,7 +342,7 @@ export default function Profile() {
                   setImportMode('replace')
                   setConfirmReplace(false)
                 }}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+                className={`min-h-10 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all sm:min-h-0 sm:px-3 ${
                   importMode === 'replace' ? 'app-accent-solid shadow-2xs' : 'app-muted-pill'
                 }`}
               >
@@ -369,7 +369,7 @@ export default function Profile() {
           </div>
 
           {confirmReplace ? (
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-500/35 bg-amber-500/12 p-3 text-xs text-amber-900 dark:text-amber-200">
+            <div className="flex flex-col gap-3 rounded-xl border border-amber-500/35 bg-amber-500/12 p-3 text-xs text-amber-900 dark:text-amber-200 sm:flex-row sm:items-center sm:justify-between">
               <span>
                 确认覆盖本地现有的 <strong>{learnedCount}</strong> 条学习记录？此操作不可撤销。
               </span>
@@ -377,29 +377,29 @@ export default function Profile() {
                 <button
                   type="button"
                   onClick={() => executeImport(importText, 'replace')}
-                  className="rounded-lg bg-rose-600 px-3.5 py-1.5 font-semibold text-white hover:bg-rose-700"
+                  className="min-h-10 flex-1 rounded-lg bg-rose-600 px-3.5 py-1.5 font-semibold text-white hover:bg-rose-700 sm:min-h-0 sm:flex-none"
                 >
                   确认覆盖导入
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmReplace(false)}
-                  className="app-muted-pill rounded-lg px-3.5 py-1.5 font-medium"
+                  className="app-muted-pill min-h-10 flex-1 rounded-lg px-3.5 py-1.5 font-medium sm:min-h-0 sm:flex-none"
                 >
                   取消
                 </button>
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-[11px] text-[var(--text-muted)]">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <span className="text-[11px] leading-4 text-[var(--text-muted)]">
                 合并模式会保留双端最早学习日、完整打卡记录与更高复习阶段；校验不通过不会改动原数据。
               </span>
               <button
                 type="button"
                 disabled={!importText.trim()}
                 onClick={handleImportSubmit}
-                className="app-accent-solid shrink-0 rounded-xl px-4 py-2 text-xs font-semibold shadow-xs disabled:opacity-45"
+                className="app-accent-solid min-h-11 shrink-0 rounded-xl px-4 py-2 text-xs font-semibold shadow-xs disabled:opacity-45 sm:min-h-0"
               >
                 验证并导入
               </button>

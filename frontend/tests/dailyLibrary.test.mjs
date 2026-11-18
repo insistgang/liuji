@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
-import { readRecordsStrict, REVIEW_INTERVALS, reviewStage, scheduleReview } from '../src/store/dailyLibrary.ts'
+import {
+  applyWrongAnswerSync,
+  day,
+  PROGRESS_KEY,
+  readRecordsStrict,
+  REVIEW_INTERVALS,
+  reviewStage,
+  scheduleReview,
+  syncWrongWordsToStorage,
+} from '../src/store/dailyLibrary.ts'
 
 function addDays(date, days) {
   const value = new Date(`${date}T12:00:00`)
@@ -115,4 +124,61 @@ test('very familiar words on a first sighting skip the shortest interval', () =>
   const strong = scheduleReview(undefined, true, '2026-11-05', 5)
   assert.equal(strong.stage, 2)
   assert.equal(strong.due, '2026-11-07')
+})
+
+test('applyWrongAnswerSync resets both target and confused word to today while preserving learned dates', () => {
+  const current = {
+    '2026-11-10:target': {
+      learned: '2026-11-10',
+      reviewed: ['2026-11-10'],
+      due: '2026-11-12',
+      interval: 2,
+      stage: 2,
+    },
+    '2026-11-05:confused': {
+      learned: '2026-11-05',
+      reviewed: ['2026-11-05', '2026-11-10'],
+      due: '2026-11-25',
+      interval: 7,
+      stage: 4,
+    },
+  }
+
+  const synced = applyWrongAnswerSync(current, '2026-11-10:target', '2026-11-05:confused', '2026-11-18')
+  assert.equal(synced.targetRecord.stage, 0)
+  assert.equal(synced.targetRecord.interval, 0)
+  assert.equal(synced.targetRecord.due, '2026-11-18')
+  assert.equal(synced.targetRecord.learned, '2026-11-10')
+
+  assert.ok(synced.confusedRecord)
+  assert.equal(synced.confusedRecord.stage, 0)
+  assert.equal(synced.confusedRecord.interval, 0)
+  assert.equal(synced.confusedRecord.due, '2026-11-18')
+  assert.equal(synced.confusedRecord.learned, '2026-11-05')
+  assert.deepEqual(synced.confusedRecord.reviewed, ['2026-11-05', '2026-11-10', '2026-11-18'])
+
+  const selfPair = applyWrongAnswerSync(current, '2026-11-10:target', '2026-11-10:target', '2026-11-18')
+  assert.equal(selfPair.confusedRecord, null)
+})
+
+test('syncWrongWordsToStorage atomically persists valid daily pairs and ignores non-daily keys', () => {
+  const store = new Map()
+  globalThis.localStorage = {
+    getItem: (k) => store.get(k) ?? null,
+    setItem: (k, v) => store.set(k, v),
+  }
+
+  const today = day()
+  const nonDaily = syncWrongWordsToStorage('42', '99')
+  assert.deepEqual(nonDaily, { targetRecord: null, confusedRecord: null })
+  assert.equal(store.get(PROGRESS_KEY), undefined)
+
+  const res = syncWrongWordsToStorage('2026-11-17:concede', '2026-11-16:intuitive')
+  assert.ok(res?.targetRecord)
+  assert.ok(res?.confusedRecord)
+  const stored = readRecordsStrict()
+  assert.equal(stored['2026-11-17:concede'].due, today)
+  assert.equal(stored['2026-11-17:concede'].stage, 0)
+  assert.equal(stored['2026-11-16:intuitive'].due, today)
+  assert.equal(stored['2026-11-16:intuitive'].stage, 0)
 })

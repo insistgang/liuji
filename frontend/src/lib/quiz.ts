@@ -156,3 +156,26 @@ export function maskWordInSentence(sentence: string, word: string): string {
   const regex = new RegExp(`\\b(?:${patterns.join('|')})\\b`, 'gi')
   return cleanSentence.replace(regex, '______')
 }
+
+export function updateQueueAfterAnswer(
+  queueIds: string[],
+  currentId: string,
+  isCorrect: boolean,
+  confusedWordId?: string | null,
+): string[] {
+  const rest = queueIds.filter((id) => id !== currentId)
+  if (isCorrect) return rest
+  const next = [...rest, currentId]
+  if (confusedWordId && confusedWordId !== currentId && !next.includes(confusedWordId)) {
+    next.push(confusedWordId)
+  }
+  return next
+}
+
+export function isDesktopFinePointer(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(pointer: fine)').matches
+  )
+}

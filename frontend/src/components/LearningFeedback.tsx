@@ -12,7 +12,7 @@ export default function LearningFeedback({
 }) {
   const dismiss = useEffectEvent(onDismiss)
   useEffect(() => {
-    const timer = window.setTimeout(() => dismiss(), 1000)
+    const timer = window.setTimeout(() => dismiss(), 2600)
     return () => window.clearTimeout(timer)
   }, [])
 
@@ -32,7 +32,7 @@ export default function LearningFeedback({
 
   return (
     <div
-      className={`feedback-enter fixed bottom-24 md:bottom-6 left-4 right-4 z-50 mx-auto flex max-w-lg items-center gap-3 rounded-2xl border px-4 py-3.5 shadow-xl backdrop-blur-md ${toneClasses}`}
+      className={`feedback-enter bottom-toast-safe fixed left-3.5 right-3.5 z-50 mx-auto flex max-w-lg items-center gap-3 rounded-2xl border px-4 py-3.5 shadow-xl backdrop-blur-md sm:left-4 sm:right-4 ${toneClasses}`}
     >
       <Icon size={20} className={`shrink-0 ${iconColor}`} aria-hidden="true" />
       <p role={tone === 'error' ? 'alert' : 'status'} className="min-w-0 flex-1 break-words text-sm font-medium leading-5">

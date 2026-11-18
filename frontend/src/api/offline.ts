@@ -22,6 +22,16 @@ export interface OfflineResponse<T> {
   data: { code: number; data: T; message: string }
 }
 
+export type QuizMode = 'mixed' | 'choice' | 'spelling'
+
+export interface QuizOptionDetail {
+  option: string
+  word_key?: string
+  word: string
+  phonetic: string | null
+  definition_cn: string
+}
+
 function response<T>(data: T): OfflineResponse<T> {
   return { data: { code: 0, data, message: 'ok' } }
 }
@@ -238,7 +248,7 @@ export const offlineApi = {
     })
   },
 
-  async startQuiz(count = 10) {
+  async startQuiz(count = 10, quizMode: QuizMode = 'mixed') {
     interface QuizWordCandidate {
       key: string
       word: string
@@ -326,48 +336,112 @@ export const offlineApi = {
       if (picked.length >= count) break
     }
 
-    const types = ['meaning', 'word', 'listening'] as const
+    const types =
+      quizMode === 'spelling'
+        ? (['spelling'] as const)
+        : quizMode === 'choice'
+          ? (['meaning', 'word', 'listening'] as const)
+          : (['meaning', 'word', 'listening', 'spelling'] as const)
+
     const questions = picked.map((target, index) => {
       const questionType = types[index % types.length]
+
+      if (questionType === 'spelling') {
+        return {
+          word_id: index + 1,
+          word_key: target.key,
+          word: target.word,
+          phonetic: target.phonetic || '',
+          part_of_speech: target.part_of_speech || '',
+          definition_cn: target.definition_cn,
+          question_type: 'spelling',
+          prompt: target.definition_cn,
+          options: [] as string[],
+          correct_answer: target.word,
+          option_details: [] as QuizOptionDetail[],
+        }
+      }
+
       const distractorPool = shuffle(
         candidates.filter((item) => item.word.toLowerCase() !== target.word.toLowerCase()),
       )
 
       if (questionType === 'word') {
-        const correctAnswer = target.word
-        const optionsSet = new Set<string>([correctAnswer])
+        const seenOptions = new Set<string>([target.word])
+        const details: QuizOptionDetail[] = [
+          {
+            option: target.word,
+            word_key: target.key,
+            word: target.word,
+            phonetic: target.phonetic,
+            definition_cn: target.definition_cn,
+          },
+        ]
         for (const candidate of distractorPool) {
-          if (optionsSet.size >= 4) break
-          optionsSet.add(candidate.word)
+          if (details.length >= 4) break
+          if (seenOptions.has(candidate.word)) continue
+          seenOptions.add(candidate.word)
+          details.push({
+            option: candidate.word,
+            word_key: candidate.key,
+            word: candidate.word,
+            phonetic: candidate.phonetic,
+            definition_cn: candidate.definition_cn,
+          })
         }
+        const shuffledDetails = shuffle(details)
         return {
           word_id: index + 1,
+          word_key: target.key,
           word: target.word,
           phonetic: target.phonetic || '',
           part_of_speech: target.part_of_speech || '',
+          definition_cn: target.definition_cn,
           question_type: questionType,
           prompt: target.definition_cn,
-          options: shuffle([...optionsSet]),
-          correct_answer: correctAnswer,
+          options: shuffledDetails.map((d) => d.option),
+          correct_answer: target.word,
+          option_details: shuffledDetails,
         }
       }
 
       const correctAnswer = summarizeDefinition(target.definition_cn)
-      const optionsSet = new Set<string>([correctAnswer])
+      const seenOptions = new Set<string>([correctAnswer])
+      const details: QuizOptionDetail[] = [
+        {
+          option: correctAnswer,
+          word_key: target.key,
+          word: target.word,
+          phonetic: target.phonetic,
+          definition_cn: target.definition_cn,
+        },
+      ]
       for (const candidate of distractorPool) {
-        if (optionsSet.size >= 4) break
+        if (details.length >= 4) break
         const summary = summarizeDefinition(candidate.definition_cn)
-        if (summary) optionsSet.add(summary)
+        if (!summary || seenOptions.has(summary)) continue
+        seenOptions.add(summary)
+        details.push({
+          option: summary,
+          word_key: candidate.key,
+          word: candidate.word,
+          phonetic: candidate.phonetic,
+          definition_cn: candidate.definition_cn,
+        })
       }
+      const shuffledDetails = shuffle(details)
       return {
         word_id: index + 1,
+        word_key: target.key,
         word: target.word,
         phonetic: target.phonetic || '',
         part_of_speech: target.part_of_speech || '',
+        definition_cn: target.definition_cn,
         question_type: questionType,
         prompt: target.word,
-        options: shuffle([...optionsSet]),
+        options: shuffledDetails.map((d) => d.option),
         correct_answer: correctAnswer,
+        option_details: shuffledDetails,
       }
     })
 
