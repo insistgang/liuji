@@ -3,9 +3,12 @@ import type {
   WordProgress,
   VocabProgressStats,
 } from '../types/vocabulary'
+import { summarizeDefinition } from '../lib/quiz'
 
 const STORAGE_KEY = 'liuji-offline-progress-v1'
+const DAILY_PROGRESS_KEY = 'liuji-daily-library-progress-v1'
 const DATA_URL = `${import.meta.env.BASE_URL}data/vocabulary.json`
+const DAILY_DATA_URL = `${import.meta.env.BASE_URL}data/daily_words.json`
 
 interface OfflineProgress extends WordProgress {
   created_at: string
@@ -233,5 +236,141 @@ export const offlineApi = {
       streak_days: streakDays,
       completed: newWordsRemaining === 0 && dueReviews === 0,
     })
+  },
+
+  async startQuiz(count = 10) {
+    interface QuizWordCandidate {
+      key: string
+      word: string
+      phonetic: string | null
+      part_of_speech: string | null
+      definition_cn: string
+    }
+
+    const shuffle = <T,>(items: T[]): T[] => {
+      const copy = [...items]
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[copy[i], copy[j]] = [copy[j], copy[i]]
+      }
+      return copy
+    }
+
+    let candidates: QuizWordCandidate[] = []
+    try {
+      const res = await fetch(DAILY_DATA_URL)
+      if (res.ok) {
+        const payload = (await res.json()) as {
+          lessons?: Array<{
+            words?: Array<{
+              id: string
+              word: string
+              phonetic?: string
+              definition_cn?: string
+            }>
+          }>
+        }
+        const dailyWords = (payload.lessons || []).flatMap((lesson) => lesson.words || [])
+        candidates = dailyWords
+          .filter((item) => item.word && item.definition_cn?.trim())
+          .map((item) => ({
+            key: item.id,
+            word: item.word,
+            phonetic: item.phonetic || null,
+            part_of_speech: null,
+            definition_cn: item.definition_cn || '',
+          }))
+      }
+    } catch {
+      // Fallback to vocabulary.json below
+    }
+
+    if (candidates.length === 0) {
+      const words = await getWords()
+      candidates = words
+        .filter((item) => item.word && item.definition_cn?.trim())
+        .map((item) => ({
+          key: String(item.id),
+          word: item.word,
+          phonetic: item.phonetic || null,
+          part_of_speech: item.part_of_speech || null,
+          definition_cn: item.definition_cn || '',
+        }))
+    }
+
+    if (candidates.length === 0) {
+      return response([])
+    }
+
+    let learnedKeys = new Set<string>()
+    try {
+      const raw = JSON.parse(localStorage.getItem(DAILY_PROGRESS_KEY) || '{}') as Record<string, unknown>
+      if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+        learnedKeys = new Set(Object.keys(raw))
+      }
+    } catch {
+      // Ignore malformed progress during quiz generation
+    }
+
+    const studied = shuffle(candidates.filter((item) => learnedKeys.has(item.key)))
+    const unstudied = shuffle(candidates.filter((item) => !learnedKeys.has(item.key)))
+    const ordered = [...studied, ...unstudied]
+
+    const picked: QuizWordCandidate[] = []
+    const seenWords = new Set<string>()
+    for (const item of ordered) {
+      const lower = item.word.toLowerCase()
+      if (seenWords.has(lower)) continue
+      seenWords.add(lower)
+      picked.push(item)
+      if (picked.length >= count) break
+    }
+
+    const types = ['meaning', 'word', 'listening'] as const
+    const questions = picked.map((target, index) => {
+      const questionType = types[index % types.length]
+      const distractorPool = shuffle(
+        candidates.filter((item) => item.word.toLowerCase() !== target.word.toLowerCase()),
+      )
+
+      if (questionType === 'word') {
+        const correctAnswer = target.word
+        const optionsSet = new Set<string>([correctAnswer])
+        for (const candidate of distractorPool) {
+          if (optionsSet.size >= 4) break
+          optionsSet.add(candidate.word)
+        }
+        return {
+          word_id: index + 1,
+          word: target.word,
+          phonetic: target.phonetic || '',
+          part_of_speech: target.part_of_speech || '',
+          question_type: questionType,
+          prompt: target.definition_cn,
+          options: shuffle([...optionsSet]),
+          correct_answer: correctAnswer,
+        }
+      }
+
+      const correctAnswer = summarizeDefinition(target.definition_cn)
+      const optionsSet = new Set<string>([correctAnswer])
+      for (const candidate of distractorPool) {
+        if (optionsSet.size >= 4) break
+        const summary = summarizeDefinition(candidate.definition_cn)
+        if (summary) optionsSet.add(summary)
+      }
+      return {
+        word_id: index + 1,
+        word: target.word,
+        phonetic: target.phonetic || '',
+        part_of_speech: target.part_of_speech || '',
+        question_type: questionType,
+        prompt: target.word,
+        options: shuffle([...optionsSet]),
+        correct_answer: correctAnswer,
+      }
+    })
+
+    return response(questions)
   },
 }

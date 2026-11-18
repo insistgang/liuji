@@ -114,6 +114,11 @@ export function applyTheme(theme: Theme) {
   root.dataset.theme = theme
   root.classList.toggle('dark', dark)
   root.style.colorScheme = dark ? 'dark' : 'light'
+  if (typeof document.querySelector === 'function') {
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', getThemeMeta(theme).canvasPreview)
+  }
 }
 
 interface ThemeState {

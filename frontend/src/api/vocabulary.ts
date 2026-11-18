@@ -39,10 +39,12 @@ export const vocabApi = {
     })
   },
 
-  startQuiz: (count = 10) =>
-    client.post<ApiResponse<Array<{ word_id: number; word: string; phonetic: string; part_of_speech: string; question_type: string; prompt: string; options: string[]; correct_answer: string }>>>('/vocabulary/quiz/start', null, {
+  startQuiz: (count = 10) => {
+    if (isStaticMode) return offlineApi.startQuiz(count)
+    return client.post<ApiResponse<Array<{ word_id: number; word: string; phonetic: string; part_of_speech: string; question_type: string; prompt: string; options: string[]; correct_answer: string }>>>('/vocabulary/quiz/start', null, {
       params: { count },
-    }),
+    })
+  },
 
   getProgress: () => {
     if (isStaticMode) return offlineApi.getProgress()

@@ -11,7 +11,7 @@ export type DailyRecords = Record<string, RecordEntry>
 export const PROGRESS_KEY = 'liuji-daily-library-progress-v1'
 export const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30] as const
 export type ReviewQuality = 1 | 3 | 4 | 5
-const PROGRESS_EVENT = 'liuji-daily-progress-updated'
+export const PROGRESS_EVENT = 'liuji-daily-progress-updated'
 
 export const day = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
@@ -49,22 +49,45 @@ export function scheduleReview(old: RecordEntry | undefined, remembered: boolean
   return { learned: old?.learned || today, reviewed: [...new Set([...(old?.reviewed || []), today])], due, interval, stage }
 }
 
-function validDay(value: unknown): value is string {
+export function isValidDay(value: unknown): value is string {
   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && day(new Date(`${value}T12:00:00`)) === value
 }
 
-export function readRecordsStrict(): DailyRecords {
-  const value: unknown = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}')
+export function validateRecords(value: unknown): DailyRecords {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('学习记录格式异常')
-  for (const item of Object.values(value)) {
-    if (!item || !validDay(item.learned) || !validDay(item.due) ||
-      !Array.isArray(item.reviewed) || !item.reviewed.every(validDay) ||
-      !Number.isFinite(item.interval) || item.interval < 0 ||
-      (item.stage !== undefined && (!Number.isInteger(item.stage) || item.stage < 0 || item.stage > REVIEW_INTERVALS.length))) {
+  for (const [key, entry] of Object.entries(value as Record<string, unknown>)) {
+    if (!key || !entry || typeof entry !== 'object' || Array.isArray(entry)) {
+      throw new Error('学习记录格式异常')
+    }
+    const item = entry as Partial<RecordEntry>
+    if (
+      !isValidDay(item.learned) ||
+      !isValidDay(item.due) ||
+      !Array.isArray(item.reviewed) ||
+      !item.reviewed.every(isValidDay) ||
+      typeof item.interval !== 'number' ||
+      !Number.isFinite(item.interval) ||
+      item.interval < 0 ||
+      (item.stage !== undefined && (!Number.isInteger(item.stage) || item.stage < 0 || item.stage > REVIEW_INTERVALS.length))
+    ) {
       throw new Error('学习记录格式异常')
     }
   }
   return value as DailyRecords
+}
+
+export function readRecordsStrict(): DailyRecords {
+  const value: unknown = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}')
+  return validateRecords(value)
+}
+
+export function writeRecordsStrict(records: DailyRecords): DailyRecords {
+  const checked = validateRecords(records)
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(checked))
+  if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+    window.dispatchEvent(new Event(PROGRESS_EVENT))
+  }
+  return checked
 }
 
 export function useDailyRecords() {
@@ -92,10 +115,9 @@ export function useDailyRecords() {
       const current = readRecordsStrict()
       const next = scheduleReview(current[word.id], remembered, day(), quality)
       const updated = { ...current, [word.id]: next }
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(updated))
+      writeRecordsStrict(updated)
       setRecords(updated)
       setStorageError('')
-      window.dispatchEvent(new Event(PROGRESS_EVENT))
       return next
     } catch {
       setStorageError('学习记录未保存。请检查浏览器存储权限或原有记录格式；没有覆盖已有数据。')

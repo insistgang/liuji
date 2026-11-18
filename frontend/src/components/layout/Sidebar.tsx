@@ -9,22 +9,26 @@ import {
   LayoutDashboard,
   PenTool,
   Sparkles,
+  Trophy,
   User,
 } from 'lucide-react'
 
 const navItems = [
   { to: '/daily', icon: CalendarCheck, label: '每日词表与复习', desc: '20词 · 场景图 · 原文' },
-  { to: '/vocabulary/learn', icon: Brain, label: '词汇特训与测验', desc: '四选一 · 间隔记忆' },
+  { to: '/vocabulary/learn', icon: Brain, label: '词汇特训与测验', desc: '看词 · 听音 · 默写' },
+  { to: '/vocabulary/test', icon: Trophy, label: '词汇随堂测验', desc: '正反向 · 听音抽测' },
   { to: '/dashboard', icon: LayoutDashboard, label: '学习仪表盘', desc: '计划与数据概览' },
   { to: '/exams', icon: FileText, label: '真题练习', desc: '阅读 · 翻译 · 模考' },
   { to: '/listening', icon: Headphones, label: '听力训练', desc: '精听文稿与习题' },
   { to: '/writing', icon: PenTool, label: '写作批改', desc: 'AI 评分与润色' },
-  { to: '/profile', icon: User, label: '个人中心', desc: '偏好设置与记录' },
+  { to: '/profile', icon: User, label: '数据备份与设置', desc: '跨设备同步 · 发音与主题' },
 ]
 
 export default function Sidebar() {
   const visibleItems = navItems.filter(
-    (item) => !isStaticMode || ['/daily', '/vocabulary/learn'].includes(item.to),
+    (item) =>
+      !isStaticMode ||
+      ['/daily', '/vocabulary/learn', '/vocabulary/test', '/profile'].includes(item.to),
   )
 
   return (

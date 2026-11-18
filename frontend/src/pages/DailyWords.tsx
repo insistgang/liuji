@@ -365,6 +365,12 @@ export default function DailyWords() {
             </div>
             <span className="text-[var(--text-muted)]">
               当前显示 {displayedWords.length} / {filteredWords.length} 词 · 进度仅保存在当前浏览器
+              <Link
+                to="/profile"
+                className="ml-1.5 font-medium text-[var(--accent-text)] underline underline-offset-2 hover:opacity-80"
+              >
+                备份/同步
+              </Link>
             </span>
           </div>
         )}
