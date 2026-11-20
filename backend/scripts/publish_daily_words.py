@@ -12,7 +12,9 @@ from datetime import datetime
 from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parents[2]
-SCOPE = ['每日英语单词', 'frontend/public/data/daily_words.json', 'frontend/public/images/daily']
+# 只提交真源目录；前端导出 JSON 与配图副本由 export_frontend_daily_words.py 生成，
+# 已在 .gitignore 中排除，由 CI 构建时重新生成。
+SCOPE = ['每日英语单词']
 PREFIX = 'chore: 发布每日英语词表 '
 
 

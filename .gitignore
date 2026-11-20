@@ -33,6 +33,13 @@ dist/
 *.db
 *.sqlite3
 
+# 每日词表前端导出产物（由 backend/scripts/export_frontend_daily_words.py 按需生成）
+frontend/public/data/daily_words.json
+frontend/public/images/daily/
+
+# 自动化改动真源前的临时备份（内容保留在 Git 历史中，不入库）
+每日英语单词/*.bak-*
+
 # OS
 .DS_Store
 Thumbs.db

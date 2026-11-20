@@ -14,8 +14,9 @@ spec.loader.exec_module(publish)
 class DailyPublishTests(unittest.TestCase):
     def test_scope_rejects_secrets_and_other_code(self):
         self.assertTrue(publish.in_scope('每日英语单词/历期词表/lesson.md'))
-        self.assertTrue(publish.in_scope('frontend/public/images/daily/a.png'))
-        for path in ['.env', '.workbuddy/state.json', 'frontend/src/App.tsx', '每日英语单词旧/secret']:
+        self.assertTrue(publish.in_scope('每日英语单词/场景配图/a.png'))
+        for path in ['.env', '.workbuddy/state.json', 'frontend/src/App.tsx', '每日英语单词旧/secret',
+                     'frontend/public/data/daily_words.json', 'frontend/public/images/daily/a.png']:
             self.assertFalse(publish.in_scope(path), path)
 
     def test_waits_for_lesson_and_image(self):
