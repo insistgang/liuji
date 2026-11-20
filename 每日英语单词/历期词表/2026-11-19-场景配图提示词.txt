@@ -1,0 +1,33 @@
+Create a polished visual memory palace for exactly 20 English vocabulary words.
+
+Horizontal landscape orientation, 16:9 aspect ratio. A cohesive illustrated double-page spread on warm ivory paper, clear ink outlines, restrained teal and amber accents, natural proportions, readable silhouettes and ample breathing space. Light background, warm clear illustration, single consistent perspective.
+
+Left half: a procurement office and its adjoining receiving bay during a supplier contract wrap-up. Right half: a home on a weekend cleaning-and-alteration day. On each side use a few connected foreground, middle-ground and background areas rather than isolated icon cells, and guide the eye with a subtle spatial route so the actions form one continuous story.
+
+WORK STORY, exactly 11 vocabulary cues, in this order:
+1. tender -- submitting a bid -- a locked bid box on the meeting table with several sealed envelopes being dropped in, an open bid document fanned beside it -- middle ground.
+2. clause -- a contract provision -- a hand with a red pen underlining one short numbered paragraph of a contract -- foreground table.
+3. provisional -- temporary acceptance -- a clipboard holding a stamped sheet marked as a trial acceptance, tag hanging loose -- middle ground.
+4. contingency -- reserve money for emergencies -- a small sealed stack of banknotes kept apart in an open drawer -- foreground.
+5. procure -- buying in goods -- a clerk ticking off delivered cardboard boxes one by one on a receiving list -- background loading area.
+6. levy -- charging a fee -- a fee notice being stamped with a round charge stamp -- foreground desk corner.
+7. penalty -- a fine for lateness -- an overdue penalty slip lying next to a desk calendar -- foreground.
+8. substantiate -- proving with evidence -- an inspector lining up three items side by side: a photo, a test report and an invoice -- middle ground.
+9. supersede -- replacing the old with the new -- an old machine pushed against the wall while a new unit is plugged in and its indicator lights up -- background.
+10. surplus -- money left over -- the last page of a ledger showing a positive balance with a small coin pouch beside it -- foreground.
+11. relinquish -- handing over control -- a supplier representative pushing a company seal and a set of keys across the table to the other side -- middle ground.
+
+LIFE STORY, exactly 9 vocabulary cues, in this order:
+12. vacuum -- cleaning with a suction cleaner -- a person pushing an upright vacuum cleaner back and forth across a rug -- foreground.
+13. scrub -- rubbing hard to clean -- someone crouching to brush the corner of a kitchen counter with a stiff brush -- middle ground.
+14. rinse -- washing off with water -- a cloth being squeezed and rinsed under a running tap -- foreground.
+15. soak -- leaving to steep in water -- a basin of water with a yellowed shirt collar submerged in it -- foreground.
+16. stain -- a dirty mark -- a coffee mark on a tablecloth, a finger pointing at it -- middle ground.
+17. fabric -- woven cloth -- a roll of cotton-linen cloth standing upright on a cutting table -- middle ground.
+18. wrinkle -- a crease being pressed out -- an iron gliding over cloth, the crease flattening behind it -- foreground.
+19. tailor -- a person who alters clothes -- a tailor holding a soft tape measure along a sleeve and chalking a line -- middle ground.
+20. sleeve -- the arm part of a garment -- one sleeve turned inside out flat on the cutting board -- foreground.
+
+Typography: titles "WORK" and "LIFE" only, plus exactly these 20 vocabulary labels, each appearing once, in readable dark sans-serif placed close to its own action and never on top of a face: tender, clause, provisional, contingency, procure, levy, penalty, substantiate, supersede, surplus, relinquish, vacuum, scrub, rinse, soak, stain, fabric, wrinkle, tailor, sleeve. No definitions, no translations, no phonetics, no sentences, no numbers.
+
+Prioritize semantic clarity, coherent scenes and legibility over decorative complexity. No grid of icons, no empty decorative cells, no invented writing on documents, no watermark, no duplicate labels, no malformed or incomplete bodies, no cropped key objects, natural human proportions.
