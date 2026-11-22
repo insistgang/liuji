@@ -52,3 +52,6 @@ Thumbs.db
 
 # Alembic
 alembic/versions/*.pyc
+
+# 本机备考讲义、真题、音频与个人计划
+/本地备考资料/
