@@ -53,5 +53,6 @@ Thumbs.db
 # Alembic
 alembic/versions/*.pyc
 
-# 本机备考讲义、真题、音频与个人计划
+# 本机备考资料、题目包、个人作答与学习记录
 /本地备考资料/
+/cet-6-review/

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   BookOpenText,
   Brain,
@@ -33,7 +33,18 @@ export default function DailyWords() {
   const { library, error } = useDailyLibrary()
   const { records, storageError, save } = useDailyRecords()
   const [selected, setSelected] = useState('')
-  const [tab, setTab] = useState<TabKey>('lesson')
+  const [params, setParams] = useSearchParams()
+  const requestedTab = params.get('tab')
+  const tab: TabKey = requestedTab === 'review' || requestedTab === 'library' || requestedTab === 'source'
+    ? requestedTab : 'lesson'
+  function setTab(next: TabKey) {
+    setParams((current) => {
+      const updated = new URLSearchParams(current)
+      if (next === 'lesson') updated.delete('tab')
+      else updated.set('tab', next)
+      return updated
+    }, { preventScrollReset: true })
+  }
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [visibleLimit, setVisibleLimit] = useState(PAGE_STEP)
@@ -231,6 +242,11 @@ export default function DailyWords() {
           </div>
         </div>
       </header>
+
+      <Link to="/plan" className="app-card-interactive flex min-h-11 items-center justify-between gap-3 rounded-2xl px-4 py-3 text-sm font-semibold">
+        <span>学习计划 · 5 分钟复习 + 20 分钟专项</span>
+        <ChevronRight size={17} className="shrink-0" aria-hidden="true" />
+      </Link>
 
       {storageError && (
         <p role="alert" className="rounded-2xl border border-red-300 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/60 dark:text-red-300">

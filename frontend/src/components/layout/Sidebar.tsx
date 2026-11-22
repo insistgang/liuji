@@ -3,6 +3,7 @@ import { isStaticMode } from '../../api/runtime'
 import {
   Brain,
   CalendarCheck,
+  ClipboardList,
   FileText,
   GraduationCap,
   Headphones,
@@ -15,6 +16,7 @@ import {
 
 const navItems = [
   { to: '/daily', icon: CalendarCheck, label: '每日词表与复习', desc: '20词 · 场景图 · 原文' },
+  { to: '/plan', icon: ClipboardList, label: '学习计划', desc: '到期复习 · 单项训练' },
   { to: '/vocabulary/learn', icon: Brain, label: '词汇特训与测验', desc: '看词 · 听音 · 默写' },
   { to: '/vocabulary/test', icon: Trophy, label: '词汇随堂测验', desc: '正反向 · 听音抽测' },
   { to: '/dashboard', icon: LayoutDashboard, label: '学习仪表盘', desc: '计划与数据概览' },
@@ -28,7 +30,7 @@ export default function Sidebar() {
   const visibleItems = navItems.filter(
     (item) =>
       !isStaticMode ||
-      ['/daily', '/vocabulary/learn', '/vocabulary/test', '/profile'].includes(item.to),
+      ['/daily', '/plan', '/vocabulary/learn', '/vocabulary/test', '/profile'].includes(item.to),
   )
 
   return (

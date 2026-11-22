@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom'
 import { isStaticMode } from '../../api/runtime'
-import { Brain, CalendarCheck, FileText, Headphones, PenTool, Trophy, User } from 'lucide-react'
+import { Brain, CalendarCheck, ClipboardList, FileText, Headphones, PenTool, Trophy, User } from 'lucide-react'
 
 const navItems = [
   { to: '/daily', icon: CalendarCheck, label: '每日词表' },
+  { to: '/plan', icon: ClipboardList, label: '学习计划' },
   { to: '/vocabulary/learn', icon: Brain, label: '词汇特训' },
   { to: '/vocabulary/test', icon: Trophy, label: '随堂测验' },
   { to: '/exams', icon: FileText, label: '真题' },
@@ -15,8 +16,9 @@ const navItems = [
 export default function BottomNav() {
   const visibleItems = navItems.filter(
     (item) =>
-      !isStaticMode ||
-      ['/daily', '/vocabulary/learn', '/vocabulary/test', '/profile'].includes(item.to),
+      isStaticMode
+        ? ['/daily', '/plan', '/vocabulary/learn', '/vocabulary/test', '/profile'].includes(item.to)
+        : item.to !== '/plan',
   )
 
   return (

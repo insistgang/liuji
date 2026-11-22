@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Outlet } from 'react-router-dom'
 import { GraduationCap } from 'lucide-react'
 import Sidebar from './Sidebar'
@@ -6,8 +7,13 @@ import ThemeToggle from './ThemeToggle'
 import { isStaticMode } from '../../api/runtime'
 
 export default function AppShell() {
+  const mainRef = useRef<HTMLElement>(null)
   return (
     <div className="app-canvas flex min-h-screen">
+      <a href="#main-content" className="app-accent-solid sr-only z-50 rounded-xl px-4 py-2 focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+        onClick={(event) => { event.preventDefault(); mainRef.current?.focus() }}>
+        跳到主要内容
+      </a>
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="app-topbar sticky top-0 z-40 px-3 py-2.5 sm:px-4 md:px-8">
@@ -32,7 +38,7 @@ export default function AppShell() {
           </div>
         </header>
 
-        <main className="pb-main-safe min-w-0 flex-1">
+        <main id="main-content" ref={mainRef} tabIndex={-1} className="pb-main-safe min-w-0 flex-1 scroll-mt-16">
           <div className="mx-auto max-w-5xl px-3.5 py-4 sm:px-4 sm:py-5 md:px-8 md:py-7">
             <Outlet />
           </div>

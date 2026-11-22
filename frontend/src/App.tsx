@@ -1,5 +1,5 @@
 import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useAuthStore } from './store/authStore'
 import { useThemeEffect } from './store/themeStore'
@@ -21,6 +21,8 @@ import WritingEditor from './pages/WritingEditor'
 import Profile from './pages/Profile'
 import DailyWords from './pages/DailyWords'
 import { isStaticMode } from './api/runtime'
+
+const StudyPlan = lazy(() => import('./pages/StudyPlan'))
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuthStore()
@@ -65,6 +67,11 @@ export default function App() {
         >
           <Route index element={<Navigate to={isStaticMode ? '/daily' : '/dashboard'} replace />} />
           <Route path="daily" element={<DailyWords />} />
+          <Route path="plan" element={
+            <Suspense fallback={<p role="status" className="p-4 text-sm text-[var(--text-secondary)]">正在加载学习计划…</p>}>
+              <StudyPlan />
+            </Suspense>
+          } />
           <Route path="dashboard" element={isStaticMode ? <Navigate to="/daily" replace /> : <Dashboard />} />
           <Route path="vocabulary/learn" element={<VocabularyLearn />} />
           <Route path="vocabulary/review" element={<VocabularyReview />} />
